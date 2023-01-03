@@ -2,7 +2,17 @@
   "devDependencies": {
     "mocha": "^10.2.0"
   },
+  "directories": {
+    "client": "src/client/",
+    "server": "src/server/",
+    "res": "res/",
+    "test": "test/"
+  },
+  "name": "keel-app",
+  "main": "src/server/index.js",
   "scripts": {
-    "test": "mocha"
-  }  
+    "start": "node src/server/index.js",
+    "build": "webpack --config src/client/webpack.config.js",
+    "test": "mocha --recursive test/"
+  }
 }
