@@ -1,37 +1,36 @@
 class Frame{
-    //#region Constructor
-    constructor(){
-        this.leftValue = null;
-        this.rightValue = null;
-        this.centerValue = null;
-        this.score = null;
-        this.totalScore = null;
-    }
+    constructor(leftValue = null, rightValue = null, centerValue = null){
 
-    constructor(leftValue){
-        this.leftValue = leftValue;
-        this.rightValue = null;
-        this.centerValue = null;
-        this.score = null;
-        this.totalScore = null;
-    }
+        if(!Frame.isValid(leftValue, rightValue, centerValue)){
+            throw new Error("Invalid data provided");
+        }
 
-    constructor(leftValue, rightValue){
-        this.leftValue = leftValue;
-        this.rightValue = rightValue;
-        this.centerValue = null;
-        this.score = null;
-        this.totalScore = null;
-    }
-
-    constructor(leftValue, rightValue, centerValue){
         this.leftValue = leftValue;
         this.rightValue = rightValue;
         this.centerValue = centerValue;
         this.score = null;
         this.totalScore = null;
     }
-    //#endregion Constructor
+
+    //#region Methods
+    static isValid(leftValue, rightValue, centerValue){
+
+        if(leftValue == null || rightValue == null || leftValue == undefined || rightValue == undefined){
+            return false;
+        }
+
+        if(typeof leftValue != 'number' || typeof rightValue != 'number'){
+            return false;
+        }
+
+        if(leftValue <0 || leftValue > 10 || rightValue <0 || rightValue > 10){
+            return false;
+        }
+        
+        return true;
+    }
+    //#endregion Methods
+    
     //#region Getters and Setters
     getLeftValue(){
         return this.leftValue;

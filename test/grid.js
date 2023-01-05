@@ -1,6 +1,6 @@
 const assert = require('assert');
-const Grid = require('client/grid.js');
-const Frame = require('client/frame.js');
+const Grid = require('../src/client/grid');
+const Frame = require('../src/client/frame');
 
 describe('Grid', function() {
     describe('constructor', function() {

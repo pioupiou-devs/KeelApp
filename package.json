@@ -9,6 +9,7 @@
     "test": "test/"
   },
   "name": "keel-app",
+  "version": "1.0.0",
   "main": "src/server/index.js",
   "scripts": {
     "start": "node src/server/index.js",
