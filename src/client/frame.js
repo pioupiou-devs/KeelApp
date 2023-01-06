@@ -1,37 +1,37 @@
 class Frame {
-    constructor(leftValue = null, rightValue = null, centerValue = null) {
+    constructor(c1 = null, c2 = null, c3 = null) {
 
-        if (!this.isValid(leftValue, rightValue, centerValue)) {
+        if (!this.isValid(c1, c2, c3)) {
             throw new Error("Invalid data provided");
         }
 
-        this.leftValue = leftValue;
-        this.rightValue = rightValue;
-        this.centerValue = centerValue;
+        this.c1 = c1;
+        this.c2 = c2;
+        this.c3 = c3;
         this.score = null;
         this.totalScore = null;
     }
 
     //#region Methods
-    isValid(leftValue = null, rightValue = null, centerValue = null) {
-        
-        if (isNaN(leftValue) || isNaN(rightValue) || isNaN(centerValue))
+    isValid(c1 = null, c2 = null, c3 = null) {
+
+        if (isNaN(c1) || isNaN(c2) || isNaN(c3))
             return false;
 
-        if (leftValue != null) {
-            if (typeof leftValue != 'number' || leftValue < 0 || leftValue > 10) {
+        if (c1 != null) {
+            if (typeof c1 != 'number' || c1 < 0 || c1 > 10) {
                 return false;
             }
         }
 
-        if (rightValue != null) {
-            if (typeof rightValue != 'number' || rightValue < 0 || rightValue > 10) {
+        if (c2 != null) {
+            if (typeof c2 != 'number' || c2 < 0 || c2 > 10) {
                 return false;
             }
         }
 
-        if (centerValue != null) {
-            if (typeof centerValue != 'number' || centerValue < 0 || centerValue > 10) {
+        if (c3 != null) {
+            if (typeof c3 != 'number' || c3 < 0 || c3 > 10) {
                 return false;
             }
         }
@@ -41,31 +41,31 @@ class Frame {
     //#endregion Methods
 
     //#region Getters and Setters
-    getLeftValue() {
-        return this.leftValue;
+    getC1() {
+        return this.c1;
     }
 
-    setLeftValue(leftValue) {
-        if (this.isValid(leftValue, this.rightValue, this.centerValue))
-            this.leftValue = leftValue;
+    setC1(c1) {
+        if (this.isValid(c1, this.c2, this.c3))
+            this.c1 = c1;
     }
 
-    getRightValue() {
-        return this.rightValue;
+    getC2() {
+        return this.c2;
     }
 
-    setRightValue(rightValue) {
-        if (this.isValid(this.leftValue, rightValue, this.centerValue))
-            this.rightValue = rightValue;
+    setC2(c2) {
+        if (this.isValid(this.c1, c2, this.c3))
+            this.c2 = c2;
     }
 
-    getCenterValue() {
-        return this.centerValue;
+    getC3() {
+        return this.c3;
     }
 
-    setCenterValue(centerValue) {
-        if (this.isValid(this.leftValue, this.rightValue, centerValue))
-            this.centerValue = centerValue;
+    setC3(c3) {
+        if (this.isValid(this.c1, this.c2, c3))
+            this.c3 = c3;
     }
 
     getScore() {
@@ -73,7 +73,8 @@ class Frame {
     }
 
     setScore(score) {
-        this.score = score;
+        if (score >= 0 && score <= 30)
+            this.score = score;
     }
 
     getTotalScore() {
@@ -81,7 +82,8 @@ class Frame {
     }
 
     setTotalScore(totalScore) {
-        this.totalScore = totalScore;
+        if (totalScore >= 0 && totalScore <= 300)
+            this.totalScore = totalScore;
     }
     //#endregion Getters and Setters
 }

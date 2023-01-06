@@ -11,15 +11,15 @@ describe('Frame', function () {
 
             it('should create a frame with correct default values', function () {
                 let frame = new Frame();
-                assert.equal(frame.leftValue, null);
-                assert.equal(frame.rightValue, null);
-                assert.equal(frame.centerValue, null);
+                assert.equal(frame.c1, null);
+                assert.equal(frame.c2, null);
+                assert.equal(frame.c3, null);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
         });
 
-        describe('leftValue', function () {
+        describe('c1', function () {
             it('should create a new Frame', function () {
                 let frame = new Frame(1);
                 assert.notEqual(frame, null);
@@ -27,18 +27,18 @@ describe('Frame', function () {
 
             it('should create an empty frame with null', function () {
                 let frame = new Frame(null);
-                assert.equal(frame.leftValue, null);
-                assert.equal(frame.rightValue, null);
-                assert.equal(frame.centerValue, null);
+                assert.equal(frame.c1, null);
+                assert.equal(frame.c2, null);
+                assert.equal(frame.c3, null);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
 
             it('should create an empty frame with undefined', function () {
                 let frame = new Frame(undefined);
-                assert.equal(frame.leftValue, null);
-                assert.equal(frame.rightValue, null);
-                assert.equal(frame.centerValue, null);
+                assert.equal(frame.c1, null);
+                assert.equal(frame.c2, null);
+                assert.equal(frame.c3, null);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
@@ -49,9 +49,9 @@ describe('Frame', function () {
 
             it('should create a frame with correct default values', function () {
                 let frame = new Frame(1);
-                assert.equal(frame.leftValue, 1);
-                assert.equal(frame.rightValue, null);
-                assert.equal(frame.centerValue, null);
+                assert.equal(frame.c1, 1);
+                assert.equal(frame.c2, null);
+                assert.equal(frame.c3, null);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
@@ -69,7 +69,7 @@ describe('Frame', function () {
             });
         });
 
-        describe('leftValue, rightValue', function () {
+        describe('c1, c2', function () {
             it('should create a new Frame', function () {
                 let frame = new Frame(1, 2);
                 assert.notEqual(frame, null);
@@ -77,27 +77,27 @@ describe('Frame', function () {
 
             it('should create a frame with correct default values', function () {
                 let frame = new Frame(1, 2);
-                assert.equal(frame.leftValue, 1);
-                assert.equal(frame.rightValue, 2);
-                assert.equal(frame.centerValue, null);
+                assert.equal(frame.c1, 1);
+                assert.equal(frame.c2, 2);
+                assert.equal(frame.c3, null);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
 
             it('should create an empty frame with two null', function () {
                 let frame = new Frame(null, null);
-                assert.equal(frame.leftValue, null);
-                assert.equal(frame.rightValue, null);
-                assert.equal(frame.centerValue, null);
+                assert.equal(frame.c1, null);
+                assert.equal(frame.c2, null);
+                assert.equal(frame.c3, null);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
 
             it('should create an empty frame with two undefined', function () {
                 let frame = new Frame(undefined, undefined);
-                assert.equal(frame.leftValue, null);
-                assert.equal(frame.rightValue, null);
-                assert.equal(frame.centerValue, null);
+                assert.equal(frame.c1, null);
+                assert.equal(frame.c2, null);
+                assert.equal(frame.c3, null);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
@@ -106,32 +106,32 @@ describe('Frame', function () {
                 assert.throws(() => new Frame(NaN, NaN), Error);
             });
 
-            it('should not create a frame with a leftValue greater than 10', function () {
+            it('should not create a frame with a c1 greater than 10', function () {
                 assert.throws(() => new Frame(11, 0), Error);
             });
 
-            it('should not create a frame with a leftValue less than 0', function () {
+            it('should not create a frame with a c1 less than 0', function () {
                 assert.throws(() => new Frame(-1, 0), Error);
             });
 
-            it('should not create a frame with a leftValue that is not a number', function () {
+            it('should not create a frame with a c1 that is not a number', function () {
                 assert.throws(() => new Frame('a', 0), Error);
             });
 
-            it('should not create a frame with a rightValue greater than 10', function () {
+            it('should not create a frame with a c2 greater than 10', function () {
                 assert.throws(() => new Frame(0, 11), Error);
             });
 
-            it('should not create a frame with a rightValue less than 0', function () {
+            it('should not create a frame with a c2 less than 0', function () {
                 assert.throws(() => new Frame(0, -1), Error);
             });
 
-            it('should not create a frame with a rightValue that is not a number', function () {
+            it('should not create a frame with a c2 that is not a number', function () {
                 assert.throws(() => new Frame(0, 'a'), Error);
             });
         });
 
-        describe('leftValue, rightValue, centerValue', function () {
+        describe('c1, c2, c3', function () {
             it('should create a new Frame', function () {
                 let frame = new Frame(1, 2, 3);
                 assert.notEqual(frame, null);
@@ -139,27 +139,27 @@ describe('Frame', function () {
 
             it('should create a frame with correct default values', function () {
                 let frame = new Frame(1, 2, 3);
-                assert.equal(frame.leftValue, 1);
-                assert.equal(frame.rightValue, 2);
-                assert.equal(frame.centerValue, 3);
+                assert.equal(frame.c1, 1);
+                assert.equal(frame.c2, 2);
+                assert.equal(frame.c3, 3);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
 
             it('should create an empty frame with three null', function () {
                 let frame = new Frame(null, null, null);
-                assert.equal(frame.leftValue, null);
-                assert.equal(frame.rightValue, null);
-                assert.equal(frame.centerValue, null);
+                assert.equal(frame.c1, null);
+                assert.equal(frame.c2, null);
+                assert.equal(frame.c3, null);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
 
             it('should create an empty frame with three undefined', function () {
                 let frame = new Frame(undefined, undefined, undefined);
-                assert.equal(frame.leftValue, null);
-                assert.equal(frame.rightValue, null);
-                assert.equal(frame.centerValue, null);
+                assert.equal(frame.c1, null);
+                assert.equal(frame.c2, null);
+                assert.equal(frame.c3, null);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
@@ -168,39 +168,39 @@ describe('Frame', function () {
                 assert.throws(() => new Frame(NaN, NaN, NaN), Error);
             });
 
-            it('should not create a frame with a leftValue greater than 10', function () {
+            it('should not create a frame with a c1 greater than 10', function () {
                 assert.throws(() => new Frame(11, 0, 0), Error);
             });
 
-            it('should not create a frame with a leftValue less than 0', function () {
+            it('should not create a frame with a c1 less than 0', function () {
                 assert.throws(() => new Frame(-1, 0, 0), Error);
             });
 
-            it('should not create a frame with a leftValue that is not a number', function () {
+            it('should not create a frame with a c1 that is not a number', function () {
                 assert.throws(() => new Frame('a', 0, 0), Error);
             });
 
-            it('should not create a frame with a rightValue greater than 10', function () {
+            it('should not create a frame with a c2 greater than 10', function () {
                 assert.throws(() => new Frame(0, 11, 0), Error);
             });
 
-            it('should not create a frame with a rightValue less than 0', function () {
+            it('should not create a frame with a c2 less than 0', function () {
                 assert.throws(() => new Frame(0, -1, 0), Error);
             });
 
-            it('should not create a frame with a rightValue that is not a number', function () {
+            it('should not create a frame with a c2 that is not a number', function () {
                 assert.throws(() => new Frame(0, 'a', 0), Error);
             });
 
-            it('should not create a frame with a centerValue greater than 10', function () {
+            it('should not create a frame with a c3 greater than 10', function () {
                 assert.throws(() => new Frame(0, 0, 11), Error);
             });
 
-            it('should not create a frame with a centerValue less than 0', function () {
+            it('should not create a frame with a c3 less than 0', function () {
                 assert.throws(() => new Frame(0, 0, -1), Error);
             });
 
-            it('should not create a frame with a centerValue that is not a number', function () {
+            it('should not create a frame with a c3 that is not a number', function () {
                 assert.throws(() => new Frame(0, 0, 'a'), Error);
             });
         });
@@ -266,24 +266,24 @@ describe('Frame', function () {
     });
 
     describe('Getter and Setters', function () {
-        describe('getLeftValue', function () {
+        describe('getc1', function () {
             it('should return the left value', function () {
                 let frame = new Frame(1, 2, 3);
-                assert.equal(frame.getLeftValue(), 1);
+                assert.equal(frame.getC1(), 1);
             });
         });
 
-        describe('getRightValue', function () {
+        describe('getc2', function () {
             it('should return the right value', function () {
                 let frame = new Frame(1, 2, 3);
-                assert.equal(frame.getRightValue(), 2);
+                assert.equal(frame.getC2(), 2);
             });
         });
 
-        describe('getCenterValue', function () {
+        describe('getc3', function () {
             it('should return the center value', function () {
                 let frame = new Frame(1, 2, 3);
-                assert.equal(frame.getCenterValue(), 3);
+                assert.equal(frame.getC3(), 3);
             });
         });
 
@@ -301,27 +301,27 @@ describe('Frame', function () {
             });
         });
 
-        describe('setLeftValue', function () {
+        describe('setc1', function () {
             it('should set the left value', function () {
                 let frame = new Frame(1, 2, 3);
-                frame.setLeftValue(4);
-                assert.equal(frame.getLeftValue(), 4);
+                frame.setC1(4);
+                assert.equal(frame.getC1(), 4);
             });
         });
 
-        describe('setRightValue', function () {
+        describe('setc2', function () {
             it('should set the right value', function () {
                 let frame = new Frame(1, 2, 3);
-                frame.setRightValue(4);
-                assert.equal(frame.getRightValue(), 4);
+                frame.setC2(4);
+                assert.equal(frame.getC2(), 4);
             });
         });
 
-        describe('setCenterValue', function () {
+        describe('setc3', function () {
             it('should set the center value', function () {
                 let frame = new Frame(1, 2, 3);
-                frame.setCenterValue(4);
-                assert.equal(frame.getCenterValue(), 4);
+                frame.setC3(4);
+                assert.equal(frame.getC3(), 4);
             });
         });
 
@@ -331,6 +331,34 @@ describe('Frame', function () {
                 frame.setScore(4);
                 assert.equal(frame.getScore(), 4);
             });
+
+            it('should not set the score if the value is not a number', function () {
+                let frame = new Frame(1, 2, 3);
+                let score = frame.getScore();
+                frame.setScore('a');
+                assert.equal(frame.getScore(), score);
+            });
+
+            it('should not set the score if the value is a negative number', function () {
+                let frame = new Frame(1, 2, 3);
+                let score = frame.getScore();
+                frame.setScore(-1);
+                assert.equal(frame.getScore(), score);
+            });
+
+            it('should not set the score if the value is a number greater than 30', function () {
+                let frame = new Frame(1, 2, 3);
+                let score = frame.getScore();
+                frame.setScore(31);
+                assert.equal(frame.getScore(), score);
+            });
+
+            it('should not set the score if the value is null', function () {
+                let frame = new Frame(1, 2, 3);
+                let score = frame.getScore();
+                frame.setScore(null);
+                assert.equal(frame.getScore(), score);
+            });
         });
 
         describe('setTotalScore', function () {
@@ -338,6 +366,34 @@ describe('Frame', function () {
                 let frame = new Frame(1, 2, 3);
                 frame.setTotalScore(4);
                 assert.equal(frame.getTotalScore(), 4);
+            });
+
+            it('should not set the total score if the value is not a number', function () {
+                let frame = new Frame(1, 2, 3);
+                let totalScore = frame.getTotalScore();
+                frame.setTotalScore('a');
+                assert.equal(frame.getTotalScore(), totalScore);
+            });
+
+            it('should not set the total score if the value is a negative number', function () {
+                let frame = new Frame(1, 2, 3);
+                let totalScore = frame.getTotalScore();
+                frame.setTotalScore(-1);
+                assert.equal(frame.getTotalScore(), totalScore);
+            });
+
+            it('should not set the total score if the value is a number greater than 300', function () {
+                let frame = new Frame(1, 2, 3);
+                let totalScore = frame.getTotalScore();
+                frame.setTotalScore(301);
+                assert.equal(frame.getTotalScore(), totalScore);
+            });
+
+            it('should not set the total score if the value is null', function () {
+                let frame = new Frame(1, 2, 3);
+                let totalScore = frame.getTotalScore();
+                frame.setTotalScore(null);
+                assert.equal(frame.getTotalScore(), totalScore);
             });
         });
     });

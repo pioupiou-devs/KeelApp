@@ -77,9 +77,9 @@ describe('Grid', function () {
                 let frameList = grid.players.get(player);
                 assert.equal(frameList.length, 10);
                 for (let i = 0; i < frameList.length; i++) {
-                    assert.equal(frameList[i].leftValue, null);
-                    assert.equal(frameList[i].rightValue, null);
-                    assert.equal(frameList[i].centerValue, null);
+                    assert.equal(frameList[i].c1, null);
+                    assert.equal(frameList[i].c2, null);
+                    assert.equal(frameList[i].c3, null);
                     assert.equal(frameList[i].score, null);
                     assert.equal(frameList[i].totalScore, null);
                 }
@@ -125,16 +125,16 @@ describe('Grid', function () {
                 assert.equal(frameList1.length, 10);
                 assert.equal(frameList2.length, 10);
                 for (let i = 0; i < frameList1.length; i++) {
-                    assert.equal(frameList1[i].leftValue, null);
-                    assert.equal(frameList1[i].rightValue, null);
-                    assert.equal(frameList1[i].centerValue, null);
+                    assert.equal(frameList1[i].c1, null);
+                    assert.equal(frameList1[i].c2, null);
+                    assert.equal(frameList1[i].c3, null);
                     assert.equal(frameList1[i].score, null);
                     assert.equal(frameList1[i].totalScore, null);
                 }
                 for (let i = 0; i < frameList2.length; i++) {
-                    assert.equal(frameList2[i].leftValue, null);
-                    assert.equal(frameList2[i].rightValue, null);
-                    assert.equal(frameList2[i].centerValue, null);
+                    assert.equal(frameList2[i].c1, null);
+                    assert.equal(frameList2[i].c2, null);
+                    assert.equal(frameList2[i].c3, null);
                     assert.equal(frameList2[i].score, null);
                     assert.equal(frameList2[i].totalScore, null);
                 }
@@ -219,9 +219,9 @@ describe('Grid', function () {
                 let frameList = grid.constructFrameList();
                 assert.equal(frameList.length, 10);
                 for (let i = 0; i < frameList.length; i++) {
-                    assert.equal(frameList[i].leftValue, null);
-                    assert.equal(frameList[i].rightValue, null);
-                    assert.equal(frameList[i].centerValue, null);
+                    assert.equal(frameList[i].c1, null);
+                    assert.equal(frameList[i].c2, null);
+                    assert.equal(frameList[i].c3, null);
                     assert.equal(frameList[i].score, null);
                     assert.equal(frameList[i].totalScore, null);
                 }
