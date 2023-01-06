@@ -1,7 +1,7 @@
-class Frame{
-    constructor(leftValue = null, rightValue = null, centerValue = null){
+class Frame {
+    constructor(leftValue = null, rightValue = null, centerValue = null) {
 
-        if(!Frame.isValid(leftValue, rightValue, centerValue)){
+        if (!this.isValid(leftValue, rightValue, centerValue)) {
             throw new Error("Invalid data provided");
         }
 
@@ -13,62 +13,74 @@ class Frame{
     }
 
     //#region Methods
-    static isValid(leftValue, rightValue, centerValue){
-
-        if(leftValue == null || rightValue == null || leftValue == undefined || rightValue == undefined){
-            return false;
-        }
-
-        if(typeof leftValue != 'number' || typeof rightValue != 'number'){
-            return false;
-        }
-
-        if(leftValue <0 || leftValue > 10 || rightValue <0 || rightValue > 10){
-            return false;
-        }
+    isValid(leftValue = null, rightValue = null, centerValue = null) {
         
+        if (isNaN(leftValue) || isNaN(rightValue) || isNaN(centerValue))
+            return false;
+
+        if (leftValue != null) {
+            if (typeof leftValue != 'number' || leftValue < 0 || leftValue > 10) {
+                return false;
+            }
+        }
+
+        if (rightValue != null) {
+            if (typeof rightValue != 'number' || rightValue < 0 || rightValue > 10) {
+                return false;
+            }
+        }
+
+        if (centerValue != null) {
+            if (typeof centerValue != 'number' || centerValue < 0 || centerValue > 10) {
+                return false;
+            }
+        }
+
         return true;
     }
     //#endregion Methods
-    
+
     //#region Getters and Setters
-    getLeftValue(){
+    getLeftValue() {
         return this.leftValue;
     }
 
-    setLeftValue(leftValue){
-        this.leftValue = leftValue;
+    setLeftValue(leftValue) {
+        if (this.isValid(leftValue, this.rightValue, this.centerValue))
+            this.leftValue = leftValue;
     }
 
-    getRightValue(){
+    getRightValue() {
         return this.rightValue;
     }
 
-    setRightValue(rightValue){
-        this.rightValue = rightValue;
+    setRightValue(rightValue) {
+        if (this.isValid(this.leftValue, rightValue, this.centerValue))
+            this.rightValue = rightValue;
     }
 
-    getCenterValue(){
+    getCenterValue() {
         return this.centerValue;
     }
 
-    setCenterValue(centerValue){
-        this.centerValue = centerValue;
+    setCenterValue(centerValue) {
+        if (this.isValid(this.leftValue, this.rightValue, centerValue))
+            this.centerValue = centerValue;
     }
 
-    getScore(){
+    getScore() {
         return this.score;
     }
 
-    setScore(score){
+    setScore(score) {
         this.score = score;
     }
 
-    getTotalScore(){
+    getTotalScore() {
         return this.totalScore;
     }
 
-    setTotalScore(totalScore){
+    setTotalScore(totalScore) {
         this.totalScore = totalScore;
     }
     //#endregion Getters and Setters
