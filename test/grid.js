@@ -11,7 +11,7 @@ describe('Grid', function () {
 
         it('should create a new Grid with correct types', function () {
             let grid = new Grid();
-            assert.equal(grid.players instanceof [{}], true);
+            assert.equal(grid.players instanceof Map, true);
         });
 
         it('should create a new Grid with correct values', function () {
@@ -29,8 +29,8 @@ describe('Grid', function () {
         it('should work with multiple Grids with correct types', function () {
             let grid1 = new Grid();
             let grid2 = new Grid();
-            assert.equal(grid1.players instanceof [{}], true);
-            assert.equal(grid2.players instanceof [{}], true);
+            assert.equal(grid1.players instanceof Map, true);
+            assert.equal(grid2.players instanceof Map, true);
         });
 
         it('should work with multiple Grids with correct values', function () {
@@ -51,13 +51,12 @@ describe('Grid', function () {
                 assert.equal(grid.players.get(player).length, 10);
             });
 
-            it('should add the player to the grid even if the player already exist in the grid', function () {
+            it('should not add the player to the grid if the player already exist in the grid', function () {
                 let grid = new Grid();
                 let player = 'player1';
                 grid.addPlayer(player);
                 grid.addPlayer(player);
-                assert.equal(grid.players.size, 2);
-                assert.equal(grid.players.get(player).length, 10);
+                assert.equal(grid.players.size, 1);
             });
 
             it('should add the player with correct types', function () {
@@ -144,21 +143,21 @@ describe('Grid', function () {
             it(' should not add the player if the player is not a string', function () {
                 let grid = new Grid();
                 let player = 1;
-                grid.addPlayer(player);
+                assert.throws(() => grid.addPlayer(player), Error);
                 assert.equal(grid.players.size, 0);
             });
 
             it('should not add the player if the player is an empty string', function () {
                 let grid = new Grid();
                 let player = '';
-                grid.addPlayer(player);
+                assert.throws(() => grid.addPlayer(player), Error);
                 assert.equal(grid.players.size, 0);
             });
 
             it('should not add the player if the player is a string with only spaces', function () {
                 let grid = new Grid();
                 let player = ' ';
-                grid.addPlayer(player);
+                assert.throws(() => grid.addPlayer(player), Error);
                 assert.equal(grid.players.size, 0);
             });
 
@@ -167,7 +166,7 @@ describe('Grid', function () {
                 let player1 = 'player1';
                 let player2 = 1;
                 grid.addPlayer(player1);
-                grid.addPlayer(player2);
+                assert.throws(() => grid.addPlayer(player2), Error);
                 assert.equal(grid.players.size, 1);
                 assert.equal(grid.players.get(player1).length, 10);
             });
@@ -177,7 +176,7 @@ describe('Grid', function () {
                 let player1 = 'player1';
                 let player2 = '';
                 grid.addPlayer(player1);
-                grid.addPlayer(player2);
+                assert.throws(() => grid.addPlayer(player2), Error);
                 assert.equal(grid.players.size, 1);
                 assert.equal(grid.players.get(player1).length, 10);
             });
@@ -187,14 +186,14 @@ describe('Grid', function () {
                 let player1 = 'player1';
                 let player2 = ' ';
                 grid.addPlayer(player1);
-                grid.addPlayer(player2);
+                assert.throws(() => grid.addPlayer(player2), Error);
                 assert.equal(grid.players.size, 1);
                 assert.equal(grid.players.get(player1).length, 10);
             });
 
             it('should not work if no player is provided', function () {
                 let grid = new Grid();
-                grid.addPlayer();
+                assert.throws(() => grid.addPlayer(), Error);
                 assert.equal(grid.players.size, 0);
             });
         });
