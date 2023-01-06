@@ -1,5 +1,5 @@
 /* Rules modal */
-.modal {
+#rulesModal.modal {
     display: none;
     position: fixed;
     z-index: 1; /* Modal shows up on top of page */
@@ -13,17 +13,17 @@
 }
 
 
-.modal-header {
+#rulesModal .modal-header {
     padding: 2px 16px;
-    background-color: red;
+    background-color: #a21313;
     color: white;
 }
 
-.modal-body {
+#rulesModal .modal-body {
     padding: 2px 16px;
 }
 
-.modal-content {
+#rulesModal .modal-content {
     position: relative;
     background-color: white;
     margin: auto;
@@ -35,16 +35,8 @@
     animation-duration: 0.4s
 }
 
-    /* Animation for modal sliding in */
+/* Animation for modal sliding in */
 @keyframes animatetop {
     from {top: -300px; opacity: 0}
     to {top: 0; opacity: 1}
-  }
-
-/* Rules button */
-#rulesBtn:hover,
-#rulesBtn.focus {
-    color: black;
-    cursor: pointer;
-    font-weight: bold;
 }
