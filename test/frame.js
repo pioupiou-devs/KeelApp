@@ -334,30 +334,22 @@ describe('Frame', function () {
 
             it('should not set the score if the value is not a number', function () {
                 let frame = new Frame(1, 2, 3);
-                let score = frame.getScore();
-                frame.setScore('a');
-                assert.equal(frame.getScore(), score);
+                assert.throws(() =>  frame.setScore('a'), Error);
             });
 
             it('should not set the score if the value is a negative number', function () {
                 let frame = new Frame(1, 2, 3);
-                let score = frame.getScore();
-                frame.setScore(-1);
-                assert.equal(frame.getScore(), score);
+                assert.throws(() =>  frame.setScore(-1), Error);
             });
 
             it('should not set the score if the value is a number greater than 30', function () {
                 let frame = new Frame(1, 2, 3);
-                let score = frame.getScore();
-                frame.setScore(31);
-                assert.equal(frame.getScore(), score);
+                assert.throws(() =>  frame.setScore(31), Error);
             });
 
             it('should not set the score if the value is null', function () {
                 let frame = new Frame(1, 2, 3);
-                let score = frame.getScore();
-                frame.setScore(null);
-                assert.equal(frame.getScore(), score);
+                assert.throws(() =>  frame.setScore(null), Error);
             });
         });
 
@@ -370,30 +362,22 @@ describe('Frame', function () {
 
             it('should not set the total score if the value is not a number', function () {
                 let frame = new Frame(1, 2, 3);
-                let totalScore = frame.getTotalScore();
-                frame.setTotalScore('a');
-                assert.equal(frame.getTotalScore(), totalScore);
+                assert.throws(() =>  frame.setTotalScore('a'), Error);
             });
 
             it('should not set the total score if the value is a negative number', function () {
                 let frame = new Frame(1, 2, 3);
-                let totalScore = frame.getTotalScore();
-                frame.setTotalScore(-1);
-                assert.equal(frame.getTotalScore(), totalScore);
+                assert.throws(() =>  frame.setTotalScore(-1), Error);
             });
 
             it('should not set the total score if the value is a number greater than 300', function () {
                 let frame = new Frame(1, 2, 3);
-                let totalScore = frame.getTotalScore();
-                frame.setTotalScore(301);
-                assert.equal(frame.getTotalScore(), totalScore);
+                assert.throws(() =>  frame.setTotalScore(301), Error );
             });
 
             it('should not set the total score if the value is null', function () {
                 let frame = new Frame(1, 2, 3);
-                let totalScore = frame.getTotalScore();
-                frame.setTotalScore(null);
-                assert.equal(frame.getTotalScore(), totalScore);
+                assert.throws(() =>  frame.setTotalScore(null), Error);
             });
         });
     });

@@ -73,8 +73,10 @@ class Frame {
     }
 
     setScore(score) {
-        if (score >= 0 && score <= 30)
-            this.score = score;
+        if (score < 0 || score > 30 || score == null || typeof score != 'number')
+            throw new Error("Out of range total score");
+
+        this.score = score;
     }
 
     getTotalScore() {
@@ -82,8 +84,10 @@ class Frame {
     }
 
     setTotalScore(totalScore) {
-        if (totalScore >= 0 && totalScore <= 300)
-            this.totalScore = totalScore;
+        if (totalScore < 0 || totalScore > 300 || totalScore == null || typeof totalScore != 'number')
+            throw new Error("Out of range total score");
+
+        this.totalScore = totalScore;
     }
     //#endregion Getters and Setters
 }
