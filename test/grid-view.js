@@ -2,7 +2,7 @@ const assert = require('assert');
 const {JSDOM} = require("jsdom");
 
 const {getId, generateHeader, getCellType, addRow, generatePlayingOrder,
-    getNbPlayers, addScore, checkInput, isValidInput, nextTurn,CellType, resetGame, cellToBePlayed
+    getNbPlayers, addScore, checkInput, isValidInput, nextTurn,CellType
 } = require('../src/client/grid-view');
 
 
@@ -150,7 +150,17 @@ describe('nextTurn', function () {
 
 describe('addScore', function () {
     it('should return the correct result - spare', function () {
-        randomTurn();
+        const dom = new JSDOM(baseHtml);
+        global.document = dom.window.document;
+        generateHeader();
+        addRow();
+        addRow();
+        generatePlayingOrder(getNbPlayers());
+        let i = 0;
+        while (i < 4) {
+            nextTurn();
+            i++;
+        }
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
@@ -166,10 +176,22 @@ describe('addScore', function () {
 
         assert.equal(firstThrow, 5);
         assert.equal(secondThrow, "/");
-
     });
+});
+
+describe('addScore', function () {
     it('should return the correct result - strike', function () {
-        randomTurn();
+        const dom = new JSDOM(baseHtml);
+        global.document = dom.window.document;
+        generateHeader();
+        addRow();
+        addRow();
+        generatePlayingOrder(getNbPlayers());
+        let i = 0;
+        while (i < 9) {
+            nextTurn();
+            i++;
+        }
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
@@ -187,8 +209,21 @@ describe('addScore', function () {
         assert.equal(secondThrow, "");
 
     });
+});
+
+describe('addScore', function () {
     it('should return the correct result - simple throw', function () {
-        randomTurn();
+        const dom = new JSDOM(baseHtml);
+        global.document = dom.window.document;
+        generateHeader();
+        addRow();
+        addRow();
+        generatePlayingOrder(getNbPlayers());
+        let i = 0;
+        while (i < 7) {
+            nextTurn();
+            i++;
+        }
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
@@ -208,18 +243,5 @@ describe('addScore', function () {
     });
 });
 
-function randomTurn() {
-    const dom = new JSDOM(baseHtml);
-    global.document = dom.window.document;
-    generateHeader();
-    addRow();
-    addRow();
-    generatePlayingOrder(getNbPlayers());
-    let i = 0;
-    while (i < 8) {
-        nextTurn();
-        i++;
-    }
-}
 
 
