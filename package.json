@@ -15,5 +15,8 @@
     "start": "node src/server/index.js",
     "build": "webpack --config src/client/webpack.config.js",
     "test": "mocha --recursive test/"
+  },
+  "dependencies": {
+    "jsdom": "^21.0.0"
   }
 }
