@@ -17,6 +17,6 @@
     "test": "mocha --recursive test/"
   },
   "dependencies": {
-    "jsdom": "^21.0.0"
+    "jsdom": "^15.0.0"
   }
 }
