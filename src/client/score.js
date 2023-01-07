@@ -1,6 +1,9 @@
+const Frame = require("./frame");
+
 function calculFrame(frameTable,mancheNumber){
-    if(mancheNumber==10){
+    if(mancheNumber===10){ //if we want to calculate the tenth frame (as it's a speciale case)
         frameTable[mancheNumber-1].setScore(calcFrame10(frameTable[mancheNumber-1]));
+        return frameTable[mancheNumber-1].getScore();
     }
 
     if(frameTable[mancheNumber-1].getC1()==10){ //case of a strike
@@ -29,7 +32,7 @@ function calculFrame(frameTable,mancheNumber){
     return  frameTable[mancheNumber-1].getScore();
 }
 
-module.exports = calculFrame;
+
 
 function calculScoreTotal(frameTable){
     sum=0;
@@ -40,20 +43,42 @@ function calculScoreTotal(frameTable){
     return sum;
 }
 
-module.exports = calculScoreTotal;
+
 
 function calcFrame10(frame){
+    if(!(frame instanceof(Frame))){ //also cover undefined and null
+        return 0;
+    }
+
     var result = 0;
+    if(frame.getC1() === null){
+        return result;
+    }
     result = frame.getC1();
 
     if(result === 10){ // we got a strike on the first throw
-        result += frame.getC2() + frame.getC3();
+        if(frame.getC2() === null){
+            return result;
+        }
+        result += frame.getC2();
+        
+        if(frame.getC3() === null){
+            return result;
+        }
+        result += frame.getC3();
+
         return result;
     }
     
+    if(frame.getC2() === null){
+        return result;
+    }
     result += frame.getC2();
 
-    if (result === 10){ // we got a spare 
+    if (result === 10){ // we got a spare
+        if(frame.getC3() === null){
+            return result;
+        }
         result += frame.getC3();
         return result;
     }
@@ -62,4 +87,4 @@ function calcFrame10(frame){
     }
 }
 
-module.exports = calcFrame10;
+module.exports = { calcFrame10, calculFrame, calculScoreTotal};

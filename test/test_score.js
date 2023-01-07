@@ -1,7 +1,5 @@
-const calculFrame = require('../src/client/score');
-const calculScoreTotal = require('../src/client/score');
-const calcFrame10 = require('../src/client/score');
-const Gird= require("../src/client/gird");
+const {calculFrame,calculScoreTotal,calcFrame10} = require('../src/client/score');
+const Grid= require("../src/client/grid");
 const Frame= require("../src/client/frame");
 
 const assert = require('assert');
@@ -40,7 +38,7 @@ describe('calculFrame', function(){
 
  describe('calculScoreTotal', function(){
   it('Calcul the final score and the score accumulated of all the frames',function(){
-    var g = new grid();
+    var g = new Grid();
     g.players["player1"] = [
         new Frame(1,2),
         new Frame(10,0), 
@@ -65,15 +63,57 @@ describe('calculFrame', function(){
  );
 
 describe('calcFrame10', function() {
-  it('should return the correct result of frame 10', function() {
-    assert.equal(calcFrame10(new Frame(10, 10,10)), 30); // maximum score with a third throw  (3 strikes)
-    assert.equal(calcFrame10(new Frame(10, 5,5)), 20); // strike on the first throw
-    assert.equal(calcFrame10(new Frame(4, 4,0)), 8); // score without third throw
-    assert.equal(calcFrame10(new Frame(8, 2,7)), 17); // score with third throw (spare)
-    assert.equal(calcFrame10(new Frame(0, 0,0)), 0); // score with 0 point (0 fallen keel)
-    assert.equal(calcFrame10(new Frame(0, 5,0)), 5); // second throw score
-    assert.equal(calcFrame10(new Frame(0, 10,4)), 14); // score with spare on the second throw  
-    assert.equal(calcFrame10(new Frame(10, 10,4)), 24); // score with 2 strikes (2 first throw)
-    assert.equal(calcFrame10(new Frame(0, 10,10)), 20); // score with 2 strikes  (2 last throw)
+  describe('Return the correct result of frame 10 (correct data)', function() {
+    it('Maximum score with a third throw (3 strikes)', function () {
+      assert.equal(calcFrame10(new Frame(10, 10,10)), 30);
+    });
+    it('Strike on the first throw', function () {
+      assert.equal(calcFrame10(new Frame(10, 5,5)), 20);
+    });
+    it('Score without third throw', function () {
+      assert.equal(calcFrame10(new Frame(4, 4,0)), 8);
+    });
+    it('Score with third throw (spare)', function () {
+      assert.equal(calcFrame10(new Frame(8, 2,7)), 17);
+    });
+    it('Score with 0 point (0 fallen keel)', function () {
+      assert.equal(calcFrame10(new Frame(0, 0,0)), 0);
+    });
+    it('Second throw score', function () {
+      assert.equal(calcFrame10(new Frame(0, 5,0)), 5);
+    });
+    it('Score with spare on the second throw', function () {
+      assert.equal(calcFrame10(new Frame(0, 10,4)), 14);
+    });
+    it('Score with 2 strikes (2 first throw)', function () {
+      assert.equal(calcFrame10(new Frame(10, 10,4)), 24);
+    });
+    it('score with 2 strikes (2 last throw)', function () {
+      assert.equal(calcFrame10(new Frame(0, 10,10)), 20);
+    });
+    it('Null on third value', function () {
+      assert.equal(calcFrame10(new Frame(0, 10,null)), 10);
+    });
+  });
+
+  describe('Return result of frame 10 (or 0) with illegal number', function() {
+    it('Illegal third throw', function () {
+      assert.equal(calcFrame10(new Frame(9, 0, 9)), 9);
+    });
+  });
+
+  describe('Manage strange data', function() {
+    it('Undefine frame', function () {
+      assert.equal(calcFrame10(undefined), 0);
+    });
+    it('Null frame', function () {
+      assert.equal(calcFrame10(null), 0);
+    });
+    it('Null frame value', function () {
+      assert.equal(calcFrame10(new Frame(null, null, null)), 0);
+    });
+    it('Not a frame', function () {
+      assert.equal(calcFrame10(""), 0);
+    });
   });
 });
