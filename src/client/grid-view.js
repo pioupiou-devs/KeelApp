@@ -156,11 +156,11 @@ function addScore() {
         firstThrowCell.textContent = "X";
         secondThrowCell.textContent = "";
     } else if (score == 10) {
-        firstThrowCell.textContent = first;
+        firstThrowCell.textContent = first.toString();
         secondThrowCell.textContent = "/";
     } else {
-        firstThrowCell.textContent = first;
-        secondThrowCell.textContent = second;
+        firstThrowCell.textContent = first.toString();
+        secondThrowCell.textContent = second.toString();
     }
 
     if (cellToBePlayed == playingOrder.length) {
@@ -174,7 +174,7 @@ function addScore() {
  * Met à jour le tour de jeu
  */
 function nextTurn() {
-    cellToBePlayed++;
+    if (cellToBePlayed < playingOrder.length -1 ) cellToBePlayed++;
     let row = playingOrder[cellToBePlayed].split("_")[0];
     let frame = playingOrder[cellToBePlayed].split("_")[1];
     let playerId = document.getElementById("player-id");

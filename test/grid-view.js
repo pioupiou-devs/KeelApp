@@ -156,11 +156,6 @@ describe('addScoreSpare', function () {
         addRow();
         addRow();
         generatePlayingOrder(getNbPlayers());
-        let i = 0;
-        while (i < 4) {
-            nextTurn();
-            i++;
-        }
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
@@ -187,11 +182,6 @@ describe('addScoreStrike', function () {
         addRow();
         addRow();
         generatePlayingOrder(getNbPlayers());
-        let i = 0;
-        while (i < 9) {
-            nextTurn();
-            i++;
-        }
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
@@ -219,11 +209,6 @@ describe('addScoreSimpleThrow', function () {
         addRow();
         addRow();
         generatePlayingOrder(getNbPlayers());
-        let i = 0;
-        while (i < 7) {
-            nextTurn();
-            i++;
-        }
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
