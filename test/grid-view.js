@@ -148,7 +148,7 @@ describe('nextTurn', function () {
     });
 });
 
-describe('addScore', function () {
+describe('addScoreSpare', function () {
     it('should return the correct result - spare', function () {
         const dom = new JSDOM(baseHtml);
         global.document = dom.window.document;
@@ -179,7 +179,7 @@ describe('addScore', function () {
     });
 });
 
-describe('addScore', function () {
+describe('addScoreStrike', function () {
     it('should return the correct result - strike', function () {
         const dom = new JSDOM(baseHtml);
         global.document = dom.window.document;
@@ -211,7 +211,7 @@ describe('addScore', function () {
     });
 });
 
-describe('addScore', function () {
+describe('addScoreSimpleThrow', function () {
     it('should return the correct result - simple throw', function () {
         const dom = new JSDOM(baseHtml);
         global.document = dom.window.document;
