@@ -2,7 +2,7 @@ const assert = require('assert');
 const {JSDOM} = require("jsdom");
 
 const {getId, generateHeader, getCellType, addRow, generatePlayingOrder,
-    getNbPlayers, addScore, checkInput, isValidInput, nextTurn,CellType
+    getNbPlayers, addScore, checkInput, isValidInput, nextTurn,CellType, resetGame, cellToBePlayed
 } = require('../src/client/grid-view');
 
 
@@ -137,6 +137,7 @@ describe('nextTurn', function () {
         addRow();
         addRow();
         generatePlayingOrder(getNbPlayers())
+
         assert.equal(nextTurn(), "2_1");
         assert.equal(nextTurn(), "1_2");
         assert.equal(nextTurn(), "2_2");
@@ -148,19 +149,8 @@ describe('nextTurn', function () {
 });
 
 describe('addScore', function () {
-    const dom = new JSDOM(baseHtml);
-    global.document = dom.window.document;
-    generateHeader();
-    addRow();
-    addRow();
-    generatePlayingOrder(getNbPlayers());
-    let i = 0;
-    while (i < 8) {
-        nextTurn();
-        i++;
-    }
-
     it('should return the correct result - spare', function () {
+        randomTurn();
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
@@ -179,6 +169,7 @@ describe('addScore', function () {
 
     });
     it('should return the correct result - strike', function () {
+        randomTurn();
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
@@ -197,6 +188,7 @@ describe('addScore', function () {
 
     });
     it('should return the correct result - simple throw', function () {
+        randomTurn();
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
@@ -215,5 +207,19 @@ describe('addScore', function () {
 
     });
 });
+
+function randomTurn() {
+    const dom = new JSDOM(baseHtml);
+    global.document = dom.window.document;
+    generateHeader();
+    addRow();
+    addRow();
+    generatePlayingOrder(getNbPlayers());
+    let i = 0;
+    while (i < 8) {
+        nextTurn();
+        i++;
+    }
+}
 
 

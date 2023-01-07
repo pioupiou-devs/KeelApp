@@ -1,5 +1,3 @@
-let rowNumber = 1;
-
 const CellType = {
     LEFT: "left",
     RIGHT: "right",
@@ -10,6 +8,7 @@ const CellType = {
 
 let playingOrder = [];
 let cellToBePlayed = 0;
+let rowNumber = 1;
 
 module.exports = {
     generateHeader, addRow, getId, getCellType, CellType,
@@ -52,8 +51,6 @@ function generateHeader() {
     for (let i = 1; i <= 10; i++) {
         let col = document.createElement("th")
         col.textContent = i.toString();
-        //add collspan 2 sauf pour la dernière ou on met 3
-        // col.setAttribute("colspan", i == 10 ? "3" : "2");
         col.setAttribute("id", getId(0, i));
         header.appendChild(col);
     }
@@ -79,7 +76,6 @@ function createFrameCell(idRow, idCol, cellType) {
  */
 function addRow() {
     let row = document.createElement("tr");
-    // row.setAttribute("rowspan", "2");
     let nameCell = document.createElement("td");
     nameCell.setAttribute("id", getId(rowNumber, 0, CellType.NONE));
     let inputName = document.createElement("input");
@@ -179,6 +175,8 @@ function addScore() {
  */
 function nextTurn() {
     cellToBePlayed++;
+    console.log("Next turn" + cellToBePlayed);
+    console.log("Next turn" + playingOrder[cellToBePlayed]);
     let row = playingOrder[cellToBePlayed].split("_")[0];
     let frame = playingOrder[cellToBePlayed].split("_")[1];
     let playerId = document.getElementById("player-id");
@@ -194,6 +192,8 @@ function nextTurn() {
  * @returns {*[]} tableau contenant l'ordre de jeu
  */
 function generatePlayingOrder(nbPlayer) {
+    console.log("Generating playing order");
+    console.log("Nb player : " + nbPlayer);
     playingOrder = [];
     for (let frame = 1; frame <= 10; frame++) {
         for (let row = 1; row <= nbPlayer; row++) {
@@ -205,7 +205,7 @@ function generatePlayingOrder(nbPlayer) {
 }
 
 /**
- * Compte le nombre de joueur avant de commencer la partie
+ * Compte le nombre de joueurs avant de commencer la partie
  * @returns {number}
  */
 function getNbPlayers() {
@@ -287,24 +287,3 @@ function checkInput(input) {
     }
 
 }
-
-/**
- * Utilitaire
- */
-
-
-//OU
-
-// function generateKeelButtons(nbKeels) {
-//     // console.log(typeof nbKeels);
-//     let keelButtons = document.createElement("div");
-//     for (let i = 0; i <= nbKeels; i++) {
-//         let button = document.createElement("button");
-//         button.setAttribute("type", "button");
-//         button.setAttribute("id", "keel" + i);
-//         button.textContent = i.toString();
-//         keelButtons.appendChild(button);
-//     }
-//     let container = document.getElementById("keels");
-//     container.appendChild(keelButtons);
-// }
