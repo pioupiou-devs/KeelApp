@@ -175,8 +175,6 @@ function addScore() {
  */
 function nextTurn() {
     cellToBePlayed++;
-    console.log("Next turn" + cellToBePlayed);
-    console.log("Next turn" + playingOrder[cellToBePlayed]);
     let row = playingOrder[cellToBePlayed].split("_")[0];
     let frame = playingOrder[cellToBePlayed].split("_")[1];
     let playerId = document.getElementById("player-id");
