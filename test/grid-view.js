@@ -109,9 +109,8 @@ describe('generatePlayingOrder', function () {
 describe('input', function () {
     const dom = new JSDOM(baseHtml);
     global.document = dom.window.document;
-    let first = document.getElementById("first");
-
     it('the input fields should display the correct result/error', function () {
+        let first = document.getElementById("first");
         first.value = 5;
         assert.equal(isValidInput("first"), true);
         first.value = 11;
