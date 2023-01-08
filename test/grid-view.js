@@ -141,6 +141,7 @@ describe('generatePlayingOrder', function () {
             "2_9", "3_9", "4_9", "1_10", "2_10", "3_10", "4_10"];
         assert.deepEqual(actual, expected);
     });
+
 });
 
 describe('input', function () {
@@ -188,7 +189,6 @@ describe('input', function () {
 describe('nextTurn', function () {
     const dom = new JSDOM(baseHtml);
     global.document = dom.window.document;
-    resetGlobalVariables();
     generateHeader();
     addRow();
     addRow();
