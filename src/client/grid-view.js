@@ -13,7 +13,7 @@ let rowNumber = 1;
 module.exports = {
     generateHeader, addRow, getId, getCellType, CellType,
     getNbPlayers, addScore, nextTurn, generatePlayingOrder, createFrameCell,
-    checkInput, isValidInput, playingOrder, cellToBePlayed
+    checkInput, isValidInput, playingOrder, cellToBePlayed, resetGlobalVariables
 }
 
 //TODO GESTION DE LA MANCHE 10 en front
@@ -285,4 +285,10 @@ function checkInput(input) {
         }
     }
 
+}
+
+function resetGlobalVariables() {
+    let playingOrder = [];
+    let cellToBePlayed = 0;
+    let rowNumber = 1;
 }

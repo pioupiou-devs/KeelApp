@@ -2,9 +2,8 @@ const assert = require('assert');
 const {JSDOM} = require("jsdom");
 
 const {getId, generateHeader, getCellType, addRow, generatePlayingOrder,
-    getNbPlayers, addScore, checkInput, isValidInput, nextTurn,CellType
+    getNbPlayers, addScore, checkInput, isValidInput, nextTurn,CellType, resetGlobalVariables
 } = require('../src/client/grid-view');
-
 
 const baseHtml = `
 <!DOCTYPE html>
@@ -159,13 +158,7 @@ describe('nextTurn', function () {
 
 describe('addScoreSpare', function () {
     it('should return the correct result - spare', function () {
-        const dom = new JSDOM(baseHtml);
-        global.document = dom.window.document;
-        global.window = global.document.defaultView;
-        generateHeader();
-        addRow();
-        addRow();
-        generatePlayingOrder(getNbPlayers());
+        createDefaultTestDom();
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
@@ -182,17 +175,8 @@ describe('addScoreSpare', function () {
         assert.equal(firstThrow, 5);
         assert.equal(secondThrow, "/");
     });
-});
-
-describe('addScoreStrike', function () {
     it('should return the correct result - strike', function () {
-        const dom = new JSDOM(baseHtml);
-        global.document = dom.window.document;
-        global.window = global.document.defaultView;
-        generateHeader();
-        addRow();
-        addRow();
-        generatePlayingOrder(getNbPlayers());
+        createDefaultTestDom();
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
@@ -210,17 +194,8 @@ describe('addScoreStrike', function () {
         assert.equal(secondThrow, "");
 
     });
-});
-
-describe('addScoreSimpleThrow', function () {
     it('should return the correct result - simple throw', function () {
-        const dom = new JSDOM(baseHtml);
-        global.document = dom.window.document;
-        global.window = global.document.defaultView;
-        generateHeader();
-        addRow();
-        addRow();
-        generatePlayingOrder(getNbPlayers());
+        createDefaultTestDom();
         let first = document.getElementById("first");
         let second = document.getElementById("second");
 
@@ -240,5 +215,13 @@ describe('addScoreSimpleThrow', function () {
     });
 });
 
-
-
+function createDefaultTestDom() {
+    const dom = new JSDOM(baseHtml);
+    global.document = dom.window.document;
+    global.window = global.document.defaultView;
+    resetGlobalVariables();
+    generateHeader();
+    addRow();
+    addRow();
+    generatePlayingOrder(getNbPlayers());
+}
