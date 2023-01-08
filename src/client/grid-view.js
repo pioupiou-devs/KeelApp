@@ -194,6 +194,9 @@ function nextTurn() {
 function generatePlayingOrder(nbPlayer) {
     // console.log("Generating playing order");
     // console.log("Nb player : " + nbPlayer);
+    if (nbPlayer < 1 || nbPlayer == null) {
+        throw new Error("Invalid number of player");
+    }
     playingOrder = [];
     for (let frame = 1; frame <= 10; frame++) {
         for (let row = 1; row <= nbPlayer; row++) {

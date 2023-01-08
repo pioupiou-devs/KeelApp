@@ -141,6 +141,10 @@ describe('generatePlayingOrder', function () {
             "2_9", "3_9", "4_9", "1_10", "2_10", "3_10", "4_10"];
         assert.deepEqual(actual, expected);
     });
+    it('should the correct playing order', function () {
+        assert.throws(() => generatePlayingOrder(-1), Error);
+
+    });
     resetGlobalVariables();
 });
 
@@ -209,8 +213,8 @@ describe('nextTurn', function () {
     it('should return the correct next turn : 4th frame - second player', function () {
         assert.equal(nextTurn(), "2_4");
     });
-})
-;
+});
+
 describe('addScoreSpare', function () {
     it('should return the correct result - spare', function () {
         createDefaultTestDom();
