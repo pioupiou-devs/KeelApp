@@ -7,6 +7,13 @@ const {getId, generateHeader, getCellType, addRow, generatePlayingOrder,
 
 
 const baseHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
         <table id="grid">
             <thead>
                 <tr id="grid-header"></tr>
@@ -26,7 +33,9 @@ const baseHtml = `
         <input required placeholder="Deuxième coup " id="second" min="0" max="10" type="number"
                oninput="checkInput('second')" pattern="\\d*">
         <div style="color: #a21313" id="error-msg"></div>
-`
+</body>
+</html>
+`;
 
 //verifie le header
 describe('header', function () {
