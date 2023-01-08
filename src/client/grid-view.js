@@ -288,7 +288,7 @@ function checkInput(input) {
 }
 
 function resetGlobalVariables() {
-    let playingOrder = [];
-    let cellToBePlayed = 0;
-    let rowNumber = 1;
+    playingOrder = [];
+    cellToBePlayed = 0;
+    rowNumber = 1;
 }
