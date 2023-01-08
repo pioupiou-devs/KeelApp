@@ -140,9 +140,8 @@ describe('generatePlayingOrder', function () {
             "1_5", "2_5", "3_5", "4_5", "1_6", "2_6", "3_6", "4_6", "1_7", "2_7", "3_7", "4_7", "1_8", "2_8", "3_8", "4_8", "1_9",
             "2_9", "3_9", "4_9", "1_10", "2_10", "3_10", "4_10"];
         assert.deepEqual(actual, expected);
-        resetGlobalVariables();
     });
-
+    resetGlobalVariables();
 });
 
 describe('input', function () {
@@ -188,32 +187,30 @@ describe('input', function () {
 
 //test next turn
 describe('nextTurn', function () {
-    describe('next turn test :', function () {
-        createDefaultTestDom();
-        it('should return the correct next turn : first frame - second player', function () {
-            assert.equal(nextTurn(), "2_1");
-        });
-        it('should return the correct next turn : 2nd frame - first player', function () {
-            assert.equal(nextTurn(), "1_2");
-        });
-        it('should return the correct next turn : 2nd frame - second player', function () {
-            assert.equal(nextTurn(), "2_2");
-        });
-        it('should return the correct next turn : 3rd frame - first player', function () {
-            assert.equal(nextTurn(), "1_3");
-        });
-        it('should return the correct next turn : 3rd frame - second player', function () {
-            assert.equal(nextTurn(), "2_3");
-        });
-        it('should return the correct next turn : 4th frame - first player', function () {
-            assert.equal(nextTurn(), "1_4");
-        });
-        it('should return the correct next turn : 4th frame - second player', function () {
-            assert.equal(nextTurn(), "2_4");
-        });
-    });
 
-});
+    it('should return the correct next turn : first frame - second player', function () {
+        assert.equal(nextTurn(), "2_1");
+    });
+    it('should return the correct next turn : 2nd frame - first player', function () {
+        assert.equal(nextTurn(), "1_2");
+    });
+    it('should return the correct next turn : 2nd frame - second player', function () {
+        assert.equal(nextTurn(), "2_2");
+    });
+    it('should return the correct next turn : 3rd frame - first player', function () {
+        assert.equal(nextTurn(), "1_3");
+    });
+    it('should return the correct next turn : 3rd frame - second player', function () {
+        assert.equal(nextTurn(), "2_3");
+    });
+    it('should return the correct next turn : 4th frame - first player', function () {
+        assert.equal(nextTurn(), "1_4");
+    });
+    it('should return the correct next turn : 4th frame - second player', function () {
+        assert.equal(nextTurn(), "2_4");
+    });
+})
+;
 describe('addScoreSpare', function () {
     it('should return the correct result - spare', function () {
         createDefaultTestDom();
