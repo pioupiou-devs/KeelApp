@@ -141,6 +141,7 @@ function getId(idRow, idCol, cellType) {
  * Met à jour le score d'un joueur
  */
 function addScore() {
+    console.log(document.querySelector("body").outerHTML);
     let first = parseInt(document.getElementById('first').value);
     let second = parseInt(document.getElementById('second').value);
     let score = first + second;
