@@ -1,3 +1,4 @@
+
 const Frame= require("./frame");
 
 function calculFrame(frameTable,mancheNumber){
@@ -7,6 +8,7 @@ function calculFrame(frameTable,mancheNumber){
     }else{
 
         if(frameTable[mancheNumber-1].getC1()==10){ //case of a strike
+
 
             if(frameTable[mancheNumber].getC1()==10){ //case 2 strikes in a row
                 if(mancheNumber==9){ // case of the 9th frame with 2 strikes in a row
@@ -88,3 +90,4 @@ function calcFrame10(frame){
 }
 
 module.exports = {calculFrame,calculScoreTotal,calcFrame10};
+
