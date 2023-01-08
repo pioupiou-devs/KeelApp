@@ -142,7 +142,7 @@ function getId(idRow, idCol, cellType) {
  * Met à jour le score d'un joueur
  */
 function addScore() {
-    console.log(document.querySelector("body").outerHTML);
+    // console.log(document.querySelector("body").outerHTML);
     let first = parseInt(document.getElementById('first').value);
     let second = parseInt(document.getElementById('second').value);
     let score = first + second;
@@ -192,8 +192,8 @@ function nextTurn() {
  * @returns {*[]} tableau contenant l'ordre de jeu
  */
 function generatePlayingOrder(nbPlayer) {
-    console.log("Generating playing order");
-    console.log("Nb player : " + nbPlayer);
+    // console.log("Generating playing order");
+    // console.log("Nb player : " + nbPlayer);
     playingOrder = [];
     for (let frame = 1; frame <= 10; frame++) {
         for (let row = 1; row <= nbPlayer; row++) {
