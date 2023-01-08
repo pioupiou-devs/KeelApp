@@ -187,12 +187,7 @@ describe('input', function () {
 
 //test next turn
 describe('nextTurn', function () {
-    const dom = new JSDOM(baseHtml);
-    global.document = dom.window.document;
-    generateHeader();
-    addRow();
-    addRow();
-    generatePlayingOrder(getNbPlayers())
+    createDefaultTestDom();
     it('should return the correct next turn : first frame - second player', function () {
         assert.equal(nextTurn(), "2_1");
     });
