@@ -161,6 +161,7 @@ describe('addScoreSpare', function () {
     it('should return the correct result - spare', function () {
         const dom = new JSDOM(baseHtml);
         global.document = dom.window.document;
+        global.window = global.document.defaultView;
         generateHeader();
         addRow();
         addRow();
@@ -187,6 +188,7 @@ describe('addScoreStrike', function () {
     it('should return the correct result - strike', function () {
         const dom = new JSDOM(baseHtml);
         global.document = dom.window.document;
+        global.window = global.document.defaultView;
         generateHeader();
         addRow();
         addRow();
@@ -214,6 +216,7 @@ describe('addScoreSimpleThrow', function () {
     it('should return the correct result - simple throw', function () {
         const dom = new JSDOM(baseHtml);
         global.document = dom.window.document;
+        global.window = global.document.defaultView;
         generateHeader();
         addRow();
         addRow();
