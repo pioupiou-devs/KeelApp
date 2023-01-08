@@ -1,9 +1,11 @@
 const assert = require('assert');
 const {JSDOM} = require("jsdom");
 
-const {getId, generateHeader, getCellType, addRow, generatePlayingOrder,
-    getNbPlayers, addScore, checkInput, isValidInput, nextTurn,CellType, resetGlobalVariables,
-    playingOrder, cellToBePlayed, rowNumber} = require('../src/client/grid-view');
+const {
+    getId, generateHeader, getCellType, addRow, generatePlayingOrder,
+    getNbPlayers, addScore, checkInput, isValidInput, nextTurn, CellType, resetGlobalVariables,
+    playingOrder, cellToBePlayed, rowNumber
+} = require('../src/client/grid-view');
 
 const baseHtml = `
 <!DOCTYPE html>
@@ -72,34 +74,61 @@ describe('addRow', function () {
 });
 
 
-
 //test la generation d'id en fonction d'un row et d'une colonne (tour)
 describe('getId', function () {
-    it('should return the correct id', function () {
+    it('should return the correct id - name header', function () {
         assert.equal(getId(0, 0), "row0_colname");
+    });
+    it('should return the correct id - player 1 cell', function () {
         assert.equal(getId(1, 5), "rowP1_col5");
+    });
+    it('should return the correct id - header cell', function () {
         assert.equal(getId(0, 5), "row0_col5");
+    });
+    it('should return the correct id - total', function () {
         assert.equal(getId(0, 11), "row0_coltotal");
+    });
+    it('should return the correct id - total header and ignore celltype', function () {
         assert.equal(getId(0, 11, CellType.BOTTOM), "row0_coltotal");
+    });
+    it('should return the correct id - first throw id', function () {
         assert.equal(getId(4, 7, CellType.LEFT), "rowP4_col7_L");
+    });
+    it('should return the correct id - second throw id', function () {
         assert.equal(getId(4, 7, CellType.RIGHT), "rowP4_col7_R");
+    });
+    it('should return the correct id - subtotal', function () {
         assert.equal(getId(10, 10, CellType.BOTTOM), "rowP10_col10_B");
     });
-    it ('should return an error', function () {
+    it('should return an error - id col > 11', function () {
         assert.throws(() => getId(0, 12), Error);
+    });
+    it('should return an error - id row < 0, valid col', function () {
         assert.throws(() => getId(-1, 9, CellType.BOTTOM), Error);
+    });
+    it('should return an error - valid row invalid col', function () {
         assert.throws(() => getId(2, 12, CellType.LEFT), Error);
+    });
+    it('should return an error - invalide center cell', function () {
         assert.throws(() => getId(4, 7, CellType.CENTER), Error);
     });
 });
 
 //test la generation de getCellType
 describe('getCellType', function () {
-    it('should return the correct cell type', function () {
+    it('should return the correct cell type - left', function () {
         assert.equal(getCellType(CellType.LEFT), "_L");
+    });
+    it('should return the correct cell type - right', function () {
         assert.equal(getCellType(CellType.RIGHT), "_R");
+    });
+    it('should return the correct cell type - center', function () {
         assert.equal(getCellType(CellType.CENTER), "_C");
+    });
+    it('should return the correct cell type - bottom', function () {
         assert.equal(getCellType(CellType.BOTTOM), "_B");
+    });
+    it('should return an error - invalid cell type', function () {
         assert.throws(() => getCellType("invalid"), Error);
     });
 });
@@ -107,9 +136,9 @@ describe('getCellType', function () {
 describe('generatePlayingOrder', function () {
     it('should the correct playing order', function () {
         let actual = generatePlayingOrder(4);
-        let expected = ["1_1","2_1","3_1","4_1","1_2","2_2","3_2","4_2","1_3","2_3","3_3","4_3","1_4","2_4","3_4","4_4",
-            "1_5","2_5","3_5","4_5","1_6","2_6","3_6","4_6","1_7","2_7","3_7","4_7","1_8","2_8","3_8","4_8","1_9",
-            "2_9","3_9","4_9","1_10","2_10","3_10","4_10"];
+        let expected = ["1_1", "2_1", "3_1", "4_1", "1_2", "2_2", "3_2", "4_2", "1_3", "2_3", "3_3", "4_3", "1_4", "2_4", "3_4", "4_4",
+            "1_5", "2_5", "3_5", "4_5", "1_6", "2_6", "3_6", "4_6", "1_7", "2_7", "3_7", "4_7", "1_8", "2_8", "3_8", "4_8", "1_9",
+            "2_9", "3_9", "4_9", "1_10", "2_10", "3_10", "4_10"];
         assert.deepEqual(actual, expected);
     });
 });
@@ -117,45 +146,75 @@ describe('generatePlayingOrder', function () {
 describe('input', function () {
     const dom = new JSDOM(baseHtml);
     global.document = dom.window.document;
-    it('the input fields should display the correct result/error', function () {
+    it('the input fields should display the correct result : valid number 0 <= number <= 10', function () {
         let first = document.getElementById("first");
         first.value = 5;
         assert.equal(isValidInput("first"), true);
+    });
+    it('the input fields should display the correct result : > 10', function () {
+        let first = document.getElementById("first");
         first.value = 11;
         assert.equal(isValidInput("first"), false);
+    });
+    it('the input fields should display the correct result : == 10', function () {
+        let first = document.getElementById("first");
         first.value = 10;
         assert.equal(isValidInput("first"), true);
+    });
+    it('the input fields should display the correct result : == 0', function () {
+        let first = document.getElementById("first");
         first.value = 0;
         assert.equal(isValidInput("first"), true);
+    });
+    it('the input fields should display the correct result : < 0', function () {
+        let first = document.getElementById("first");
         first.value = -1;
         assert.equal(isValidInput("first"), false);
+    });
+    it('the input fields should display the correct result : string', function () {
+        let first = document.getElementById("first");
         first.value = "qsdqsdsqd";
         assert.equal(isValidInput("first"), false);
+    });
+    it('the input fields should display the correct result : char', function () {
+        let first = document.getElementById("first");
         first.value = 'a';
         assert.equal(isValidInput("first"), false);
     });
-});
+})
+;
 
 //test next turn
 describe('nextTurn', function () {
-    it('should return the correct turn', function () {
-        const dom = new JSDOM(baseHtml);
-        global.document = dom.window.document;
-        generateHeader();
-        addRow();
-        addRow();
-        generatePlayingOrder(getNbPlayers())
-
+    const dom = new JSDOM(baseHtml);
+    global.document = dom.window.document;
+    resetGlobalVariables();
+    generateHeader();
+    addRow();
+    addRow();
+    generatePlayingOrder(getNbPlayers())
+    it('should return the correct next turn : first frame - second player', function () {
         assert.equal(nextTurn(), "2_1");
+    });
+    it('should return the correct next turn : 2nd frame - first player', function () {
         assert.equal(nextTurn(), "1_2");
+    });
+    it('should return the correct next turn : 2nd frame - second player', function () {
         assert.equal(nextTurn(), "2_2");
+    });
+    it('should return the correct next turn : 3rd frame - first player', function () {
         assert.equal(nextTurn(), "1_3");
+    });
+    it('should return the correct next turn : 3rd frame - second player', function () {
         assert.equal(nextTurn(), "2_3");
+    });
+    it('should return the correct next turn : 4th frame - first player', function () {
         assert.equal(nextTurn(), "1_4");
+    });
+    it('should return the correct next turn : 4th frame - second player', function () {
         assert.equal(nextTurn(), "2_4");
     });
 });
-
 describe('addScoreSpare', function () {
     it('should return the correct result - spare', function () {
         createDefaultTestDom();
