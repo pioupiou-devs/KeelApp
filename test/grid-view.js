@@ -2,8 +2,8 @@ const assert = require('assert');
 const {JSDOM} = require("jsdom");
 
 const {getId, generateHeader, getCellType, addRow, generatePlayingOrder,
-    getNbPlayers, addScore, checkInput, isValidInput, nextTurn,CellType, resetGlobalVariables
-} = require('../src/client/grid-view');
+    getNbPlayers, addScore, checkInput, isValidInput, nextTurn,CellType, resetGlobalVariables,
+    playingOrder, cellToBePlayed, rowNumber} = require('../src/client/grid-view');
 
 const baseHtml = `
 <!DOCTYPE html>
@@ -169,8 +169,8 @@ describe('addScoreSpare', function () {
         second.value = 5;
         addScore();
 
-        let firstThrow = parseInt(document.getElementById(getId(row, frame, CellType.LEFT)).innerHTML);
-        let secondThrow = document.getElementById(getId(row, frame, CellType.RIGHT)).innerHTML;
+        let firstThrow = parseInt(document.getElementById(getId(rowNumber, frame, CellType.LEFT)).innerHTML);
+        let secondThrow = document.getElementById(getId(rowNumber, frame, CellType.RIGHT)).innerHTML;
 
         assert.equal(firstThrow, 5);
         assert.equal(secondThrow, "/");
@@ -187,8 +187,8 @@ describe('addScoreSpare', function () {
         second.value = 0;
         addScore();
 
-        let firstThrow = document.getElementById(getId(row, frame, CellType.LEFT)).innerHTML;
-        let secondThrow = document.getElementById(getId(row, frame, CellType.RIGHT)).innerHTML;
+        let firstThrow = document.getElementById(getId(rowNumber, frame, CellType.LEFT)).innerHTML;
+        let secondThrow = document.getElementById(getId(rowNumber, frame, CellType.RIGHT)).innerHTML;
 
         assert.equal(firstThrow, "X");
         assert.equal(secondThrow, "");
@@ -206,8 +206,8 @@ describe('addScoreSpare', function () {
         second.value = 4;
         addScore();
 
-        let firstThrow = parseInt(document.getElementById(getId(row, frame, CellType.LEFT)).innerHTML);
-        let secondThrow = document.getElementById(getId(row, frame, CellType.RIGHT)).innerHTML;
+        let firstThrow = parseInt(document.getElementById(getId(rowNumber, frame, CellType.LEFT)).innerHTML);
+        let secondThrow = document.getElementById(getId(rowNumber, frame, CellType.RIGHT)).innerHTML;
 
         assert.equal(firstThrow, 5);
         assert.equal(secondThrow, 4);

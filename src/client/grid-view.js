@@ -13,7 +13,8 @@ let rowNumber = 1;
 module.exports = {
     generateHeader, addRow, getId, getCellType, CellType,
     getNbPlayers, addScore, nextTurn, generatePlayingOrder, createFrameCell,
-    checkInput, isValidInput, playingOrder, cellToBePlayed, resetGlobalVariables
+    checkInput, isValidInput, playingOrder, cellToBePlayed, resetGlobalVariables,
+    playingOrder, cellToBePlayed, rowNumber
 }
 
 //TODO GESTION DE LA MANCHE 10 en front
