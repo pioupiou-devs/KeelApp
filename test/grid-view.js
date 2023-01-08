@@ -187,8 +187,8 @@ describe('input', function () {
 
 //test next turn
 describe('nextTurn', function () {
-    createDefaultTestDom();
     it('should return the correct next turn : first frame - second player', function () {
+        createDefaultTestDom();
         assert.equal(nextTurn(), "2_1");
     });
     it('should return the correct next turn : 2nd frame - first player', function () {
