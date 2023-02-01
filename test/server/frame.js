@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Frame = require('../src/client/frame.js');
+const Frame = require('../../src/server/models/frame.js');
 
 describe('Frame', function () {
     describe('constructor', function () {

@@ -12,8 +12,11 @@
   "version": "1.0.0",
   "main": "src/server/index.js",
   "scripts": {
-    "start": "node src/server/index.js",
+    "start": "node src/server/endpoint.js",
     "build": "webpack --config src/client/webpack.config.js",
     "test": "mocha --recursive test/"
+  },
+  "dependencies": {
+    "jsdom": "^15.0.0"
   }
 }
