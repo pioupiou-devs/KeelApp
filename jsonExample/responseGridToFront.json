@@ -1,0 +1,49 @@
+{
+    "nbKeel": 10,
+    "players": [
+        {
+            "name": "John Doe",
+            "frames": [
+                {
+                    "score1": 10,
+                    "score2": 0,
+                    "score3": 0,
+                    "total": 10
+                },
+                {
+                    "score1": 10,
+                    "score2": 0,
+                    "score3": 0,
+                    "total": 20
+                },
+                null,
+                null,
+                null
+            ],
+            "totalScore": 20,
+            "isPlaying": true
+        },
+        {
+            "name": "Jane Doe",
+            "frames": [
+                {
+                    "score1": 10,
+                    "score2": 0,
+                    "score3": 0,
+                    "total": 10
+                },
+                {
+                    "score1": 10,
+                    "score2": 0,
+                    "score3": 0,
+                    "total": 20
+                },
+                null,
+                null,
+                null
+            ],
+            "totalScore": 20,
+            "isPlaying": false
+        }
+    ]
+}
