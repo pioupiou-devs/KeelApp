@@ -18,44 +18,44 @@ class Grid {
         this.players.set(player, this.constructFrameList());
     }
 
-    constructFrameList(nbFrame=10) {
+    constructFrameList() {
         let frameList = [];
 
-        for (let i = 0; i < nbFrame; i++) {
+        for (let i = 0; i < this.nbFrame; i++) {
             frameList.push(new Frame());
         }
 
         return frameList;
     }
 
-    calculFrame(namePlayer, mancheNumber, nbFrame=10, nbKeel=10) {
+    calculFrame(namePlayer, mancheNumber) {
 
-        frameTable=this.players[namePlayer];
-        if (mancheNumber == nbFrame) {
-            frameTable[mancheNumber - 1].setScore(calcFrame10(frameTable[mancheNumber - 1]),nbKeel);
+        var frameTable=this.players[namePlayer];
+        if (mancheNumber == this.nbFrame) {
+            frameTable[mancheNumber - 1].setScore(this.calculLastFrame(frameTable[mancheNumber - 1]),this.nbKeel);
         } else {
 
-            if (frameTable[mancheNumber - 1].getC1() == nbKeel) { //case of a strike
+            if (frameTable[mancheNumber - 1].getC1() == this.nbKeel) { //case of a strike
 
 
-                if (frameTable[mancheNumber].getC1() == nbKeel) { //case 2 strikes in a row
-                    if (mancheNumber == nbFrame-1) { // case of the 9th frame with 2 strikes in a row
-                        frameTable[mancheNumber - 1].setScore(nbKeel*2 + frameTable[mancheNumber].getC2(),nbKeel);
+                if (frameTable[mancheNumber].getC1() == this.nbKeel) { //case 2 strikes in a row
+                    if (mancheNumber == this.nbFrame-1) { // case of the 9th frame with 2 strikes in a row
+                        frameTable[mancheNumber - 1].setScore(this.nbKeel*2 + frameTable[mancheNumber].getC2(),this.nbKeel);
                     } else {
-                        frameTable[mancheNumber - 1].setScore(nbKeel*2 + frameTable[mancheNumber + 1].getC1(),nbKeel);
+                        frameTable[mancheNumber - 1].setScore(this.nbKeel*2 + frameTable[mancheNumber + 1].getC1(),this.nbKeel);
                     }
 
                 } else {
-                    frameTable[mancheNumber - 1].setScore(nbKeel + frameTable[mancheNumber].getC1() + frameTable[mancheNumber].getC2(),nbKeel);
+                    frameTable[mancheNumber - 1].setScore(this.nbKeel + frameTable[mancheNumber].getC1() + frameTable[mancheNumber].getC2(),this.nbKeel);
                 }
 
 
             } else {
-                if (frameTable[mancheNumber - 1].getC1() + frameTable[mancheNumber - 1].getC2() == nbKeel) { //case of a spare
-                    frameTable[mancheNumber - 1].setScore(10 + frameTable[mancheNumber].getC1(),nbKeel);
+                if (frameTable[mancheNumber - 1].getC1() + frameTable[mancheNumber - 1].getC2() == this.nbKeel) { //case of a spare
+                    frameTable[mancheNumber - 1].setScore(this.nbKeel + frameTable[mancheNumber].getC1(),this.nbKeel);
 
                 } else { //no spare, no strike
-                    frameTable[mancheNumber - 1].setScore(frameTable[mancheNumber - 1].getC1() + frameTable[mancheNumber - 1].getC2(),nbKeel);
+                    frameTable[mancheNumber - 1].setScore(frameTable[mancheNumber - 1].getC1() + frameTable[mancheNumber - 1].getC2(),this.nbKeel);
                 }
             }
         }
@@ -64,19 +64,18 @@ class Grid {
     }
 
 
-    calculScoreTotal(namePlayer,nbFrame=10,nbKeel) {
-        frameTable=this.players[namePlayer];
-        sum = 0;
-        for (let i = 1; i < nbFrame+1; i = i + 1) {
-            sum = sum + calculFrame(frameTable, i);
-            frameTable[i - 1].setTotalScore(sum,nbFrame,nbKeel);
+    calculScoreTotal(namePlayer) {
+        var sum = 0;
+        for (let i = 1; i < this.nbFrame+1; i = i + 1) {
+            sum = sum + this.calculFrame(namePlayer, i);
+            this.players[namePlayer][i - 1].setTotalScore(sum,this.nbFrame,this.nbKeel);
         }
         return sum;
     }
 
 
 
-    calcFrame10(frame,nbKeel=10) {
+    calculLastFrame(frame) {
         if (!(frame instanceof (Frame))) { //also cover undefined and null
             return 0;
         }
@@ -87,7 +86,7 @@ class Grid {
         }
         result = frame.getC1();
 
-        if (result === nbKeel) { // we got a strike on the first throw
+        if (result === this.nbKeel) { // we got a strike on the first throw
             if (frame.getC2() === null) {
                 return result;
             }
@@ -106,7 +105,7 @@ class Grid {
         }
         result += frame.getC2();
 
-        if (result === nbKeel) { // we got a spare
+        if (result === this.nbKeel) { // we got a spare
             if (frame.getC3() === null) {
                 return result;
             }
