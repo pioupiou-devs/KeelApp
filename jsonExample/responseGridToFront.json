@@ -16,9 +16,24 @@
                     "score3": 0,
                     "total": 20
                 },
-                null,
-                null,
-                null
+                {
+                    "score1": 0,
+                    "score2": 0,
+                    "score3": 0,
+                    "total": 0
+                },
+                {
+                    "score1": 0,
+                    "score2": 0,
+                    "score3": 0,
+                    "total": 0
+                },{
+                    "score1": 0,
+                    "score2": 0,
+                    "score3": 0,
+                    "total": 0
+                }
+                
             ],
             "totalScore": 20,
             "isPlaying": true
@@ -30,19 +45,33 @@
                     "score1": 10,
                     "score2": 0,
                     "score3": 0,
-                    "total": 10
+                    "total": 20
                 },
                 {
                     "score1": 10,
                     "score2": 0,
                     "score3": 0,
-                    "total": 20
+                    "total": 10
                 },
-                null,
-                null,
-                null
+                {
+                    "score1": 0,
+                    "score2": 0,
+                    "score3": 0,
+                    "total": 0
+                },
+                {
+                    "score1": 0,
+                    "score2": 0,
+                    "score3": 0,
+                    "total": 0
+                },{
+                    "score1": 0,
+                    "score2": 0,
+                    "score3": 0,
+                    "total": 0
+                }
             ],
-            "totalScore": 20,
+            "totalScore": 30,
             "isPlaying": false
         }
     ]

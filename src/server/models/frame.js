@@ -1,5 +1,5 @@
 class Frame {
-    constructor(c1 = null, c2 = null, c3 = null) {
+    constructor(c1 = 0, c2 = 0, c3 = 0) {
 
         if (!this.isValid(c1, c2, c3)) {
             throw new Error("Invalid data provided");
