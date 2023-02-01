@@ -7,8 +7,10 @@ const urlGrid = urlBase + '/grid';
 const urlPlayer = urlGrid + '/player';
 const urlFrame = urlPlayer + '/frame';
 
+const urlRedirectGrid = 'index.html';
+const frontServerPort = 5500;
+
 const server = http.createServer(function (request, response) {
-    console.log('request starting on ' + request.url + ' and method ' + request.method + ' should respect ' + getRegexUrl(urlBase));
     if (getRegexUrl(urlBase).test(request.url)) {
         switch (request.method) {
             case 'GET':
@@ -78,7 +80,9 @@ function putEndpoints(request, response) {
         let json = getJsonFromBody(request);
         manager.createGrid(json);
 
-        response.writeHead(308, { 'Location': urlGrid });
+        let urlRedirect =   'http://localhost:' + frontServerPort + '/src/client/' + urlRedirectGrid;
+
+        response.writeHead(308, { 'Location': urlRedirect });
         response.end();
     }
 }
