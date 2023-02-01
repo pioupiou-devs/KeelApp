@@ -1,8 +1,10 @@
 const Frame = require('./frame');
 
 class Grid {
-    constructor() {
+    constructor(nbKeel=10, nbFrame=10) {
         this.players = new Map();
+        this.nbKeel=nbKeel;
+        this.nbFrame=nbFrame;
     }
 
     addPlayer(player) {
@@ -26,8 +28,9 @@ class Grid {
         return frameList;
     }
 
-    calculFrame(frameTable, mancheNumber, nbFrame=10, nbKeel=10) {
+    calculFrame(namePlayer, mancheNumber, nbFrame=10, nbKeel=10) {
 
+        frameTable=this.players[namePlayer];
         if (mancheNumber == nbFrame) {
             frameTable[mancheNumber - 1].setScore(calcFrame10(frameTable[mancheNumber - 1]),nbKeel);
         } else {
@@ -61,7 +64,8 @@ class Grid {
     }
 
 
-    calculScoreTotal(frameTable,nbFrame=10,nbKeel) {
+    calculScoreTotal(namePlayer,nbFrame=10,nbKeel) {
+        frameTable=this.players[namePlayer];
         sum = 0;
         for (let i = 1; i < nbFrame+1; i = i + 1) {
             sum = sum + calculFrame(frameTable, i);
