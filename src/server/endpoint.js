@@ -1,24 +1,34 @@
 const http = require('http');
+const urlParser = require('url');
 const manager = require('./modelManager');
 
 const urlBase = '/api';
-const urlScoreBoard = urlBase + '/scoreboard';
+const urlGrid = urlBase + '/grid';
+const urlPlayer = urlGrid + '/player';
+const urlFrame = urlPlayer + '/frame';
 
 const server = http.createServer(function (request, response) {
-    if (request.url === urlBase) {
+    console.log('request starting on ' + request.url + ' and method ' + request.method + ' should respect ' + getRegexUrl(urlBase));
+    if (getRegexUrl(urlBase).test(request.url)) {
         switch (request.method) {
             case 'GET':
+                console.log('GET: ' + request.url);
                 getEndpoints(request, response);
                 break;
             case 'POST':
+                console.log('POST: ' + request.url);
                 postEndpoints(request, response);
                 break;
             case 'PUT':
+                console.log('PUT: ' + request.url);
                 putEndpoints(request, response);
+                break;
             default:
-                response.writeHead(405, { 'Content-Type': 'text/plain' });
-                response.end('Method not allowed');
+                responseError(response, 405, 'Method Not Allowed');
         }
+    }
+    else {
+        responseError(response);
     }
 });
 
@@ -26,36 +36,56 @@ server.listen(3000, () => {
     console.log('Server running at http://localhost:3000');
 });
 
-function getEndpoints(request, response) {
-    if (request.url === '/') {
-        response.writeHead(200, { 'Content-Type': 'text/plain' });
-        response.end('Home page');
-    } else {
-        response.writeHead(404, { 'Content-Type': 'text/plain' });
-        response.end('404 error');
+//#region Endpoints
+
+function getEndpoints(request,response)
+{
+    if(getRegexUrl(urlGrid).test(request.url))
+    {
+        console.log('grid get');
+        response.writeHead(200, { 'Content-Type': 'text/json' });
+        response.write(JSON.stringify(manager.getGrid()));
+        response.end();
+        console.log('grid get end');
     }
 }
 
 function postEndpoints(request, response) {
-    if (request.url === '/grid/player/player1/frame/1/c1/1') {
-        response.writeHead(200, { 'Content-Type': 'text/plain' });
-        response.end('Login page');
-    } else {
-        response.writeHead(404, { 'Content-Type': 'text/plain' });
-        response.end('404 error');
+    if (getRegexUrl(urlGrid).test(request.url)) {
+        if (getRegexUrl(urlFrame).test(request.url)) {
+            {
+                console.log('frame update');
+                const querystring = getQueryParams(request.url);
+                const frame = getPathInfoParam(request.url);
+                const player = querystring.p;
+                const element = querystring.e;
+                const value = querystring.v;
+                console.log('frame: ' + frame + ', player: ' + player + ', element: ' + element + ', value: ' + value);
+                manager.updateGrid(player, frame, element, value);
+
+                response.writeHead(200, { 'Content-Type': 'text/json' });
+                response.write(JSON.stringify(manager.getGrid()));
+                response.end();
+            }
+        }
     }
 }
 
 function putEndpoints(request, response) {
-    if (request.url === '/grid') {
+    if (getRegexUrl(urlGrid).test(request.url)) {
+        console.log('grid creation');
+
         let json = getJsonFromBody(request);
         manager.createGrid(json);
 
-        response.writeHead(301, { 'Location': urlScoreBoard });
+        response.writeHead(308, { 'Location': urlGrid });
         response.end();
     }
 }
 
+//#endregion Endpoints
+
+//#region Utils
 function getJsonFromBody(request) {
     let body = '';
     let json;
@@ -77,3 +107,24 @@ function getJsonFromBody(request) {
 
     return json
 }
+
+function getQueryParams(url) {
+    const parsedUrl = urlParser.parse(url, true);
+    return parsedUrl.query;
+}
+
+function getPathInfoParam(url) {
+    const parsedUrl = urlParser.parse(url, true);
+    return parsedUrl.pathname.split('/').filter(Boolean).pop();
+}
+
+function getRegexUrl(url) {
+    url = url.replace('/', '\/');
+    return new RegExp('.*' + url + '.*');
+}
+
+function responseError(response, statusCode = 500, message = 'Internal Server Error') {
+    response.writeHead(statusCode, { 'Content-Type': 'text/plain' });
+    response.end(message);
+}
+//#endregion Utils
