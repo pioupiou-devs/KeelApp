@@ -13,25 +13,25 @@ class Frame {
     }
 
     //#region Methods
-    isValid(c1 = null, c2 = null, c3 = null) {
+    isValid(c1 = null, c2 = null, c3 = null, nbKeel=10) {
 
         if (isNaN(c1) || isNaN(c2) || isNaN(c3))
             return false;
 
         if (c1 != null) {
-            if (typeof c1 != 'number' || c1 < 0 || c1 > 10) {
+            if (typeof c1 != 'number' || c1 < 0 || c1 > nbKeel) {
                 return false;
             }
         }
 
         if (c2 != null) {
-            if (typeof c2 != 'number' || c2 < 0 || c2 > 10) {
+            if (typeof c2 != 'number' || c2 < 0 || c2 > nbKeel) {
                 return false;
             }
         }
 
         if (c3 != null) {
-            if (typeof c3 != 'number' || c3 < 0 || c3 > 10) {
+            if (typeof c3 != 'number' || c3 < 0 || c3 > nbKeel) {
                 return false;
             }
         }
@@ -72,8 +72,8 @@ class Frame {
         return this.score;
     }
 
-    setScore(score) {
-        if (score < 0 || score > 30 || score == null || typeof score != 'number')
+    setScore(score, nbKeel=10) {
+        if (score < 0 || score > 3*nbKeel || score == null || typeof score != 'number')
             throw new Error("Out of range total score");
 
         this.score = score;
@@ -83,8 +83,8 @@ class Frame {
         return this.totalScore;
     }
 
-    setTotalScore(totalScore) {
-        if (totalScore < 0 || totalScore > 300 || totalScore == null || typeof totalScore != 'number')
+    setTotalScore(totalScore, nbFrame=10,nbKeel=10) {
+        if (totalScore < 0 || totalScore > nbFrame*nbKeel*3 || totalScore == null || typeof totalScore != 'number')
             throw new Error("Out of range total score");
 
         this.totalScore = totalScore;
