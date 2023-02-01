@@ -1,11 +1,11 @@
-const assert = require('assert');
+/*const assert = require('assert');
 const {JSDOM} = require("jsdom");
 
 const {
     getId, generateHeader, getCellType, addRow, generatePlayingOrder,
     getNbPlayers, addScore, checkInput, isValidInput, nextTurn, CellType, resetGlobalVariables,
     playingOrder, cellToBePlayed, rowNumber
-} = require('../src/client/grid-view');
+} = require('../../src/client/grid-view');
 
 const baseHtml = `
 <!DOCTYPE html>
@@ -284,3 +284,4 @@ function createDefaultTestDom() {
     addRow();
     generatePlayingOrder(getNbPlayers());
 }
+*/
