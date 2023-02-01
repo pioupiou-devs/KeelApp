@@ -1,4 +1,5 @@
 const Frame = require('./frame');
+const Player=require('./player');
 
 class Grid {
     constructor(nbKeel=10, nbFrame=10) {
@@ -15,18 +16,10 @@ class Grid {
         if (player.trim() === '') throw new Error('Player is empty');
 
 
-        this.players.set(player, this.constructFrameList());
+        this.players.set(player, Player(this.nbFrame));
+        
     }
 
-    constructFrameList() {
-        let frameList = [];
-
-        for (let i = 0; i < this.nbFrame; i++) {
-            frameList.push(new Frame());
-        }
-
-        return frameList;
-    }
 
     calculFrame(namePlayer, mancheNumber) {
 

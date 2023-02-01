@@ -1,78 +1,62 @@
 {
-    "nbKeel": 10,
-    "players": [
-        {
-            "name": "John Doe",
-            "frames": [
+    "nbKeel":10,
+    "nbFrame":3,
+    "player":{
+        "player1":{
+            "frames":[
                 {
-                    "score1": 10,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 10
+                    "c1":1,
+                    "c2":3,
+                    "c3":0,
+                    "score":4,
+                    "totalScore":4
                 },
                 {
-                    "score1": 10,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 20
+                    "c1":1,
+                    "c2":9,
+                    "c3":0,
+                    "score":10,
+                    "totalScore":14
                 },
                 {
-                    "score1": 0,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 0
-                },
-                {
-                    "score1": 0,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 0
-                },{
-                    "score1": 0,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 0
+                    "c1":10,
+                    "c2":10,
+                    "c3":5,
+                    "score":25,
+                    "totalScore":39
                 }
                 
             ],
-            "totalScore": 20,
-            "isPlaying": true
+            "isPlaying":true,
+            "currentFrame":4
         },
-        {
-            "name": "Jane Doe",
-            "frames": [
+        "player2":{
+            "frames":[
                 {
-                    "score1": 10,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 20
+                    "c1":1,
+                    "c2":3,
+                    "c3":0,
+                    "score":4,
+                    "totalScore":4
                 },
                 {
-                    "score1": 10,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 10
+                    "c1":1,
+                    "c2":9,
+                    "c3":0,
+                    "score":10,
+                    "totalScore":14
                 },
                 {
-                    "score1": 0,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 0
-                },
-                {
-                    "score1": 0,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 0
-                },{
-                    "score1": 0,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 0
+                    "c1":0,
+                    "c2":0,
+                    "c3":0,
+                    "score":0,
+                    "totalScore":14
                 }
+                
             ],
-            "totalScore": 30,
-            "isPlaying": false
+            "isPlaying":false,
+            "currentFrame":3
         }
-    ]
+    }
 }
