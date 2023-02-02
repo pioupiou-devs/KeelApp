@@ -20,10 +20,9 @@ class Grid {
         
     }
 
-
     calculFrame(namePlayer, mancheNumber) {
 
-        frameTable=this.players[namePlayer];
+        var frameTable=this.players[namePlayer];
         if (mancheNumber == this.nbFrame) {
             frameTable[mancheNumber - 1].setScore(calcFrame10(frameTable[mancheNumber - 1]),this.nbKeel);
         } else {
@@ -58,9 +57,9 @@ class Grid {
 
 
     calculScoreTotal(namePlayer) {
-        sum = 0;
+        var sum = 0;
         for (let i = 1; i < this.nbFrame+1; i = i + 1) {
-            sum = sum + calculFrame(namePlayer, i);
+            sum = sum + this.calculFrame(namePlayer, i);
             this.players[namePlayer][i - 1].setTotalScore(sum,this.nbFrame,this.nbKeel);
         }
         return sum;
@@ -68,7 +67,8 @@ class Grid {
 
 
 
-    calcFrame10(frame) {
+
+    calculLastFrame(frame) {
         if (!(frame instanceof (Frame))) { //also cover undefined and null
             return 0;
         }
