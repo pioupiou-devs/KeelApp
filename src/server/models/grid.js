@@ -1,4 +1,5 @@
 const Frame = require('./frame');
+const Player=require('./player');
 
 class Grid {
     constructor(nbKeel=10, nbFrame=10) {
@@ -15,24 +16,15 @@ class Grid {
         if (player.trim() === '') throw new Error('Player is empty');
 
 
-        this.players.set(player, this.constructFrameList());
-    }
-
-    constructFrameList() {
-        let frameList = [];
-
-        for (let i = 0; i < this.nbFrame; i++) {
-            frameList.push(new Frame());
-        }
-
-        return frameList;
+        this.players.set(player, Player(this.nbFrame));
+        
     }
 
     calculFrame(namePlayer, mancheNumber) {
 
         var frameTable=this.players[namePlayer];
         if (mancheNumber == this.nbFrame) {
-            frameTable[mancheNumber - 1].setScore(this.calculLastFrame(frameTable[mancheNumber - 1]),this.nbKeel);
+            frameTable[mancheNumber - 1].setScore(calcFrame10(frameTable[mancheNumber - 1]),this.nbKeel);
         } else {
 
             if (frameTable[mancheNumber - 1].getC1() == this.nbKeel) { //case of a strike
@@ -72,6 +64,7 @@ class Grid {
         }
         return sum;
     }
+
 
 
 
