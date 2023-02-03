@@ -23,22 +23,39 @@ class Grid {
     // as we create the list of frame during player creation, we need to set value of frame
     setFrameThrow(playerName, frameNumber, c1 = 0,c2 = 0, c3 = 0){
         //player inupt verification
-        if (playerName == null) {throw new Error('Player is undefined');}
-        if (typeof playerName !== 'string') {throw new Error('Player is not a string');}
-        if (playerName.trim() === '') {throw new Error('Player is empty');}
+        if (playerName == null) {
+            throw new Error('Player is undefined');
+        }
+        if (typeof playerName !== 'string') {
+            throw new Error('Player is not a string');
+        }
+        if (playerName.trim() === '') {
+            throw new Error('Player is empty');
+        }
         //is player existe
         var frameTable=this.players.get(playerName).frames;
         if (frameTable == null) {throw new Error('PLayer is not in List');}
 
         //throw value verification
         //in case of null or undefined input, we set to 0
-        if (c1 == null){c1 = 0;}
-        if (c2 == null){c2 = 0;}
-        if (c3 == null){c3 = 0;}
-        if (c1 <0 || c1 >this.nbKeel || c2 <0 || c2 >this.nbKeel || c3 <0 || c3 >this.nbKeel){throw new Error('Throw not valid');}
+        if (c1 == null){
+            c1 = 0;
+        }
+        if (c2 == null){
+            c2 = 0;
+        }
+        if (c3 == null){
+            c3 = 0;
+        }
+        //verify input value : not negative and not above keel number
+        if (c1 <0 || c1 >this.nbKeel || c2 <0 || c2 >this.nbKeel || c3 <0 || c3 >this.nbKeel){
+            throw new Error('Throw not valid');
+        }
 
         //frame number verification
-        if (frameNumber <1 || frameNumber >this.nbFrame ){throw new Error('Frame not valid');}
+        if (frameNumber <1 || frameNumber >this.nbFrame ){
+            throw new Error('Frame not valid');
+        }
         this.players.get(playerName).frames[frameNumber -1] = new Frame(c1,c2,c3);
     }
 

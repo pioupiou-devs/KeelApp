@@ -6,9 +6,15 @@ class Frame {
         }
 
         //in case of null or undefined input, we set to 0
-        if (c1 == null){c1 = 0;}
-        if (c2 == null){c2 = 0;}
-        if (c3 == null){c3 = 0;}
+        if (c1 == null){
+            c1 = 0;
+        }
+        if (c2 == null){
+            c2 = 0;
+        }
+        if (c3 == null){
+            c3 = 0;
+        }
 
         this.c1 = c1;
         this.c2 = c2;

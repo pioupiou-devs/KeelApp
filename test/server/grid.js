@@ -199,14 +199,15 @@ describe('Grid', function () {
             });
         });
 
-        describe('constructFrameList TODO : Moove to Player tests', function () {
+        //TODO move to player test
+        describe('constructFrameList', function () {
             it('should return a list of 10 frames', function () {
                 let player = new Player();
                 let frameList = player.constructFrameList();
                 assert.equal(frameList.length, 10);
             });
-
-            it('should return a list of 10 frames with the correct type  TODO : Moove to Player tests', function () {
+            //TODO move to player test
+            it('should return a list of 10 frames with the correct type', function () {
                 let player = new Player();
                 let frameList = player.constructFrameList();
                 assert.equal(frameList.length, 10);
@@ -214,8 +215,8 @@ describe('Grid', function () {
                     assert.equal(frameList[i] instanceof Frame, true);
                 }
             });
-
-            it('should return a list of 10 frames with the correct values  TODO : Moove to Player tests', function () {
+            //TODO move to player test
+            it('should return a list of 10 frames with the correct values', function () {
                 let player = new Player();
                 let frameList = player.constructFrameList();
                 assert.equal(frameList.length, 10);
