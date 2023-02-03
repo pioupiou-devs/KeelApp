@@ -10,6 +10,7 @@ const urlFrame = urlPlayer + '/frame';
 const urlRedirectGrid = 'index.html';
 const frontServerPort = 5500;
 
+// Create the server with the callback function to handle every HTTP request
 const server = http.createServer(function (request, response) {
     if (getRegexUrl(urlBase).test(request.url)) {
         switch (request.method) {
@@ -34,12 +35,16 @@ const server = http.createServer(function (request, response) {
     }
 });
 
-server.listen(3000, () => {
-    console.log('Server running at http://localhost:3000');
-});
+// Start the server
+server.listen(3000);
 
 //#region Endpoints
 
+/// <summary>
+/// GET: /api/grid
+/// <param name="request">object representing the input HTTP request</param>
+/// <param name="response">object representing the HTTP response tha will be sent</param>
+/// </summary>
 function getEndpoints(request,response)
 {
     if(getRegexUrl(urlGrid).test(request.url))
@@ -52,6 +57,11 @@ function getEndpoints(request,response)
     }
 }
 
+/// <summary>
+/// POST: /api/grid/player/frame
+/// <param name="request">object representing the input HTTP request</param>
+/// <param name="response">object representing the HTTP response tha will be sent</param>
+/// </summary>
 function postEndpoints(request, response) {
     if (getRegexUrl(urlGrid).test(request.url)) {
         if (getRegexUrl(urlFrame).test(request.url)) {
@@ -73,6 +83,11 @@ function postEndpoints(request, response) {
     }
 }
 
+/// <summary>
+/// PUT: /api/grid
+/// <param name="request">object representing the input HTTP request</param>
+/// <param name="response">object representing the HTTP response tha will be sent</param>
+/// </summary>
 function putEndpoints(request, response) {
     if (getRegexUrl(urlGrid).test(request.url)) {
         console.log('grid creation');
@@ -90,6 +105,11 @@ function putEndpoints(request, response) {
 //#endregion Endpoints
 
 //#region Utils
+
+/// <summary>
+/// Get the JSON object from the request body
+/// <param name="request">object representing the input HTTP request</param>
+/// </summary>
 function getJsonFromBody(request) {
     let body = '';
     let json;
@@ -112,21 +132,39 @@ function getJsonFromBody(request) {
     return json
 }
 
+/// <summary>
+/// Get the querystring parameters from the request url
+/// <param name="url">url of the request</param>
+/// </summary>
 function getQueryParams(url) {
     const parsedUrl = urlParser.parse(url, true);
     return parsedUrl.query;
 }
 
+/// <summary>
+/// Get the last parameter of the url path
+/// <param name="url">url of the request</param>
+/// </summary>
 function getPathInfoParam(url) {
     const parsedUrl = urlParser.parse(url, true);
     return parsedUrl.pathname.split('/').filter(Boolean).pop();
 }
 
+/// <summary>
+/// Get the regex of the url
+/// <param name="url">url of the request</param>
+/// </summary>
 function getRegexUrl(url) {
     url = url.replace('/', '\/');
     return new RegExp('.*' + url + '.*');
 }
 
+/// <summary>
+/// Send an error response
+/// <param name="response">object representing the HTTP response tha will be sent</param>
+/// <param name="statusCode">status code of the response</param>
+/// <param name="message">message of the response</param>
+/// </summary>
 function responseError(response, statusCode = 500, message = 'Internal Server Error') {
     response.writeHead(statusCode, { 'Content-Type': 'text/plain' });
     response.end(message);
