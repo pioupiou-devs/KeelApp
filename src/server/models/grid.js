@@ -21,7 +21,7 @@ class Grid {
     }
 
     // as we create the list of frame during player creation, we need to set value of frame
-    setFrameScore(playerName, frameNumber, c1 = 0,c2 = 0, c3 = 0){
+    setFrameThrow(playerName, frameNumber, c1 = 0,c2 = 0, c3 = 0){
         //player inupt verification
         if (playerName == null) {throw new Error('Player is undefined');}
         if (typeof playerName !== 'string') {throw new Error('Player is not a string');}
@@ -39,60 +39,46 @@ class Grid {
 
         //frame number verification
         if (frameNumber <1 || frameNumber >this.nbFrame ){throw new Error('Frame not valid');}
-        //console.log("this.players[playerName].frames");
-        //console.log(this.players[playerName].frames);
         this.players.get(playerName).frames[frameNumber -1] = new Frame(c1,c2,c3);
-        //console.log(this.players[playerName].frames);
-        //score update 
-        this.calculScoreTotal(playerName);
-        //console.log("this.players[playerName].frames");
-
-
-
-
-        
     }
 
     calculFrame(namePlayer, mancheNumber) {
-
         var frameTable=this.players.get(namePlayer).frames;
-        /*console.log("namePlayer");
-        console.log(namePlayer);
-        console.log("this.players[namePlayer]");
-        console.log(this.players[namePlayer]);
-        console.log("frameTable");
-        console.log(frameTable);
-        console.log("frameTable");*/
-        if (mancheNumber == this.nbFrame) {
-            frameTable[mancheNumber - 1].setScore(this.calculLastFrame(frameTable[mancheNumber - 1]),this.nbKeel);
+        var frameIndex =  mancheNumber -1;
+        var nextFrameIndex =  mancheNumber;
+        var next2FrameIdex=  mancheNumber+1;
+        var doubleKeel = this.nbKeel*2;
+
+        if (nextFrameIndex == this.nbFrame) {
+            frameTable[frameIndex].setScore(this.calculLastFrame(frameTable[frameIndex]),this.nbKeel);
         } else {
 
-            if (frameTable[mancheNumber - 1].getC1() == this.nbKeel) { //case of a strike
+            if (frameTable[frameIndex].getC1() == this.nbKeel) { //case of a strike
 
 
-                if (frameTable[mancheNumber].getC1() == this.nbKeel) { //case 2 strikes in a row
-                    if (mancheNumber == this.nbFrame-1) { // case of the 9th frame with 2 strikes in a row
-                        frameTable[mancheNumber - 1].setScore(this.nbKeel*2 + frameTable[mancheNumber].getC2(),this.nbKeel);
+                if (frameTable[nextFrameIndex].getC1() == this.nbKeel) { //case 2 strikes in a row
+                    if (nextFrameIndex == this.nbFrame-1) { // case of the 9th frame with 2 strikes in a row
+                        frameTable[frameIndex].setScore(doubleKeel + frameTable[nextFrameIndex].getC2(),this.nbKeel);
                     } else {
-                        frameTable[mancheNumber - 1].setScore(this.nbKeel*2 + frameTable[mancheNumber + 1].getC1(),this.nbKeel);
+                        frameTable[frameIndex].setScore(doubleKeel + frameTable[next2FrameIdex].getC1(),this.nbKeel);
                     }
 
                 } else {
-                    frameTable[mancheNumber - 1].setScore(this.nbKeel + frameTable[mancheNumber].getC1() + frameTable[mancheNumber].getC2(),this.nbKeel);
+                    frameTable[frameIndex].setScore(this.nbKeel + frameTable[nextFrameIndex].getC1() + frameTable[nextFrameIndex].getC2(),this.nbKeel);
                 }
 
 
             } else {
-                if (frameTable[mancheNumber - 1].getC1() + frameTable[mancheNumber - 1].getC2() == this.nbKeel) { //case of a spare
-                    frameTable[mancheNumber - 1].setScore(this.nbKeel + frameTable[mancheNumber].getC1(),this.nbKeel);
+                if (frameTable[frameIndex].getC1() + frameTable[frameIndex].getC2() == this.nbKeel) { //case of a spare
+                    frameTable[frameIndex].setScore(this.nbKeel + frameTable[nextFrameIndex].getC1(),this.nbKeel);
 
                 } else { //no spare, no strike
-                    frameTable[mancheNumber - 1].setScore(frameTable[mancheNumber - 1].getC1() + frameTable[mancheNumber - 1].getC2(),this.nbKeel);
+                    frameTable[frameIndex].setScore(frameTable[frameIndex].getC1() + frameTable[frameIndex].getC2(),this.nbKeel);
                 }
             }
         }
 
-        return frameTable[mancheNumber - 1].getScore();
+        return frameTable[frameIndex].getScore();
     }
 
 
