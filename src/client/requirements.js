@@ -1,6 +1,8 @@
 // Page that will appear upon loading game for first time
 // Goal: asks user for number of players, pins and rounds they want to play with
 
+const SERVER_URL = "http://localhost:3000";
+
 /**
  * Show error text on page
  * @param {String} txt 
@@ -77,7 +79,7 @@ function setRequirements() {
         console.log(data);
 
         // Send json to server
-        sendRequest('http://localhost:3000/api/grid', 'PUT')
+        sendRequest(SERVER_URL + '/api/grid', 'PUT')
             .catch((error) => {
                 console.error("ERROR (sending requirements to server) - ", error);
             });
