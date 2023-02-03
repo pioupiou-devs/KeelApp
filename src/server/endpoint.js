@@ -40,7 +40,7 @@ server.listen(3000);
 
 //#region Endpoints
 
-/* GET: /api/grid 
+/** GET: /api/grid 
 @param {object} request object representing the input HTTP request
 @param {object} response object representing the HTTP response tha will be sent
 */
@@ -57,7 +57,7 @@ function getEndpoints(request,response)
 }
 
 
-/* POST: /api/grid/player/frame
+/** POST: /api/grid/player/frame
 @param {object} request object representing the input HTTP request
 @param {object} response object representing the HTTP response tha will be sent
 */
@@ -83,7 +83,7 @@ function postEndpoints(request, response) {
 }
 
 
-/* PUT: /api/grid
+/** PUT: /api/grid
 @param {object} request object representing the input HTTP request
 @param {object} response object representing the HTTP response tha will be sent
 */
@@ -105,7 +105,7 @@ function putEndpoints(request, response) {
 
 //#region Utils
 
-/* Get the json from the body of the request
+/** Get the json from the body of the request
 @param {object} request object representing the input HTTP request
 */
 function getJsonFromBody(request) {
@@ -130,7 +130,7 @@ function getJsonFromBody(request) {
     return json
 }
 
-/* Get the querystring of the url
+/** Get the querystring of the url
 @param {string} url of the request
 */
 function getQueryParams(url) {
@@ -138,7 +138,7 @@ function getQueryParams(url) {
     return parsedUrl.query;
 }
 
-/* Get the last param of the url
+/** Get the last param of the url
 @param {string} url of the request
 */
 function getPathInfoParam(url) {
@@ -146,7 +146,7 @@ function getPathInfoParam(url) {
     return parsedUrl.pathname.split('/').filter(Boolean).pop();
 }
 
-/* Get the regex of the url
+/** Get the regex of the url
 @param {string} url of the request
 */
 function getRegexUrl(url) {
@@ -154,7 +154,7 @@ function getRegexUrl(url) {
     return new RegExp('.*' + url + '.*');
 }
 
-/* Send an error response
+/** Send an error response
 @param {object} response object representing the HTTP response tha will be sent
 @param {number} statusCode of the response
 @param {string} message of the response
