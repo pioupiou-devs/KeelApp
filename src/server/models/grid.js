@@ -1,8 +1,11 @@
 const Frame = require('./frame');
+const Player=require('./player');
 
 class Grid {
-    constructor() {
+    constructor(nbKeel=10, nbFrame=10) {
         this.players = new Map();
+        this.nbKeel=nbKeel;
+        this.nbFrame=nbFrame;
     }
 
     addPlayer(player) {
@@ -13,46 +16,38 @@ class Grid {
         if (player.trim() === '') throw new Error('Player is empty');
 
 
-        this.players.set(player, this.constructFrameList());
+        this.players.set(player, Player(this.nbFrame));
+        
     }
 
-    constructFrameList() {
-        let frameList = [];
+    calculFrame(namePlayer, mancheNumber) {
 
-        for (let i = 0; i < 10; i++) {
-            frameList.push(new Frame());
-        }
-
-        return frameList;
-    }
-
-    calculFrame(frameTable, mancheNumber) {
-
-        if (mancheNumber == 10) {
-            frameTable[mancheNumber - 1].setScore(calcFrame10(frameTable[mancheNumber - 1]));
+        var frameTable=this.players[namePlayer];
+        if (mancheNumber == this.nbFrame) {
+            frameTable[mancheNumber - 1].setScore(calcFrame10(frameTable[mancheNumber - 1]),this.nbKeel);
         } else {
 
-            if (frameTable[mancheNumber - 1].getC1() == 10) { //case of a strike
+            if (frameTable[mancheNumber - 1].getC1() == this.nbKeel) { //case of a strike
 
 
-                if (frameTable[mancheNumber].getC1() == 10) { //case 2 strikes in a row
-                    if (mancheNumber == 9) { // case of the 9th frame with 2 strikes in a row
-                        frameTable[mancheNumber - 1].setScore(20 + frameTable[mancheNumber].getC2());
+                if (frameTable[mancheNumber].getC1() == this.nbKeel) { //case 2 strikes in a row
+                    if (mancheNumber == this.nbFrame-1) { // case of the 9th frame with 2 strikes in a row
+                        frameTable[mancheNumber - 1].setScore(this.nbKeel*2 + frameTable[mancheNumber].getC2(),this.nbKeel);
                     } else {
-                        frameTable[mancheNumber - 1].setScore(20 + frameTable[mancheNumber + 1].getC1());
+                        frameTable[mancheNumber - 1].setScore(this.nbKeel*2 + frameTable[mancheNumber + 1].getC1(),this.nbKeel);
                     }
 
                 } else {
-                    frameTable[mancheNumber - 1].setScore(10 + frameTable[mancheNumber].getC1() + frameTable[mancheNumber].getC2());
+                    frameTable[mancheNumber - 1].setScore(this.nbKeel + frameTable[mancheNumber].getC1() + frameTable[mancheNumber].getC2(),this.nbKeel);
                 }
 
 
             } else {
-                if (frameTable[mancheNumber - 1].getC1() + frameTable[mancheNumber - 1].getC2() == 10) { //case of a spare
-                    frameTable[mancheNumber - 1].setScore(10 + frameTable[mancheNumber].getC1());
+                if (frameTable[mancheNumber - 1].getC1() + frameTable[mancheNumber - 1].getC2() == this.nbKeel) { //case of a spare
+                    frameTable[mancheNumber - 1].setScore(this.nbKeel + frameTable[mancheNumber].getC1(),this.nbKeel);
 
                 } else { //no spare, no strike
-                    frameTable[mancheNumber - 1].setScore(frameTable[mancheNumber - 1].getC1() + frameTable[mancheNumber - 1].getC2());
+                    frameTable[mancheNumber - 1].setScore(frameTable[mancheNumber - 1].getC1() + frameTable[mancheNumber - 1].getC2(),this.nbKeel);
                 }
             }
         }
@@ -61,18 +56,19 @@ class Grid {
     }
 
 
-    calculScoreTotal(frameTable) {
-        sum = 0;
-        for (let i = 1; i < 11; i = i + 1) {
-            sum = sum + calculFrame(frameTable, i);
-            frameTable[i - 1].setTotalScore(sum);
+    calculScoreTotal(namePlayer) {
+        var sum = 0;
+        for (let i = 1; i < this.nbFrame+1; i = i + 1) {
+            sum = sum + this.calculFrame(namePlayer, i);
+            this.players[namePlayer][i - 1].setTotalScore(sum,this.nbFrame,this.nbKeel);
         }
         return sum;
     }
 
 
 
-    calcFrame10(frame) {
+
+    calculLastFrame(frame) {
         if (!(frame instanceof (Frame))) { //also cover undefined and null
             return 0;
         }
@@ -83,7 +79,7 @@ class Grid {
         }
         result = frame.getC1();
 
-        if (result === 10) { // we got a strike on the first throw
+        if (result === this.nbKeel) { // we got a strike on the first throw
             if (frame.getC2() === null) {
                 return result;
             }
@@ -102,7 +98,7 @@ class Grid {
         }
         result += frame.getC2();
 
-        if (result === 10) { // we got a spare
+        if (result === this.nbKeel) { // we got a spare
             if (frame.getC3() === null) {
                 return result;
             }
