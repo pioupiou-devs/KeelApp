@@ -18,7 +18,7 @@ var grid;
 *    ]
 * }
 *
-* @param json, the Object JS 
+* @param {Object}json, the Object JS 
 * @returns Nothing
 */
 function createGrid(json)
@@ -36,7 +36,7 @@ function createGrid(json)
 /**
  * playingPlayerGestion: set isPlaying at True for the person after the playing passing in parameter
  * 
- * @param  namePlayer , name of the current player
+ * @param {string} namePlayer , name of the current player
  * @returns nothing
  */
 function playingPlayerGestion(namePlayer){
@@ -60,10 +60,10 @@ function playingPlayerGestion(namePlayer){
 *   - Change the current player if it is necessary
 * 
 *
-* @param  namePlayer, the name of the playing player
-* @param frame, the number of the current frame of the player
-* @param element, the number of the current throw in the current frame of the player
-* @param value, the number of fallen keels
+* @param {string} namePlayer, the name of the playing player
+* @param {int} frame, the number of the current frame of the player between 1 and grid.nbFrame
+* @param {int} element, the number of the current throw in the current frame of the player between 1 and 3
+* @param {int} value, the number of fallen keels between 0 and grid.nbKeel
 * @returns Nothing
 */
 function updateGrid(namePlayer, frame, element, value)
