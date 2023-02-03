@@ -16,8 +16,9 @@
 <body>
 
 <h2>PROJET quilles !!!</h2>
-
-<button id="rulesBtn">Rules</button>
+<div class="container">
+    <button id="rulesBtn">Rules</button>
+</div>
 <div id="rulesModal" class="modal">
     <div class="modal-content">
         <div class="class-header">
@@ -100,28 +101,32 @@
     </div>
 </div>
 
-
-<table id="grid">
-    <thead>
-    <tr id="grid-header"></tr>
-    </thead>
-    <tbody id="grid-content">
-    </tbody>
-</table>
+<div class="container">
+    <table id="grid">
+        <thead>
+        <tr id="grid-header"></tr>
+        </thead>
+        <tbody id="grid-content">
+        </tbody>
+    </table>
+</div>
+<div class="container">
+    <div>
+        <span>Au tour de </span>
+        <span id="player-id"></span>
+        <span>, manche n°</span>
+        <span id="frame-id"></span>
+        <span>, lancer n°</span>
+        <span id="throw-id"></span>
+    </div>
+</div>
+<div class="container">
+    <span>Nombre de quilles tombées : </span>
+    <div id="keels"></div>
+</div>
 <!--<button onclick="addRow()">Add row</button>-->
 
-<br>
-<div>
-    <span>Au tour de </span>
-    <span id="player-id"></span>
-    <span>, manche n°</span>
-    <span id="frame-id"></span>
-    <span>, lancer n°</span>
-    <span id="throw-id"></span>
-</div>
-<br>
-<span>Nombre de quilles tombées : </span>
-<div id="keels"></div>
+
 <!--<form>-->
 <!--    <input required placeholder="Premier coup" id="first" type="number" min="0" max="10"-->
 <!--           oninput="checkInput('first')" pattern="\d*">-->

@@ -12,6 +12,10 @@ const frontServerPort = 5500;
 
 const server = http.createServer(function (request, response) {
     if (getRegexUrl(urlBase).test(request.url)) {
+        response.setHeader('Access-Control-Allow-Origin', '*');
+        response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE', 'OPTIONS', 'PATCH');
+        response.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
+
         switch (request.method) {
             case 'GET':
                 console.log('GET: ' + request.url);
@@ -25,11 +29,15 @@ const server = http.createServer(function (request, response) {
                 console.log('PUT: ' + request.url);
                 putEndpoints(request, response);
                 break;
+            case 'OPTIONS':
+                console.log('OPTIONS: ' + request.url);
+                response.writeHead(200, {'Content-Type': 'text/json'});
+                response.end();
+                break;
             default:
                 responseError(response, 405, 'Method Not Allowed');
         }
-    }
-    else {
+    } else {
         responseError(response);
     }
 });
@@ -40,14 +48,18 @@ server.listen(3000, () => {
 
 //#region Endpoints
 
-function getEndpoints(request,response)
-{
-    if(getRegexUrl(urlGrid).test(request.url))
-    {
+function getEndpoints(request, response) {
+    if (getRegexUrl(urlGrid).test(request.url)) {
         console.log('grid get');
         response.writeHead(200, { 'Content-Type': 'text/json' });
-        response.write(JSON.stringify(manager.getGrid()));
-        response.end();
+        // response.write(JSON.stringify(manager.getGrid()));
+        // response.write("test");
+        //met le status à 200
+        // response.end(JSON.stringify(manager.getGrid()));
+        let json = {
+            "nbKeel" : 10
+        }
+        response.end(JSON.stringify(json));
         console.log('grid get end');
     }
 }
@@ -65,7 +77,7 @@ function postEndpoints(request, response) {
                 console.log('frame: ' + frame + ', player: ' + player + ', element: ' + element + ', value: ' + value);
                 manager.updateGrid(player, frame, element, value);
 
-                response.writeHead(200, { 'Content-Type': 'text/json' });
+                response.writeHead(200, {'Content-Type': 'text/json'});
                 response.write(JSON.stringify(manager.getGrid()));
                 response.end();
             }
@@ -80,9 +92,9 @@ function putEndpoints(request, response) {
         let json = getJsonFromBody(request);
         manager.createGrid(json);
 
-        let urlRedirect =   'http://localhost:' + frontServerPort + '/src/client/' + urlRedirectGrid;
+        let urlRedirect = 'http://localhost:' + frontServerPort + '/src/client/' + urlRedirectGrid;
 
-        response.writeHead(308, { 'Location': urlRedirect });
+        response.writeHead(308, {'Location': urlRedirect});
         response.end();
     }
 }
@@ -101,8 +113,7 @@ function getJsonFromBody(request) {
     request.on('end', () => {
         try {
             json = JSON.parse(body);
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
             response.statusCode = 400;
             return response.end(`error: ${e.message}`);
@@ -128,7 +139,8 @@ function getRegexUrl(url) {
 }
 
 function responseError(response, statusCode = 500, message = 'Internal Server Error') {
-    response.writeHead(statusCode, { 'Content-Type': 'text/plain' });
+    response.writeHead(statusCode, {'Content-Type': 'text/plain'});
     response.end(message);
 }
+
 //#endregion Utils

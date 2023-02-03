@@ -46,6 +46,18 @@ function updateGrid(namePlayer, frame, element, value)
 
 function getGrid()
 {
+    let test = {
+        "nbKeel" : 10,
+        "nbFrames" : 10,
+        "players":
+            [
+                "player1",
+                "player2",
+                "player3"
+            ]
+    }
+    // grid = createGrid(JSON.stringify(test))
+    // console.log(JSON.stringify(grid))
     return JSON.stringify(grid);
 }
 

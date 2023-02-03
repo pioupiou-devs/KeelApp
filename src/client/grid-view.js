@@ -101,7 +101,7 @@ class GridView {
      * @returns {string} id corresponding to the parameters
      */
     getId(idRow, idCol, cellType = null) {
-        if (idRow < 0 || idCol < 0 || idCol > 11) {
+        if (idRow < 0 || idCol < 0 || idCol > this.NB_FRAMES+1) {
             throw new Error(`Invalid id ${idRow}, ${idCol}`);
         }
         if (idCol != this.NB_FRAMES && cellType == CellType.THIRD) {
@@ -197,16 +197,16 @@ class GridView {
      * From the player's data received from the API, fill in the scoreboard
      */
     fillScoreboard() {
-        // console.log(this.players)
+        console.log(this.players)
         this.players.forEach(([player,playerData], index) => {
             let rowNumber = index+1;
-            // console.log(playerData)
+            console.log(player + " " + this.NB_FRAMES)
             for (let i = 1; i <= this.NB_FRAMES; i++) {
                 if (i == this.frameToPlay && this.playerNameToPlay == player && this.throwToPlay == 1) {
                     continue;
                 } else {
                     let frame = playerData['frames'][i-1];
-
+                    console.log(frame)
                     let firstThrowDiv = document.getElementById(this.getId(rowNumber, i, CellType.FIRST));
                     let secondThrowDiv = document.getElementById(this.getId(rowNumber, i, CellType.SECOND));
                     let subTotalDiv = document.getElementById(this.getId(rowNumber, i, CellType.SUB_TOTAL));
@@ -295,6 +295,225 @@ class GridView {
         }
     }
 }
+
+
+let jsonNew = `
+{
+  "nbKeel":10,
+  "nbFrame":11,
+  "player":{
+    "player1":{
+      "frames":[
+        {
+          "c1":1,
+          "c2":3,
+          "c3":0,
+          "score":4,
+          "totalScore":4
+        },
+        {
+          "c1":1,
+          "c2":9,
+          "c3":0,
+          "score":10,
+          "totalScore":14
+        },
+        {
+          "c1":10,
+          "c2":10,
+          "c3":5,
+          "score":25,
+          "totalScore":39
+        },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+        }
+
+      ],
+      "isPlaying":false,
+      "currentFrame":3,
+      "nbThrow": 1
+    },
+    "player2":{
+      "frames":[
+        {
+          "c1":1,
+          "c2":3,
+          "c3":0,
+          "score":4,
+          "totalScore":4
+        },
+        {
+          "c1":1,
+          "c2":9,
+          "c3":0,
+          "score":10,
+          "totalScore":14
+        },
+        {
+          "c1":9,
+          "c2":0,
+          "c3":0,
+          "score":20,
+          "totalScore":14
+        },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+                },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":14
+        }
+      ],
+      "isPlaying":true,
+      "currentFrame":3,
+      "nbThrow": 2
+    }
+  }
+}
+`
+
+/**
+//  * Send json data to target url
+//  * @param {String} url
+//  * @param {String} data
+//  * @param {String} method
+//  * @returns {String} Response JSON
+//  */
+async function sendRequest(url, data={}, method) {
+    console.log("sendRequest")
+    const response = await fetch(url, {
+        method: method,
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    });
+    console.log(response.json().then(data => console.log(data)));
+    createGridView(jsonData);
+
+    return response.text();
+}
+let jsonData = sendRequest(GRID_ENDPOINT, {}, 'GET');
+// fetch(GRID_ENDPOINT, {
+//     method: 'GET',
+//     mode: 'cors',
+//     headers: {
+//         'Content-Type': 'application/json'
+//     },
+// })
+//     .then(response => {
+//         jsonData = response.json();
+//         console.log(response.text());
+//     })
+//     .then(data => console.log(data))
+//     .catch(error => console.error(error))
+//     .finally(() => {
+//         console.log(jsonData);
+//     });
+// createGridView(jsonData);
 
 //get data from backend to initialize
 // createGridView(jsonNew);
