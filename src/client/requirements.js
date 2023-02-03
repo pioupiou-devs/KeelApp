@@ -44,7 +44,7 @@ function containDuplicateNames(playersNames) {
 async function sendRequest(url, data={}, method) {
     const response = await fetch(url, {
         method: method,
-        mode: 'cors',
+        mode: 'no-cors',
         headers: {
             'Content-Type': 'application/json'
         },
