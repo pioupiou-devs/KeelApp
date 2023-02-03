@@ -6,8 +6,11 @@ const CellType = {
     NONE: ""
 }
 
+const BASE_URL = "http://localhost:3000/api";
+const GRID_ENDPOINT = BASE_URL + "/grid";
+
 /**
- * Crée le scordboard à partir du json
+ * Create a new grid from a json
  * @param json
  */
 function createGridView(json) {
@@ -15,11 +18,16 @@ function createGridView(json) {
     grid.createHeader();
     grid.createScoreboard();
     grid.fillScoreboard();
-    console.log(grid.NB_KEELS);
+    // console.log(grid.NB_KEELS);
     grid.generatePossibilities(grid.playerNameToPlay, grid.frameToPlay, grid.throwToPlay);
-    console.log("oui");
+    // console.log("oui");
 }
 
+/**
+ * Given a cellType, return the corresponding id value
+ * @param cellType cell type
+ * @returns {string} return id to display
+ */
 function getCellType(cellType) {
     switch (cellType) {
         case "first":
@@ -51,7 +59,7 @@ class GridView {
 
     constructor(jsonDocument) {
         this.gridview = JSON.parse(jsonDocument);
-        console.log( this.gridview)
+        // console.log( this.gridview)
         this.NB_KEELS = this.gridview['nbKeel'];
         this.players = Object.entries(this.gridview['player']);
         // console.log(this.players);
@@ -63,11 +71,14 @@ class GridView {
         // this.NB_FRAMES = this.gridview['players'][0]['frames'].length;
     }
 
+    /**
+     * From the data extract from the json, creating the grid header
+     */
     createHeader() {
-        console.log("Generating header");
+        // console.log("Generating header");
         let header = document.getElementById("grid-header");
         let nameCell = document.createElement("th");
-        nameCell.setAttribute("id", this.   getId(0, 0, CellType.NONE));
+        nameCell.setAttribute("id", this.getId(0, 0, CellType.NONE));
         nameCell.textContent = "Name";
         header.appendChild(nameCell)
         for (let i = 1; i <= this.NB_FRAMES; i++) {
@@ -80,15 +91,14 @@ class GridView {
         total.textContent = "Total";
         total.setAttribute("id", this.getId(0, this.NB_FRAMES+1));
         header.appendChild(total);
-        return header;
     }
 
     /**
-     * Retourne l'id d'une cellule (sans vérifier si elle existe)
-     * @param idRow ligne/joueur
-     * @param idCol manche
-     * @param cellType type de cellule
-     * @returns {string} id de la cellule
+     * Return the id from a cell given the following argument (sans vérifier si elle existe)
+     * @param idRow line/player
+     * @param idCol nb frame
+     * @param cellType CellType
+     * @returns {string} id corresponding to the parameters
      */
     getId(idRow, idCol, cellType = null) {
         if (idRow < 0 || idCol < 0 || idCol > 11) {
@@ -100,18 +110,26 @@ class GridView {
 
         const row = "rowP";
         const col = "_col";
-
+        // if idCol is 0, it is the name column, if it's NB_FRAMES+1 : total column, else it's the frame's number
         const identifierCol = idCol == 0 ? "name" : idCol == this.NB_FRAMES+1 ? "total" : idCol;
 
         if (idRow == 0) {
             const rowHeader = "row";
             return rowHeader + idRow + col + identifierCol;
         } else {
-            const type = cellType != null && idCol != 0 && idCol != 11 ? getCellType(cellType) : "";
+            //retrieve the type in a inner cell (1st throw, 2nd, 3rd or subtotal
+            const type = cellType != null && idCol != 0 && idCol != this.NB_FRAMES+1 ? getCellType(cellType) : "";
             return row + idRow + col + identifierCol + type;
         }
     }
 
+    /**
+     * Create a score cell (1st throw, 2nd throw, 3rd throw, subtotal ...) given the following parameters
+     * @param idRow
+     * @param idCol
+     * @param cellType
+     * @returns {HTMLDivElement}
+     */
     createFrameCell(idRow, idCol, cellType) {
         if (cellType == CellType.THIRD && idCol != this.NB_FRAMES) {
             throw new Error("Can't create a third cell for a frame different than 10");
@@ -121,6 +139,9 @@ class GridView {
         return innerFrameCell;
     }
 
+    /**
+     * Creating the frames for each player
+     */
     createScoreboard() {
         this.players.forEach(([player,frame], index) => {
             let rowNumber = index+1;
@@ -133,7 +154,7 @@ class GridView {
             nameCell.appendChild(namePlayer);
             row.appendChild(nameCell)
 
-            // Gestion de l'affichage du joueur qui doit jouer
+            // Management of the display of the player who must play
             if (frame['isPlaying'] == true) {
                 this.playerNameToPlay = player;
                 this.frameToPlay = frame['currentFrame'];
@@ -146,7 +167,7 @@ class GridView {
                 throwToPlay.innerHTML = this.throwToPlay.toString();
             }
 
-            // Création des cellules de score
+            // create score cells
             for (let i = 1; i <= this.NB_FRAMES; i++) {
                 let cell = document.createElement("td");
                 let firstThrowDiv = this.createFrameCell(rowNumber, i, CellType.FIRST);// first throw
@@ -169,17 +190,17 @@ class GridView {
             let tbody = document.querySelector("tbody");
             tbody.appendChild(row);
         })
-        console.log({playerNameToPlay: this.playerNameToPlay, frameToPlay: this.frameToPlay, throwToPlay: this.throwToPlay})
+        // console.log({playerNameToPlay: this.playerNameToPlay, frameToPlay: this.frameToPlay, throwToPlay: this.throwToPlay})
     }
 
     /**
-     * A partir des données du joueur reçu depuis l'API, remplit le tableau de score
+     * From the player's data received from the API, fill in the scoreboard
      */
     fillScoreboard() {
-        console.log(this.players)
+        // console.log(this.players)
         this.players.forEach(([player,playerData], index) => {
             let rowNumber = index+1;
-            console.log(playerData)
+            // console.log(playerData)
             for (let i = 1; i <= this.NB_FRAMES; i++) {
                 if (i == this.frameToPlay && this.playerNameToPlay == player && this.throwToPlay == 1) {
                     continue;
@@ -194,7 +215,7 @@ class GridView {
                     let secondThrow = frame['c2'];
                     let subTotal = frame['score'];
                     //TODO devrait être gérer lorsqu'on détecte que la partie est finie
-                    //ex : dans json on a un champ isFinished ==> si oui on affiche le total
+                    //TODO ex : dans json on a un champ isFinished ==> si oui on affiche le total
                     let total = frame['total'];
 
                     //TODO afficher / ou X si strike ou spare
@@ -224,10 +245,10 @@ class GridView {
     }
 
     /**
-     * Genere les boutons permettant d'éviter toute complexité avec l'utilisateur
-     * @param playerToPlay quel joueur va jouer
+     * Generate buttons to avoid complexity with the user (error in input...)
+     * @param playerToPlay which player is going to play
      * @param frame quelle manche de jeu (de 1 à NB_FRAMES maximum)
-     * @param nbThrow n° de lancer 1, 2 ou 3 si la dernière manche
+     * @param nbThrow throw number 1, 2 or 3 if the last run
      */
     generatePossibilities() {//TODO générer en fonction des coups précédents
         let currentFrame = this.gridview['player'][this.playerNameToPlay]['frames'][this.frameToPlay-1];
@@ -240,7 +261,7 @@ class GridView {
             if (this.frameToPlay != this.NB_FRAMES) {
                 if (this.throwToPlay == 1 && i == this.NB_KEELS)
                     button.innerHTML = "X";
-                else if (this.throwToPlay == 2 && i == this.NB_KEELS - nbKeelDown)// si on a fait un strike au coup 1, on ne rentrera pas dedans car le backed changera le coup à jouer
+                else if (this.throwToPlay == 2 && i == this.NB_KEELS - nbKeelDown)// if we made a strike on the first move, we won't go back in because the backing will change the move to be played
                     button.innerHTML = "/";
                 else
                     button.innerHTML = i.toString();
@@ -249,9 +270,7 @@ class GridView {
                 if (this.throwToPlay == 1 && i == this.NB_KEELS)
                     button.innerHTML = "X";
                 else if (this.throwToPlay == 2) {
-                    // console.log(this.NB_KEELS - currentFrame['c1'])
-                    // console.log(i)
-                    //dernier coup pas un strike et le nb de quilles tombées est égal au nb de quilles restantes
+                    // last shot not a strike and the number of pins dropped is equal to the number of pins remaining
                     if (currentFrame['c1'] != this.NB_KEELS && i == this.NB_KEELS - currentFrame['c1'])
                         button.innerHTML = "/";
                     else if (currentFrame['c1'] == this.NB_KEELS && i == this.NB_KEELS)
@@ -266,143 +285,16 @@ class GridView {
             }
 
             button.addEventListener("click", function() {
-                console.log("Click on :", i);
-                //request aussi
-                //reload scoreboard ici en appelant fonction remplissage de score avec le retour api
+                // console.log("Click on :", i);
+                //request too
+                //reload scoreboard here by calling score filling function with api return
+
             });
             let buttonsDiv = document.getElementById("keels");
             buttonsDiv.appendChild(button);
         }
     }
-    //genere les bons nombres de boutons
-    // 0 1 2 3 4 5
-    // si le 1e coup est 5 on a ces possibilités
-    //après appuie sur bouton, envoie le coup fait et passe au suivant
-    //puis génère les autres boutons pour le prochain lancer (donc de 0 à 10)
-
-
-
-
-
-
 }
 
-let jsonOld = `{
-    "nbKeel": 10,
-    "players": [
-        {
-            "name": "John Doe",
-            "frames": [
-                {
-                    "score1": 10,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 10
-                },
-                {
-                    "score1": 10,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 20
-                },
-                null,
-                null,
-                null
-            ],
-            "totalScore": 20,
-            "isPlaying": true
-        },
-        {
-            "name": "Jane Doe",
-            "frames": [
-                {
-                    "score1": 10,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 10
-                },
-                {
-                    "score1": 10,
-                    "score2": 0,
-                    "score3": 0,
-                    "total": 20
-                },
-                null,
-                null,
-                null
-            ],
-            "totalScore": 20,
-            "isPlaying": false
-        }
-    ]
-}`;
-
-let jsonNew = `
-{
-  "nbKeel":10,
-  "nbFrame":3,
-  "player":{
-    "player1":{
-      "frames":[
-        {
-          "c1":1,
-          "c2":3,
-          "c3":0,
-          "score":4,
-          "totalScore":4
-        },
-        {
-          "c1":1,
-          "c2":9,
-          "c3":0,
-          "score":10,
-          "totalScore":14
-        },
-        {
-          "c1":10,
-          "c2":10,
-          "c3":5,
-          "score":25,
-          "totalScore":39
-        }
-
-      ],
-      "isPlaying":false,
-      "currentFrame":3,
-      "nbThrow": 1
-    },
-    "player2":{
-      "frames":[
-        {
-          "c1":1,
-          "c2":3,
-          "c3":0,
-          "score":4,
-          "totalScore":4
-        },
-        {
-          "c1":1,
-          "c2":9,
-          "c3":0,
-          "score":10,
-          "totalScore":14
-        },
-        {
-          "c1":10,
-          "c2":10,
-          "c3":0,
-          "score":20,
-          "totalScore":14
-        }
-
-      ],
-      "isPlaying":true,
-      "currentFrame":3,
-      "nbThrow": 3
-    }
-  }
-}
-`
 //get data from backend to initialize
-console.log("jsonNew")
-createGridView(jsonNew);
+// createGridView(jsonNew);

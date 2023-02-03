@@ -1,5 +1,5 @@
 const Grid = require("./models/grid");
-const Frame = require('./frame');
+const Frame = require('./models/frame');
 
 
 var grid;
@@ -27,7 +27,7 @@ function updateGrid(namePlayer, frame, element, value)
           break;
         case 2:
             grid.players[namePlayer].frames[indexFrame].setC2(value);
-            
+
             break;
         case 3:
             grid.players[namePlayer].frames[indexFrame].setC3(value);
@@ -35,13 +35,13 @@ function updateGrid(namePlayer, frame, element, value)
             grid.players[namePlayer].isPlayin=false;
             break;
     }
-      
+
     grid.calculScoreTotal(namePlayer);
 
   }else{
     throw new Error('Player is undefined');
   }
- 
+
 }
 
 function getGrid()
