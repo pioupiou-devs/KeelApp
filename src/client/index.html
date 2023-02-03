@@ -11,10 +11,6 @@
     <!-- CSS imports -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- JS imports -->
-    <!--    <script src="grid-view.js">-->
-    <!---->
-    <!--    </script>-->
 </head>
 
 <body>
@@ -112,24 +108,36 @@
     <tbody id="grid-content">
     </tbody>
 </table>
-<button onclick="addRow()">Add row</button>
+<!--<button onclick="addRow()">Add row</button>-->
 
+<br>
 <div>
-    <span>Player : </span>
-    <span id="player-id">1</span>
-    <span id="">Frame : </span>
-    <span id="frame-id">1</span>
+    <span>Au tour de </span>
+    <span id="player-id"></span>
+    <span>, manche n°</span>
+    <span id="frame-id"></span>
+    <span>, lancer n°</span>
+    <span id="throw-id"></span>
 </div>
-<form>
-    <input required placeholder="Premier coup" id="first" type="number" min="0" max="10"
-           oninput="checkInput('first')" pattern="\d*">
-    <input required placeholder="Deuxième coup " id="second" min="0" max="10" type="number"
-           oninput="checkInput('second')" pattern="\d*">
-    <div style="color: #a21313" id="error-msg"></div>
-    <button type="reset" id="add-score" onclick="addScore()" disabled>Add score</button>
-</form>
+<br>
+<span>Nombre de quilles tombées : </span>
+<div id="keels"></div>
+<!--<form>-->
+<!--    <input required placeholder="Premier coup" id="first" type="number" min="0" max="10"-->
+<!--           oninput="checkInput('first')" pattern="\d*">-->
+<!--    <input required placeholder="Deuxième coup " id="second" min="0" max="10" type="number"-->
+<!--           oninput="checkInput('second')" pattern="\d*">-->
+<!--    <div style="color: #a21313" id="error-msg"></div>-->
+<!--    <button type="reset" id="add-score" onclick="addScore()" disabled>Add score</button>-->
+<!--</form>-->
 
 
-<script src="rules.js"></script>
+
+<script src="rules.js">
+</script>
+<script src="grid-view.js" type="module">
+</script>
+
+
 </body>
 </html>
