@@ -3,7 +3,7 @@ const Frame = require('./frame');
 
 
 var grid;
-
+//#region Grid
 function createGrid(json)
 {
     let nbFrame=json.nbFrame;
@@ -49,3 +49,6 @@ function getGrid()
     return JSON.stringify(grid);
 }
 
+//#endregion Grid
+
+module.exports = { createGrid, updateGrid, getGrid };
