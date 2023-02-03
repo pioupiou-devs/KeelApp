@@ -72,7 +72,8 @@ function setRequirements() {
         showErrorText("Some players have the same name.")
         return false;
     } else {
-        let data = JSON.stringify({nbKeel:inputNbPins, nbFrames:inputNbRounds, players:inputNames, "redirect":"index.html"});
+        let redirectURL = location.href.substring(0, location.href.lastIndexOf("/")+1) + "index.html";
+        let data = JSON.stringify({nbKeel:inputNbPins, nbFrames:inputNbRounds, players:inputNames, "redirect":redirectURL});
         console.log(data);
 
         // Send json to server
