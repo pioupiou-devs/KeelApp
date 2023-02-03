@@ -9,6 +9,11 @@ class Player{
         this.throw=1;
     }
 
+    /**
+     * constructFrameList: construct an array of Frame object which has nbFrame frames.
+     * @param {int} nbFrame , the number of frames choosen
+     * @returns {array} the array of Frame
+     */
     constructFrameList(nbFrame=10) {
         let frameList = [];
 
