@@ -73,7 +73,8 @@ class Frame {
     }
 
     setScore(score, nbKeel=10) {
-        if (score < 0 || score > 3*nbKeel || score == null || typeof score != 'number')
+        let maxScore=3*nbKeel;
+        if (score < 0 || score > maxScore || score == null || typeof score != 'number')
             throw new Error("Out of range total score");
 
         this.score = score;
@@ -84,7 +85,8 @@ class Frame {
     }
 
     setTotalScore(totalScore, nbFrame=10,nbKeel=10) {
-        if (totalScore < 0 || totalScore > nbFrame*nbKeel*3 || totalScore == null || typeof totalScore != 'number')
+        let maxScoreTotal=nbFrame*nbKeel*3;
+        if (totalScore < 0 || totalScore > maxScoreTotal || totalScore == null || typeof totalScore != 'number')
             throw new Error("Out of range total score");
 
         this.totalScore = totalScore;

@@ -6,12 +6,14 @@ var grid;
 
 function createGrid(json)
 {
-    grid=new Grid(json.nbKeel,json.nbFrame);
-    for (let i = 0; i < json.players.length; i++) {
-        grid.addPlayer(json.players[i]);
-        
-    }
-    grid.players[json.players[0]].isPlayin=true;
+    let nbFrame=json.nbFrame;
+    let nbKeel=json.nbKeel;
+    let players=json.players;
+    grid=new Grid(nbKeel,nbFrame);
+    players.forEach(element => {
+      grid.addPlayer(element);
+    });
+    grid.players[players[0]].isPlayin=true;
 }
 
 // A modifier pour faire évoluer le joueur en cours et la manche en cours
