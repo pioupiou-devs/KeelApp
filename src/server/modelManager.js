@@ -20,6 +20,7 @@ function createGrid(json)
 function updateGrid(namePlayer, frame, element, value)
 {
   let indexFrame=frame-1;
+  console.log(grid)
   if(grid.players.get(namePlayer)!=undefined){
     switch (element) {
         case 1:

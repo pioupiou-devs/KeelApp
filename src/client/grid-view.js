@@ -8,6 +8,8 @@ const CellType = {
 
 const BASE_URL = "http://localhost:3000/api";
 const GRID_ENDPOINT = BASE_URL + "/grid";
+const THROW_ENDPOINT = GRID_ENDPOINT + "/player/frame/";
+// POST /api/grid/player/frame/1?p=player1&e=2&v=3 => 3 quille dans le champs 2 de la frame 1 du player1 | renvoie json grid updated
 
 /**
  * Create a new grid from a json
@@ -23,6 +25,11 @@ function createGridView(json) {
     // console.log("oui");
 }
 
+function updateGridView(json) {
+    let grid = new GridView(json);
+    grid.fillScoreboard();
+    grid.generatePossibilities(grid.playerNameToPlay, grid.frameToPlay, grid.throwToPlay);
+}
 /**
  * Given a cellType, return the corresponding id value
  * @param cellType cell type
@@ -283,12 +290,25 @@ class GridView {
                 else
                     button.innerHTML = i.toString();
             }
-
+            let p = this.playerNameToPlay;
+            let t = this.throwToPlay;
+            let f = this.frameToPlay;
             button.addEventListener("click", function() {
                 // console.log("Click on :", i);
-                //request too
-                //reload scoreboard here by calling score filling function with api return
-
+                fetch(THROW_ENDPOINT+`${f}?p=${p}&e=${t}&v=${i}`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        console.log("Successfully received updated grid");
+                        updateGridView(data);
+                    })
+                    .catch(error => console.error(error))
             });
             let buttonsDiv = document.getElementById("keels");
             buttonsDiv.appendChild(button);
@@ -482,38 +502,36 @@ let jsonNew = `
 //  * @param {String} method
 //  * @returns {String} Response JSON
 //  */
-async function sendRequest(url, data={}, method) {
-    console.log("sendRequest")
-    const response = await fetch(url, {
-        method: method,
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    });
-    console.log(response.json().then(data => console.log(data)));
-    createGridView(jsonData);
-
-    return response.text();
-}
-let jsonData = sendRequest(GRID_ENDPOINT, {}, 'GET');
-// fetch(GRID_ENDPOINT, {
-//     method: 'GET',
-//     mode: 'cors',
-//     headers: {
-//         'Content-Type': 'application/json'
-//     },
-// })
-//     .then(response => {
-//         jsonData = response.json();
-//         console.log(response.text());
-//     })
-//     .then(data => console.log(data))
-//     .catch(error => console.error(error))
-//     .finally(() => {
-//         console.log(jsonData);
+// async function sendRequest(url, data={}, method) {
+//     console.log("sendRequest")
+//     const response = await fetch(url, {
+//         method: method,
+//         mode: 'cors',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
 //     });
+//     console.log(response.json().then(data => console.log(data)));
+//     createGridView(jsonData);
+//
+//     return response.text();
+// }
+// let jsonData = sendRequest(GRID_ENDPOINT, {}, 'GET');
+/*fetch(GRID_ENDPOINT, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+})
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        console.log("Successfully fetched data")
+    })
+    .catch(error => console.error(error))*/
+
 // createGridView(jsonData);
 
 //get data from backend to initialize
-// createGridView(jsonNew);
+createGridView(jsonNew);
