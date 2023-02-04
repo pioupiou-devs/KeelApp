@@ -44,7 +44,7 @@ function containDuplicateNames(playersNames) {
 async function sendRequest(url, data={}, method) {
     const response = await fetch(url, {
         method: method,
-        mode: 'no-cors',
+        mode: 'cors',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -74,16 +74,16 @@ function setRequirements() {
         showErrorText("Some players have the same name.")
         return false;
     } else {
-        let redirectURL = location.href.substring(0, location.href.lastIndexOf("/")+1) + "index.html";
+        let redirectURL = location.href.substring(0, location.href.lastIndexOf("/")+1) + "scoreboard.html";
         let data = JSON.stringify({nbKeel:inputNbPins, nbFrames:inputNbRounds, players:inputNames, "redirect":redirectURL});
         console.log(data);
 
         // Send json to server
-        sendRequest(SERVER_URL + '/api/grid', 'PUT')
-            .catch((error) => {
-                console.error("ERROR (sending requirements to server) - ", error);
-            });
+        // sendRequest(SERVER_URL + '/api/grid', 'PUT')
+        //     .catch((error) => {
+        //         console.error("ERROR (sending requirements to server) - ", error);
+        //     });
 
-        return true;
+        return false;
     }
 }

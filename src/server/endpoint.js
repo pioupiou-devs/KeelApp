@@ -7,7 +7,7 @@ const urlGrid = urlBase + '/grid';
 const urlPlayer = urlGrid + '/player';
 const urlFrame = urlPlayer + '/frame';
 
-const urlRedirectGrid = 'index.html';
+const urlRedirectGrid = 'scoreboard.html';
 const frontServerPort = 5500;
 
 // Create the server with the callback function to handle every HTTP request

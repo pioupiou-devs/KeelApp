@@ -12,144 +12,31 @@
     <link rel="stylesheet" href="style.css">
 
     <!-- JS imports -->
-    <!--    <script src="grid-view.js">-->
-    <!---->
-    <!--    </script>-->
+    <script src="requirements.js"></script>
 </head>
 
 <body>
-    <h2>PROJET quilles !!!</h2>
+    <h2>Before starting...</h2>
 
-    <div class="container">
-        <button id="rulesBtn">Rules</button>
-    </div>
-    <div id="rulesModal" class="modal">
-        <div class="modal-content">
-            <div class="class-header">
-                <span class="close">&times;</span>
-                <h2>How to play bowling</h2>
-            </div>
-            <div class="class-body">
-                <p>The main goal is simple: knock down as many pins as you can, with as little throws as possible. You have
-                    ten frames to do so, each allowing you to do two (2) throws.</p>
-                <p>In a classic game, you will have ten (10) pins to knock down per frame. All calculs done below will use that as the maximum score per frame.</p>
-                <p>The maximum possible score is 300, achievable by only doing strikes for the whole game (so a total of 12
-                    in a row!).</p>
-                <p>The scoring system may look a little complicated as first view, but here is an explanation of its inner
-                    workings:</p>
-                <ul>
-                    <li>
-                        <p><u>Strike:</u> you knocked down <b>all pins with only the first throw of the current frame</b>.
-                        </p>
-                        <p><u>/!\</u> The second throw of this frame is skipped, you will play again at the next frame.</p>
-                        <p><i>Filling the scoring sheet:</i> write an 'X' in the first box of the current frame. The second
-                            one will be left empty</p>
-                        <p>Frame total score: 10 points, plus the score of the next frame.</p>
-                        <p>For example:
-                        <ul>
-                            <li>the following two throws are '8' and '1', your frame will have a score of 10+8+1 = 19</li>
-                            <li>the following frame is a Spare, you will have to wait until the Spare frame can be
-                                calculated before adding its score to the one of the Strike frame
-                            </li>
-                            <li>the following frame is another Strike, you will have to wait until the second Strike frame
-                                can be calculated before ading its result to the current Strike frame
-                            </li>
-                        </ul>
+<!--    <form id="formRequirements" method="post" onsubmit="return setRequirements()" action="scoreboard.html">-->
+    <form id="formRequirements" method="post" onsubmit="return setRequirements()">
+        <label for='nbPlayers'>How many players?</label>
+        <input type="number" id='nbPlayers' name='nbPlayers' placeholder="3" min="1" max="99" required>
+    
+        <label for='playersNames'>Enter their name(s) separated by commas (,)</label>
+        <input type="text" id='playersNames' name='playersNames' placeholder="Marc, Hélène, Jean" required>
+    
+        <label for='nbRounds'>How many rounds?</label>
+        <input type="number" id='nbRounds' name='nbRounds' value="10" min="1" required>
+    
+        <label for='nbPins'>How many pins?</label>
+        <input type="number" id='nbPins' name='nbPins' value="10" min="1" required>
+    
+        <button type="submit" id="requirementsBtn">Ready</button>
+    </form>
+    <p id="txtRequirementsError"></p>
 
-                        However, <b>you can't have more than 30 points in a frame</b> if you manage to do more than three
-                        (3) strikes in a row.
-                        </p>
-                    </li>
-                    <li>
-                        <p><u>Spare:</u> you knocked down <b>all pins using the two throws of the current frame</b>.</p>
-                        <p><i>Filling the scoring sheet:</i> write the number of pins hit in the first box of the current
-                            frame, and a '/' in the second one.</p>
-                        <p>Frame total score: 10 points, plus the first throw of the next frame.</p>
-                        <p>For example:
-                        <ul>
-                            <li>the very next throw is '7', your frame will have a score of 10+7 = 17</li>
-                            <li>the next throw is a Strike, your frame will have a score of 10+10 = 20</li>
-                        </ul>
-                        </p>
-                    </li>
-                    <li>
-                        <p>In any other case, you simply note how many pins you took down with each throw.</p>
-                        <p><i>Filling the scoring sheet:</i> write the number of pins hit with each throw in their
-                            respective boxes.</p>
-                        <p>Frame total score: the total of your two throws.</p>
-                        <p>For example:
-                        <ul>
-                            <li>you knocked down 5 then 3 pins, your frame will have a score of 5+3 = 8</li>
-                            <li>you knocked down 0 then 9 pins, your frame will have a score of 0+9 = 9</li>
-                        </ul>
-                        </p>
-                    </li>
-                </ul>
-
-                <p>
-                    There is now a special case for the final frame, composed of three input fields as you maybe noticed.
-                    It's a bonus round. The third box will be unused unless you managed to do either a Strike or a Spare.
-                <ul>
-                    <li>
-                        <p>You knocked down all pins with your first throw: it's a strike!</p>
-                        <p>Note an 'X' in the first box. You can now use each of the two remaining throws as bonus throws,
-                            independant of each other.</p>
-                    </li>
-                    <li>
-                        <p>You knocked down all pins using two throws: it's a spare!</p>
-                        <p>Treat the first two boxes as a normal Spare case. You can now do one last throw, which will be
-                            used </p>
-                    </li>
-                </ul>
-                </p>
-            </div>
-        </div>
-    </div>
-    <script src="rules.js"></script>
-
-<div class="container">
-    <table id="grid">
-        <thead>
-        <tr id="grid-header"></tr>
-        </thead>
-        <tbody id="grid-content">
-        </tbody>
-    </table>
-</div>
-<div class="container">
-    <div>
-        <span>Au tour de </span>
-        <span id="player-id"></span>
-        <span>, manche n°</span>
-        <span id="frame-id"></span>
-        <span>, lancer n°</span>
-        <span id="throw-id"></span>
-    </div>
-</div>
-<div class="container">
-    <span>Nombre de quilles tombées : </span>
-    <div id="keels"></div>
-</div>
-<!--<button onclick="addRow()">Add row</button>-->
-
-
-<!--<form>-->
-<!--    <input required placeholder="Premier coup" id="first" type="number" min="0" max="10"-->
-<!--           oninput="checkInput('first')" pattern="\d*">-->
-<!--    <input required placeholder="Deuxième coup " id="second" min="0" max="10" type="number"-->
-<!--           oninput="checkInput('second')" pattern="\d*">-->
-<!--    <div style="color: #a21313" id="error-msg"></div>-->
-<!--    <button type="reset" id="add-score" onclick="addScore()" disabled>Add score</button>-->
-<!--</form>-->
-
-
-
-<script src="rules.js">
-</script>
-<script src="grid-view.js" type="module">
-</script>
-
-
+    
 </body>
 
 </html>
