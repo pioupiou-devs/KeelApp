@@ -10,6 +10,7 @@ const urlFrame = urlPlayer + '/frame';
 const urlRedirectGrid = 'index.html';
 const frontServerPort = 5500;
 
+// Create the server with the callback function to handle every HTTP request
 const server = http.createServer(function (request, response) {
     if (getRegexUrl(urlBase).test(request.url)) {
         response.setHeader('Access-Control-Allow-Origin', '*');
@@ -37,21 +38,29 @@ const server = http.createServer(function (request, response) {
             default:
                 responseError(response, 405, 'Method Not Allowed');
         }
-    } else {
+    }
+    else {
         responseError(response);
     }
 });
 
-server.listen(3000, () => {
-    console.log('Server running at http://localhost:3000');
-});
+// Start the server
+server.listen(3000);
 
 //#region Endpoints
 
-function getEndpoints(request, response) {
-    if (getRegexUrl(urlGrid).test(request.url)) {
+/** GET: /api/grid
+@param {object} request object representing the input HTTP request
+@param {object} response object representing the HTTP response tha will be sent
+*/
+function getEndpoints(request,response)
+{
+    if(getRegexUrl(urlGrid).test(request.url))
+    {
         console.log('grid get');
         response.writeHead(200, { 'Content-Type': 'text/json' });
+        // response.write(JSON.stringify(manager.getGrid()));
+        // response.end();
         // response.write(JSON.stringify(manager.getGrid()));
         // response.write("test");
         //met le status à 200
@@ -60,10 +69,16 @@ function getEndpoints(request, response) {
             "nbKeel" : 10
         }
         response.end(JSON.stringify(json));
+
         console.log('grid get end');
     }
 }
 
+
+/** POST: /api/grid/player/frame
+@param {object} request object representing the input HTTP request
+@param {object} response object representing the HTTP response tha will be sent
+*/
 function postEndpoints(request, response) {
     if (getRegexUrl(urlGrid).test(request.url)) {
         if (getRegexUrl(urlFrame).test(request.url)) {
@@ -85,6 +100,11 @@ function postEndpoints(request, response) {
     }
 }
 
+
+/** PUT: /api/grid
+@param {object} request object representing the input HTTP request
+@param {object} response object representing the HTTP response tha will be sent
+*/
 function putEndpoints(request, response) {
     if (getRegexUrl(urlGrid).test(request.url)) {
         console.log('grid creation');
@@ -94,7 +114,7 @@ function putEndpoints(request, response) {
 
         let urlRedirect = 'http://localhost:' + frontServerPort + '/src/client/' + urlRedirectGrid;
 
-        response.writeHead(308, {'Location': urlRedirect});
+        response.writeHead(308, { 'Location': urlRedirect });
         response.end();
     }
 }
@@ -102,6 +122,10 @@ function putEndpoints(request, response) {
 //#endregion Endpoints
 
 //#region Utils
+
+/** Get the json from the body of the request
+@param {object} request object representing the input HTTP request
+*/
 function getJsonFromBody(request) {
     let body = '';
     let json;
@@ -113,7 +137,8 @@ function getJsonFromBody(request) {
     request.on('end', () => {
         try {
             json = JSON.parse(body);
-        } catch (e) {
+        }
+        catch (e) {
             console.error(e);
             response.statusCode = 400;
             return response.end(`error: ${e.message}`);
@@ -123,24 +148,37 @@ function getJsonFromBody(request) {
     return json
 }
 
+/** Get the querystring of the url
+@param {string} url of the request
+*/
 function getQueryParams(url) {
     const parsedUrl = urlParser.parse(url, true);
     return parsedUrl.query;
 }
 
+/** Get the last param of the url
+@param {string} url of the request
+*/
 function getPathInfoParam(url) {
     const parsedUrl = urlParser.parse(url, true);
     return parsedUrl.pathname.split('/').filter(Boolean).pop();
 }
 
+/** Get the regex of the url
+@param {string} url of the request
+*/
 function getRegexUrl(url) {
     url = url.replace('/', '\/');
     return new RegExp('.*' + url + '.*');
 }
 
+/** Send an error response
+@param {object} response object representing the HTTP response tha will be sent
+@param {number} statusCode of the response
+@param {string} message of the response
+*/
 function responseError(response, statusCode = 500, message = 'Internal Server Error') {
-    response.writeHead(statusCode, {'Content-Type': 'text/plain'});
+    response.writeHead(statusCode, { 'Content-Type': 'text/plain' });
     response.end(message);
 }
-
 //#endregion Utils

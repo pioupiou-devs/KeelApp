@@ -1,7 +1,7 @@
 {
     "nbKeel":10,
     "nbFrame":3,
-    "player":{
+    "players":{
         "player1":{
             "frames":[
                 {
