@@ -1,5 +1,5 @@
 const Grid = require("./models/grid");
-const Frame = require('./frame');
+const Frame = require('./models/frame');
 
 
 var grid;
@@ -13,7 +13,8 @@ function createGrid(json)
     players.forEach(element => {
       grid.addPlayer(element);
     });
-    grid.players[players[0]].isPlaying=true;
+    grid.players.get(players[0]).isPlaying=true;
+    module.exports = { grid };
 }
 
 // TODO : A modifier pour faire évoluer le joueur en cours et la manche en cours
