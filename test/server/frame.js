@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Frame = require('../src/client/frame.js');
+const Frame = require('../../src/server/models/frame.js');
 
 describe('Frame', function () {
     describe('constructor', function () {
@@ -11,9 +11,9 @@ describe('Frame', function () {
 
             it('should create a frame with correct default values', function () {
                 let frame = new Frame();
-                assert.equal(frame.c1, null);
-                assert.equal(frame.c2, null);
-                assert.equal(frame.c3, null);
+                assert.equal(frame.c1, 0);
+                assert.equal(frame.c2, 0);
+                assert.equal(frame.c3, 0);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
@@ -27,18 +27,18 @@ describe('Frame', function () {
 
             it('should create an empty frame with null', function () {
                 let frame = new Frame(null);
-                assert.equal(frame.c1, null);
-                assert.equal(frame.c2, null);
-                assert.equal(frame.c3, null);
+                assert.equal(frame.c1, 0);
+                assert.equal(frame.c2, 0);
+                assert.equal(frame.c3, 0);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
 
             it('should create an empty frame with undefined', function () {
                 let frame = new Frame(undefined);
-                assert.equal(frame.c1, null);
-                assert.equal(frame.c2, null);
-                assert.equal(frame.c3, null);
+                assert.equal(frame.c1, 0);
+                assert.equal(frame.c2, 0);
+                assert.equal(frame.c3, 0);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
@@ -50,14 +50,10 @@ describe('Frame', function () {
             it('should create a frame with correct default values', function () {
                 let frame = new Frame(1);
                 assert.equal(frame.c1, 1);
-                assert.equal(frame.c2, null);
-                assert.equal(frame.c3, null);
+                assert.equal(frame.c2, 0);
+                assert.equal(frame.c3, 0);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
-            });
-
-            it('should not create a frame with a value greater than 10', function () {
-                assert.throws(() => new Frame(11), Error);
             });
 
             it('should not create a frame with a value less than 0', function () {
@@ -79,25 +75,25 @@ describe('Frame', function () {
                 let frame = new Frame(1, 2);
                 assert.equal(frame.c1, 1);
                 assert.equal(frame.c2, 2);
-                assert.equal(frame.c3, null);
+                assert.equal(frame.c3, 0);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
 
             it('should create an empty frame with two null', function () {
                 let frame = new Frame(null, null);
-                assert.equal(frame.c1, null);
-                assert.equal(frame.c2, null);
-                assert.equal(frame.c3, null);
+                assert.equal(frame.c1, 0);
+                assert.equal(frame.c2, 0);
+                assert.equal(frame.c3, 0);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
 
             it('should create an empty frame with two undefined', function () {
                 let frame = new Frame(undefined, undefined);
-                assert.equal(frame.c1, null);
-                assert.equal(frame.c2, null);
-                assert.equal(frame.c3, null);
+                assert.equal(frame.c1, 0);
+                assert.equal(frame.c2, 0);
+                assert.equal(frame.c3, 0);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
@@ -148,28 +144,24 @@ describe('Frame', function () {
 
             it('should create an empty frame with three null', function () {
                 let frame = new Frame(null, null, null);
-                assert.equal(frame.c1, null);
-                assert.equal(frame.c2, null);
-                assert.equal(frame.c3, null);
+                assert.equal(frame.c1, 0);
+                assert.equal(frame.c2, 0);
+                assert.equal(frame.c3, 0);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
 
             it('should create an empty frame with three undefined', function () {
                 let frame = new Frame(undefined, undefined, undefined);
-                assert.equal(frame.c1, null);
-                assert.equal(frame.c2, null);
-                assert.equal(frame.c3, null);
+                assert.equal(frame.c1, 0);
+                assert.equal(frame.c2, 0);
+                assert.equal(frame.c3, 0);
                 assert.equal(frame.score, null);
                 assert.equal(frame.totalScore, null);
             });
 
             it('should not create a frame with three NaN', function () {
                 assert.throws(() => new Frame(NaN, NaN, NaN), Error);
-            });
-
-            it('should not create a frame with a c1 greater than 10', function () {
-                assert.throws(() => new Frame(11, 0, 0), Error);
             });
 
             it('should not create a frame with a c1 less than 0', function () {

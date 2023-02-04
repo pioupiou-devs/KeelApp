@@ -1,8 +1,19 @@
 class Frame {
-    constructor(c1 = null, c2 = null, c3 = null) {
+    constructor(c1 = 0, c2 = 0, c3 = 0) {
 
         if (!this.isValid(c1, c2, c3)) {
             throw new Error("Invalid data provided");
+        }
+
+        //in case of null or undefined input, we set to 0
+        if (c1 == null){
+            c1 = 0;
+        }
+        if (c2 == null){
+            c2 = 0;
+        }
+        if (c3 == null){
+            c3 = 0;
         }
 
         this.c1 = c1;
@@ -13,25 +24,25 @@ class Frame {
     }
 
     //#region Methods
-    isValid(c1 = null, c2 = null, c3 = null) {
+    isValid(c1 = null, c2 = null, c3 = null, nbKeel=10) {
 
         if (isNaN(c1) || isNaN(c2) || isNaN(c3))
             return false;
 
         if (c1 != null) {
-            if (typeof c1 != 'number' || c1 < 0 || c1 > 10) {
+            if (typeof c1 != 'number' || c1 < 0 || c1 > nbKeel) {
                 return false;
             }
         }
 
         if (c2 != null) {
-            if (typeof c2 != 'number' || c2 < 0 || c2 > 10) {
+            if (typeof c2 != 'number' || c2 < 0 || c2 > nbKeel) {
                 return false;
             }
         }
 
         if (c3 != null) {
-            if (typeof c3 != 'number' || c3 < 0 || c3 > 10) {
+            if (typeof c3 != 'number' || c3 < 0 || c3 > nbKeel) {
                 return false;
             }
         }
@@ -72,8 +83,9 @@ class Frame {
         return this.score;
     }
 
-    setScore(score) {
-        if (score < 0 || score > 30 || score == null || typeof score != 'number')
+    setScore(score, nbKeel=10) {
+        let maxScore=3*nbKeel;
+        if (score < 0 || score > maxScore || score == null || typeof score != 'number')
             throw new Error("Out of range total score");
 
         this.score = score;
@@ -83,8 +95,9 @@ class Frame {
         return this.totalScore;
     }
 
-    setTotalScore(totalScore) {
-        if (totalScore < 0 || totalScore > 300 || totalScore == null || typeof totalScore != 'number')
+    setTotalScore(totalScore, nbFrame=10,nbKeel=10) {
+        let maxScoreTotal=nbFrame*nbKeel*3;
+        if (totalScore < 0 || totalScore > maxScoreTotal || totalScore == null || typeof totalScore != 'number')
             throw new Error("Out of range total score");
 
         this.totalScore = totalScore;
