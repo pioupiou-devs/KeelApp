@@ -13,96 +13,96 @@ describe('calculFrame', function(){
     var g = new Grid();
     var playerName ="player1" 
     g.addPlayer(playerName);
-    g.setFrameScore(playerName,1,1,2);
-    g.setFrameScore(playerName,2,10,0);
-    g.setFrameScore(playerName,3,8,2);
-    g.setFrameScore(playerName,4,0,0);
-    g.setFrameScore(playerName,5,10);
-    g.setFrameScore(playerName,6,10,0);
-    g.setFrameScore(playerName,7,10,0);
-    g.setFrameScore(playerName,8,2,8);
-    g.setFrameScore(playerName,9,10,);
-    g.setFrameScore(playerName,10,10,5,3);
+    g.setFrameThrow(playerName,1,1,2);
+    g.setFrameThrow(playerName,2,10,0);
+    g.setFrameThrow(playerName,3,8,2);
+    g.setFrameThrow(playerName,4,0,0);
+    g.setFrameThrow(playerName,5,10);
+    g.setFrameThrow(playerName,6,10,0);
+    g.setFrameThrow(playerName,7,10,0);
+    g.setFrameThrow(playerName,8,2,8);
+    g.setFrameThrow(playerName,9,10,);
+    g.setFrameThrow(playerName,10,10,5,3);
     assert.equal(g.calculFrame(playerName,1),3); // No strike, no spare
   });
   it('Calcul the score of a frame with one strike in a row',function(){
     var g = new Grid();
     var playerName ="player1" 
     g.addPlayer(playerName);
-    g.setFrameScore(playerName,1,1,2);
-    g.setFrameScore(playerName,2,10);
-    g.setFrameScore(playerName,3,8,2);
-    g.setFrameScore(playerName,4,0,0);
-    g.setFrameScore(playerName,5,10);
-    g.setFrameScore(playerName,6,10,0);
-    g.setFrameScore(playerName,7,10,0);
-    g.setFrameScore(playerName,8,2,8);
-    g.setFrameScore(playerName,9,10,);
-    g.setFrameScore(playerName,10,10,5,3);
+    g.setFrameThrow(playerName,1,1,2);
+    g.setFrameThrow(playerName,2,10);
+    g.setFrameThrow(playerName,3,8,2);
+    g.setFrameThrow(playerName,4,0,0);
+    g.setFrameThrow(playerName,5,10);
+    g.setFrameThrow(playerName,6,10,0);
+    g.setFrameThrow(playerName,7,10,0);
+    g.setFrameThrow(playerName,8,2,8);
+    g.setFrameThrow(playerName,9,10,);
+    g.setFrameThrow(playerName,10,10,5,3);
     assert.equal(g.calculFrame(playerName,7),20); //1 strike in a row
   });
   it('Calcul the score of a frame with spare',function(){
     var g = new Grid();
     var playerName ="player1" 
     g.addPlayer(playerName);
-    g.setFrameScore(playerName,1,1,2);
-    g.setFrameScore(playerName,2,10);
-    g.setFrameScore(playerName,3,8,2);
-    g.setFrameScore(playerName,4,0,0);
-    g.setFrameScore(playerName,5,10);
-    g.setFrameScore(playerName,6,10,0);
-    g.setFrameScore(playerName,7,10,0);
-    g.setFrameScore(playerName,8,2,8);
-    g.setFrameScore(playerName,9,10,);
-    g.setFrameScore(playerName,10,10,5,3);
+    g.setFrameThrow(playerName,1,1,2);
+    g.setFrameThrow(playerName,2,10);
+    g.setFrameThrow(playerName,3,8,2);
+    g.setFrameThrow(playerName,4,5,3);
+    g.setFrameThrow(playerName,5,10);
+    g.setFrameThrow(playerName,6,10,0);
+    g.setFrameThrow(playerName,7,10,0);
+    g.setFrameThrow(playerName,8,2,8);
+    g.setFrameThrow(playerName,9,10,);
+    g.setFrameThrow(playerName,10,10,5,3);
     assert.equal(g.calculFrame(playerName,3),15); //spare
   });
   it('Calcul the score of a frame with 3 strike in a row',function(){
     var g = new Grid();
     var playerName ="player1" 
     g.addPlayer(playerName);
-    g.setFrameScore(playerName,1,1,2);
-    g.setFrameScore(playerName,2,10);
-    g.setFrameScore(playerName,3,8,2);
-    g.setFrameScore(playerName,4,0,0);
-    g.setFrameScore(playerName,5,10);
-    g.setFrameScore(playerName,6,10,0);
-    g.setFrameScore(playerName,7,10,0);
-    g.setFrameScore(playerName,8,2,8);
-    g.setFrameScore(playerName,9,10,);
-    g.setFrameScore(playerName,10,10,5,3);
+    g.setFrameThrow(playerName,1,1,2);
+    g.setFrameThrow(playerName,2,10);
+    g.setFrameThrow(playerName,3,8,2);
+    g.setFrameThrow(playerName,4,0,0);
+    g.setFrameThrow(playerName,5,10);
+    g.setFrameThrow(playerName,6,10,0);
+    g.setFrameThrow(playerName,7,10,0);
+    g.setFrameThrow(playerName,8,2,8);
+    g.setFrameThrow(playerName,9,10,);
+    g.setFrameThrow(playerName,10,10,5,3);
     assert.equal(g.calculFrame(playerName,5),30); // 3 strikes in a row
 });
 it('Calcul the score of a frame with 2 strike in a row',function(){
   var g = new Grid();
   var playerName ="player1" 
   g.addPlayer(playerName);
-  g.setFrameScore(playerName,1,1,2);
-  g.setFrameScore(playerName,2,10);
-  g.setFrameScore(playerName,3,8,2);
-  g.setFrameScore(playerName,4,0,0);
-  g.setFrameScore(playerName,5,10);
-  g.setFrameScore(playerName,6,10,0);
-  g.setFrameScore(playerName,7,10,0);
-  g.setFrameScore(playerName,8,2,8);
-  g.setFrameScore(playerName,9,10,);
-  g.setFrameScore(playerName,10,10,5,3);
+  g.setFrameThrow(playerName,1,1,2);
+  g.setFrameThrow(playerName,2,10);
+  g.setFrameThrow(playerName,3,8,2);
+  g.setFrameThrow(playerName,4,0,0);
+  g.setFrameThrow(playerName,5,10);
+  g.setFrameThrow(playerName,6,10,0);
+  g.setFrameThrow(playerName,7,10,0);
+  g.setFrameThrow(playerName,8,2,8);
+  g.setFrameThrow(playerName,9,10,);
+  g.setFrameThrow(playerName,10,10,5,3);
     assert.equal(g.calculFrame(playerName,6),22); // 2 strikes in a row
   });
   it('Calcul the score of a frame with strike at the 9th frame',function(){
     var g = new Grid();
     var playerName ="player1" 
     g.addPlayer(playerName);
-    g.setFrameScore(playerName,1,1,2);
-    g.setFrameScore(playerName,2,10);
-    g.setFrameScore(playerName,3,8,2);
-    g.setFrameScore(playerName,4,0,0);
-    g.setFrameScore(playerName,5,10);
-    g.setFrameScore(playerName,6,10,0);
-    g.setFrameScore(playerName,7,10,0);
-    g.setFrameScore(playerName,8,2,8);
-    g.setFrameScore(playerName,9,10,);
-    g.setFrameScore(playerName,10,10,5,3);
+    g.setFrameThrow(playerName,1,1,2);
+    g.setFrameThrow(playerName,2,10);
+    g.setFrameThrow(playerName,3,8,2);
+    g.setFrameThrow(playerName,4,0,0);
+    g.setFrameThrow(playerName,5,10);
+    g.setFrameThrow(playerName,6,10,0);
+    g.setFrameThrow(playerName,7,10,0);
+    g.setFrameThrow(playerName,8,2,8);
+    g.setFrameThrow(playerName,9,10,);
+    g.setFrameThrow(playerName,10,10,5,3);
     assert.equal(g.calculFrame(playerName,9),25);// strike at the 9th frame with 2 strikes in a row
 
   });
@@ -110,16 +110,16 @@ it('Calcul the score of a frame with 2 strike in a row',function(){
     var g = new Grid();
     var playerName ="player1" 
     g.addPlayer(playerName);
-    g.setFrameScore(playerName,1,1,2);
-    g.setFrameScore(playerName,2,10);
-    g.setFrameScore(playerName,3,8,2);
-    g.setFrameScore(playerName,4,0,0);
-    g.setFrameScore(playerName,5,10);
-    g.setFrameScore(playerName,6,10,0);
-    g.setFrameScore(playerName,7,10,0);
-    g.setFrameScore(playerName,8,2,8);
-    g.setFrameScore(playerName,9,10,);
-    g.setFrameScore(playerName,10,10,5,3);
+    g.setFrameThrow(playerName,1,1,2);
+    g.setFrameThrow(playerName,2,10);
+    g.setFrameThrow(playerName,3,8,2);
+    g.setFrameThrow(playerName,4,0,0);
+    g.setFrameThrow(playerName,5,10);
+    g.setFrameThrow(playerName,6,10,0);
+    g.setFrameThrow(playerName,7,10,0);
+    g.setFrameThrow(playerName,8,2,8);
+    g.setFrameThrow(playerName,9,10,);
+    g.setFrameThrow(playerName,10,10,5,3);
 
     assert.equal(g.calculFrame(playerName,10),18);// case of the 10th frame
   });
@@ -131,16 +131,16 @@ it('Calcul the score of a frame with 2 strike in a row',function(){
     var g = new Grid();
     var playerName ="player1" 
     g.addPlayer(playerName);
-    g.setFrameScore(playerName,1,1,2);
-    g.setFrameScore(playerName,2,10,0);
-    g.setFrameScore(playerName,3,8,2);
-    g.setFrameScore(playerName,4,0,0);
-    g.setFrameScore(playerName,5,10,0);
-    g.setFrameScore(playerName,6,10,0);
-    g.setFrameScore(playerName,7,10,0);
-    g.setFrameScore(playerName,8,2,8);
-    g.setFrameScore(playerName,9,10,0);
-    g.setFrameScore(playerName,10,10,5,3);
+    g.setFrameThrow(playerName,1,1,2);
+    g.setFrameThrow(playerName,2,10,0);
+    g.setFrameThrow(playerName,3,8,2);
+    g.setFrameThrow(playerName,4,0,0);
+    g.setFrameThrow(playerName,5,10,0);
+    g.setFrameThrow(playerName,6,10,0);
+    g.setFrameThrow(playerName,7,10,0);
+    g.setFrameThrow(playerName,8,2,8);
+    g.setFrameThrow(playerName,9,10,0);
+    g.setFrameThrow(playerName,10,10,5,3);
     it('Calcul the final score and the score accumulated of all the frames',function(){
       assert.equal(g.calculScoreTotal(playerName),168);
     }

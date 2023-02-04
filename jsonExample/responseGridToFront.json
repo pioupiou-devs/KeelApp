@@ -2,61 +2,63 @@
     "nbKeel":10,
     "nbFrame":3,
     "player":{
-        "player1":{
-            "frames":[
-                {
-                    "c1":1,
-                    "c2":3,
-                    "c3":0,
-                    "score":4,
-                    "totalScore":4
-                },
-                {
-                    "c1":1,
-                    "c2":9,
-                    "c3":0,
-                    "score":10,
-                    "totalScore":14
-                },
-                {
-                    "c1":10,
-                    "c2":10,
-                    "c3":5,
-                    "score":25,
-                    "totalScore":39
-                }
-                
-            ],
-            "isPlaying":true,
-            "currentFrame":4
-        },
-        "player2":{
-            "frames":[
-                {
-                    "c1":1,
-                    "c2":3,
-                    "c3":0,
-                    "score":4,
-                    "totalScore":4
-                },
-                {
-                    "c1":1,
-                    "c2":9,
-                    "c3":0,
-                    "score":10,
-                    "totalScore":14
-                },
-                {
-                    "c1":0,
-                    "c2":0,
-                    "c3":0,
-                    "score":0,
-                    "totalScore":14
-                }
-                
-            ],
-            "isPlaying":false,
-            "currentFrame":3
-        }
+      "player1":{
+        "frames":[
+          {
+            "c1":1,
+            "c2":3,
+            "c3":0,
+            "score":4,
+            "totalScore":4
+          },
+          {
+            "c1":1,
+            "c2":9,
+            "c3":0,
+            "score":20,
+            "totalScore":24
+          },
+          {
+            "c1":10,
+            "c2":10,
+            "c3":5,
+            "score":25,
+            "totalScore":49
+          }
+  
+        ],
+        "isPlaying":false,
+        "currentFrame":4,
+        "nbThrow": 1
+      },
+      "player2":{
+        "frames":[
+          {
+            "c1":1,
+            "c2":3,
+            "c3":0,
+            "score":4,
+            "totalScore":4
+          },
+          {
+            "c1":1,
+            "c2":9,
+            "c3":0,
+            "score":19,
+            "totalScore":23
+          },
+          {
+            "c1":9,
+            "c2":0,
+            "c3":0,
+            "score":9,
+            "totalScore":32
+          }
+  
+        ],
+        "isPlaying":true,
+        "currentFrame":3,
+        "nbThrow": 2
+      }
     }
-}
+  }
