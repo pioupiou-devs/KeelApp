@@ -18,8 +18,8 @@
 <body>
     <h2>Before starting...</h2>
 
-<!--    <form id="formRequirements" method="post" onsubmit="return setRequirements()" action="scoreboard.html">-->
-    <form id="formRequirements" method="post" onsubmit="return setRequirements()">
+    <form id="formRequirements" method="post" onsubmit="return setRequirements()" action="scoreboard.html">
+<!--    <form id="formRequirements" method="post" onsubmit="return setRequirements()">-->
         <label for='nbPlayers'>How many players?</label>
         <input type="number" id='nbPlayers' name='nbPlayers' placeholder="3" min="1" max="99" required>
     
@@ -35,8 +35,7 @@
         <button type="submit" id="requirementsBtn">Ready</button>
     </form>
     <p id="txtRequirementsError"></p>
-
-    
+    <button onclick="setRequirements()">Oui</button>
 </body>
 
 </html>

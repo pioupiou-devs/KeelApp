@@ -12,10 +12,11 @@ const frontServerPort = 5500;
 
 // Create the server with the callback function to handle every HTTP request
 const server = http.createServer(function (request, response) {
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Accept, Origin, User-Agent, DNT, Cache-Control, X-Mx-ReqToken, Keep-Alive, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With');
+    console.log(request.headers)
     if (getRegexUrl(urlBase).test(request.url)) {
-        response.setHeader('Access-Control-Allow-Origin', '*');
-        response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE', 'OPTIONS', 'PATCH');
-        response.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
 
         switch (request.method) {
             case 'GET':
@@ -74,6 +75,7 @@ function getEndpoints(request,response)
     }
 }
 
+var test = true;
 
 /** POST: /api/grid/player/frame
 @param {object} request object representing the input HTTP request
@@ -83,6 +85,18 @@ function postEndpoints(request, response) {
     if (getRegexUrl(urlGrid).test(request.url)) {
         if (getRegexUrl(urlFrame).test(request.url)) {
             {
+                if (test== true) {
+                    manager.createGrid(JSON.parse(`{
+   "nbKeel":10,
+   "nbPlayer":2,
+   "nbFrame":8,
+   "players":[
+      "player1",
+      "player2"
+   ]
+}`))
+                    test = false;
+                }
                 console.log('frame update');
                 const querystring = getQueryParams(request.url);
                 const frame = getPathInfoParam(request.url);
@@ -106,6 +120,7 @@ function postEndpoints(request, response) {
 @param {object} response object representing the HTTP response tha will be sent
 */
 function putEndpoints(request, response) {
+
     if (getRegexUrl(urlGrid).test(request.url)) {
         console.log('grid creation');
 
@@ -129,11 +144,10 @@ function putEndpoints(request, response) {
 function getJsonFromBody(request) {
     let body = '';
     let json;
-
     request.on('data', chunk => {
         body += chunk.toString();
     });
-
+    console.log(body)
     request.on('end', () => {
         try {
             json = JSON.parse(body);

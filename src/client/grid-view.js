@@ -17,6 +17,7 @@ const THROW_ENDPOINT = GRID_ENDPOINT + "/player/frame/";
  */
 function createGridView(json) {
     let grid = new GridView(json);
+    console.log(grid);
     grid.createHeader();
     grid.createScoreboard();
     grid.fillScoreboard();
@@ -68,7 +69,7 @@ class GridView {
         this.gridview = JSON.parse(jsonDocument);
         // console.log( this.gridview)
         this.NB_KEELS = this.gridview['nbKeel'];
-        this.players = Object.entries(this.gridview['player']);
+        this.players = Object.entries(this.gridview['players']);
         // console.log(this.players);
         // console.log(typeof this.players);
         // console.log(Object.keys(this.players).length);
@@ -213,7 +214,7 @@ class GridView {
                     continue;
                 } else {
                     let frame = playerData['frames'][i-1];
-                    console.log(frame)
+                    // console.log(frame)
                     let firstThrowDiv = document.getElementById(this.getId(rowNumber, i, CellType.FIRST));
                     let secondThrowDiv = document.getElementById(this.getId(rowNumber, i, CellType.SECOND));
                     let subTotalDiv = document.getElementById(this.getId(rowNumber, i, CellType.SUB_TOTAL));
@@ -258,7 +259,7 @@ class GridView {
      * @param nbThrow throw number 1, 2 or 3 if the last run
      */
     generatePossibilities() {//TODO générer en fonction des coups précédents
-        let currentFrame = this.gridview['player'][this.playerNameToPlay]['frames'][this.frameToPlay-1];
+        let currentFrame = this.gridview['players'][this.playerNameToPlay]['frames'][this.frameToPlay-1];
         let nbKeelDown = 0;
         if (this.throwToPlay == 2 && currentFrame['c1'] != this.NB_KEELS)
             nbKeelDown = currentFrame['c1'] != null ? currentFrame['c1'] : 0;
@@ -299,8 +300,9 @@ class GridView {
                     method: 'POST',
                     mode: 'cors',
                     headers: {
-                        'Content-Type': 'application/json'
-                    },
+                        'Content-Type': 'application/json',
+                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3750.0 Iron Safari/537.36'
+                    }
                 })
                     .then(response => response.json())
                     .then(data => {
@@ -320,176 +322,177 @@ class GridView {
 let jsonNew = `
 {
   "nbKeel":10,
-  "nbFrame":11,
-  "player":{
+  "nbFrame":8,
+  "players":{
     "player1":{
       "frames":[
         {
-          "c1":1,
-          "c2":3,
+          "c1":0,
+          "c2":0,
           "c3":0,
-          "score":4,
-          "totalScore":4
-        },
-        {
-          "c1":1,
-          "c2":9,
-          "c3":0,
-          "score":10,
-          "totalScore":14
-        },
-        {
-          "c1":10,
-          "c2":10,
-          "c3":5,
-          "score":25,
-          "totalScore":39
+          "score":0,
+          "totalScore":0
         },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
+        },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":0
+        },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
         }
 
       ],
-      "isPlaying":false,
-      "currentFrame":3,
+      "isPlaying":true,
+      "currentFrame":1,
       "nbThrow": 1
     },
     "player2":{
       "frames":[
         {
-          "c1":1,
-          "c2":3,
-          "c3":0,
-          "score":4,
-          "totalScore":4
-        },
-        {
-          "c1":1,
-          "c2":9,
-          "c3":0,
-          "score":10,
-          "totalScore":14
-        },
-        {
-          "c1":9,
+          "c1":0,
           "c2":0,
           "c3":0,
-          "score":20,
-          "totalScore":14
+          "score":0,
+          "totalScore":0
         },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
+        },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":0
+        },
+        {
+          "c1":0,
+          "c2":0,
+          "c3":0,
+          "score":0,
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
                 },
         {
           "c1":0,
           "c2":0,
           "c3":0,
           "score":0,
-          "totalScore":14
+          "totalScore":0
         }
+
       ],
-      "isPlaying":true,
-      "currentFrame":3,
-      "nbThrow": 2
+      "isPlaying":false,
+      "currentFrame":1,
+      "nbThrow": 1
     }
   }
 }
