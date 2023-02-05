@@ -1,539 +1,366 @@
-// import {Grid, Frame,calculFrame,calculScoreTotal,calcFrame10 } from "./grid-frame.js";
-
-class Grid {
-    constructor() {
-        this.players = new Map();
-    }
-
-    addPlayer(player) {
-        if(player == null) throw new Error('Player is undefined');
-
-        if( typeof player !== 'string' ) throw new Error('Player is not a string');
-
-        if( player.trim() === '' ) throw new Error('Player is empty');
-
-
-        this.players.set(player, this.constructFrameList());
-    }
-
-    constructFrameList() {
-        let frameList = [];
-
-        for (let i = 0; i < 10; i++) {
-            frameList.push(new Frame());
-        }
-
-        return frameList;
-    }
-}
-
-class Frame {
-    constructor(c1 = null, c2 = null, c3 = null) {
-
-        if (!this.isValid(c1, c2, c3)) {
-            throw new Error("Invalid data provided");
-        }
-
-        this.c1 = c1;
-        this.c2 = c2;
-        this.c3 = c3;
-        this.score = null;
-        this.totalScore = null;
-    }
-
-    //#region Methods
-    isValid(c1 = null, c2 = null, c3 = null) {
-
-        if (isNaN(c1) || isNaN(c2) || isNaN(c3))
-            return false;
-
-        if (c1 != null) {
-            if (typeof c1 != 'number' || c1 < 0 || c1 > 10) {
-                return false;
-            }
-        }
-
-        if (c2 != null) {
-            if (typeof c2 != 'number' || c2 < 0 || c2 > 10) {
-                return false;
-            }
-        }
-
-        if (c3 != null) {
-            if (typeof c3 != 'number' || c3 < 0 || c3 > 10) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-    //#endregion Methods
-
-    //#region Getters and Setters
-    getC1() {
-        return this.c1;
-    }
-
-    setC1(c1) {
-        if (this.isValid(c1, this.c2, this.c3))
-            this.c1 = c1;
-    }
-
-    getC2() {
-        return this.c2;
-    }
-
-    setC2(c2) {
-        if (this.isValid(this.c1, c2, this.c3))
-            this.c2 = c2;
-    }
-
-    getC3() {
-        return this.c3;
-    }
-
-    setC3(c3) {
-        if (this.isValid(this.c1, this.c2, c3))
-            this.c3 = c3;
-    }
-
-    getScore() {
-        return this.score;
-    }
-
-    setScore(score) {
-        if (score < 0 || score > 30 || score == null || typeof score != 'number')
-            throw new Error("Out of range total score");
-
-        this.score = score;
-    }
-
-    getTotalScore() {
-        return this.totalScore;
-    }
-
-    setTotalScore(totalScore) {
-        if (totalScore < 0 || totalScore > 300 || totalScore == null || typeof totalScore != 'number')
-            throw new Error("Out of range total score");
-
-        this.totalScore = totalScore;
-    }
-    //#endregion Getters and Setters
-}
-
-
-function calculFrame(frameTable, mancheNumber){
-
-    if(mancheNumber==10){
-        frameTable[mancheNumber-1].setScore(calcFrame10(frameTable[mancheNumber-1]));
-    }else{
-
-        if(frameTable[mancheNumber-1].getC1()==10){ //case of a strike
-
-
-            if(frameTable[mancheNumber].getC1()==10){ //case 2 strikes in a row
-                if(mancheNumber==9){ // case of the 9th frame with 2 strikes in a row
-                    frameTable[mancheNumber-1].setScore(20+frameTable[mancheNumber].getC2());
-                }else{
-                    frameTable[mancheNumber-1].setScore(20+frameTable[mancheNumber+1].getC1());
-                }
-
-            }else{
-                frameTable[mancheNumber-1].setScore(10+frameTable[mancheNumber].getC1()+frameTable[mancheNumber].getC2());
-            }
-
-
-        }else{
-            if(frameTable[mancheNumber-1].getC1()+frameTable[mancheNumber-1].getC2()==10){ //case of a spare
-                frameTable[mancheNumber-1].setScore(10+frameTable[mancheNumber].getC1());
-
-            }else{ //no spare, no strike
-                frameTable[mancheNumber-1].setScore(frameTable[mancheNumber-1].getC1()+frameTable[mancheNumber-1].getC2());
-            }
-        }
-    }
-
-    return  frameTable[mancheNumber-1].getScore();
-}
-
-
-function calculScoreTotal(frameTable){
-    sum=0;
-    for(let i=1;i<11;i=i+1){
-        sum=sum+calculFrame(frameTable,i);
-        frameTable[i-1].setTotalScore(sum);
-    }
-    return sum;
-}
-
-
-
-function calcFrame10(frame){
-    if(!(frame instanceof(Frame))){ //also cover undefined and null
-        return 0;
-    }
-
-    var result = 0;
-    if(frame.getC1() === null){
-        return result;
-    }
-    result = frame.getC1();
-
-    if(result === 10){ // we got a strike on the first throw
-        if(frame.getC2() === null){
-            return result;
-        }
-        result += frame.getC2();
-
-        if(frame.getC3() === null){
-            return result;
-        }
-        result += frame.getC3();
-
-        return result;
-    }
-
-    if(frame.getC2() === null){
-        return result;
-    }
-    result += frame.getC2();
-
-    if (result === 10){ // we got a spare
-        if(frame.getC3() === null){
-            return result;
-        }
-        result += frame.getC3();
-        return result;
-    }
-    else{ // we got a normal round with only 2 throws
-        return result;
-    }
-}
-
-
 const CellType = {
-    LEFT: "left",
-    RIGHT: "right",
-    CENTER: "center",
-    BOTTOM: "bottom",
+    FIRST: "first",
+    SECOND: "second",
+    THIRD: "third",
+    SUB_TOTAL: "subtotal",
     NONE: ""
 }
 
-let playingOrder = [];
-let cellToBePlayed = 0;
-let rowNumber = 1;
-let grid = new Grid();
-
-generateHeader()
-addRow()
-addRow()
-generatePlayingOrder(getNbPlayers())
-//TODO GESTION DE LA MANCHE 10 en front
+const BASE_URL = "http://localhost:3000/api";
+const GRID_ENDPOINT = BASE_URL + "/grid";
+const THROW_ENDPOINT = GRID_ENDPOINT + "/player/frame/";
+// POST /api/grid/player/frame/1?p=player1&e=2&v=3 => 3 quille dans le champs 2 de la frame 1 du player1 | renvoie json grid updated
 
 /**
- * Retourn le type de cellule en fonction de CellType
- * @param cellType
- * @returns {string}
+ * Create a new grid from a json
+ * @param json
+ */
+function createGridView(json) {
+    let grid = new GridView(json);
+    console.log(grid);
+    grid.createHeader();
+    grid.createScoreboard();
+    grid.fillScoreboard();
+    // console.log(grid.NB_KEELS);
+    grid.generatePossibilities(grid.playerNameToPlay, grid.frameToPlay, grid.throwToPlay);
+    // console.log("oui");
+}
+
+function updateGridView(json) {
+    let grid = new GridView(json);
+    grid.fillScoreboard();
+    grid.generatePossibilities(grid.playerNameToPlay, grid.frameToPlay, grid.throwToPlay);
+}
+/**
+ * Given a cellType, return the corresponding id value
+ * @param cellType cell type
+ * @returns {string} return id to display
  */
 function getCellType(cellType) {
     switch (cellType) {
-        case "left":
-            return "_L";//TODO changer en 1,2,3... avec test aussi
-        case "right":
-            return "_R";
-        case "center":
-            return "_C";
-        case "bottom":
-            return "_B";
+        case "first":
+            return "_1";//TODO changer en 1,2,3... avec test aussi
+        case "second":
+            return "_2";
+        case "third":
+            return "_3";
+        case "subtotal":
+            return "_4";
         default:
             throw new Error("Invalid cell type");
     }
 }
 
-/**
- * Génère le header du tableau de score
- * @returns {HTMLElement}
- */
-function generateHeader() {
-    console.log("Generating header");
-    let header = document.getElementById("grid-header");
-    let nameCell = document.createElement("th");
-    nameCell.setAttribute("id", getId(0, 0, CellType.NONE));
-    nameCell.textContent = "Name";
-    header.appendChild(nameCell)
-    for (let i = 1; i <= 10; i++) {
-        let col = document.createElement("th")
-        col.textContent = i.toString();
-        col.setAttribute("id", getId(0, i));
-        header.appendChild(col);
+//#region GridView - Scoreboard
+
+class GridView {
+    NB_PLAYERS = 0;
+    NB_KEELS = 0;
+    NB_FRAMES = 0;
+    gridview = null;
+    players = null;
+
+    //Data needed to send to API
+    playerNameToPlay = "";
+    frameToPlay = 0;
+    throwToPlay = 0;
+
+    constructor(jsonDocument) {
+        this.gridview = JSON.parse(jsonDocument);
+        console.log(this.gridview);
+        // console.log( this.gridview)
+        this.NB_KEELS = this.gridview['nbKeel'];
+        this.players = Object.entries(this.gridview['player']);
+        // console.log(this.players);
+        // console.log(typeof this.players);
+        // console.log(Object.keys(this.players).length);
+        this.NB_FRAMES = this.gridview['nbFrame'];
+        this.NB_PLAYERS = this.players.length;
+        // this.NB_PLAYERS = this.gridview['players'].length;
+        // this.NB_FRAMES = this.gridview['players'][0]['frames'].length;
     }
-    let total = document.createElement("th");
-    total.textContent = "Total";
-    total.setAttribute("id", getId(0, 11));
-    header.appendChild(total);
-    return header;
-}
 
-function createFrameCell(idRow, idCol, cellType) {
-    if (cellType == CellType.CENTER && idCol != 10) {
-        throw new Error("Can't create a center cell for a frame different than 10");
-    }
-    let innerFrameCell = document.createElement("div");
-    innerFrameCell.setAttribute("id", getId(idRow, idCol, cellType));
-    return innerFrameCell;
-}
-
-/**
- * Ajoute une ligne au tableau de score
- * @returns {HTMLTableRowElement}
- */
-function addRow() {
-
-    let row = document.createElement("tr");
-    let nameCell = document.createElement("td");
-    nameCell.setAttribute("id", getId(rowNumber, 0, CellType.NONE));
-    let inputName = document.createElement("input");
-    inputName.setAttribute("type", "text");
-    inputName.setAttribute("id", getId(rowNumber, 0, CellType.NONE));
-    nameCell.appendChild(inputName);
-
-    row.appendChild(nameCell)
-    for (let i = 1; i <= 10; i++) {
-        let cell = document.createElement("td");
-        let leftInput = createFrameCell(rowNumber, i, CellType.LEFT);
-        let rightInput = createFrameCell(rowNumber, i, CellType.RIGHT);
-        let bottomInput = createFrameCell(rowNumber, i, CellType.BOTTOM);
-        cell.appendChild(leftInput);
-        if (i == 10) {
-            let centerInput = createFrameCell(rowNumber, i, CellType.CENTER);
-            cell.appendChild(centerInput);
-
+    /**
+     * From the data extract from the json, creating the grid header
+     */
+    createHeader() {
+        // console.log("Generating header");
+        let header = document.getElementById("grid-header");
+        let nameCell = document.createElement("th");
+        nameCell.setAttribute("id", this.getId(0, 0, CellType.NONE));
+        nameCell.textContent = "Name";
+        header.appendChild(nameCell)
+        for (let i = 1; i <= this.NB_FRAMES; i++) {
+            let col = document.createElement("th")
+            col.textContent = i.toString();
+            col.setAttribute("id", this.getId(0, i));
+            header.appendChild(col);
         }
-        cell.appendChild(rightInput);
-        cell.appendChild(bottomInput);
-        row.appendChild(cell);
-    }
-    let total = document.createElement("td");
-    total.textContent = "Somme";
-    row.appendChild(total);
-    let tbody = document.querySelector("tbody");
-    tbody.appendChild(row);
-
-    //TODO TEMPORARY FIX
-    grid.addPlayer("Player" + rowNumber);
-
-    rowNumber++;
-    return row;
-}
-
-/**
- * Retourne l'id d'une cellule (sans vérifier si elle existe)
- * @param idRow ligne/joueur
- * @param idCol manche
- * @param cellType type de cellule
- * @returns {string} id de la cellule
- */
-function getId(idRow, idCol, cellType) {
-    if (idRow < 0 || idCol < 0 || idCol > 11) {
-        throw new Error(`Invalid id ${idRow}, ${idCol}`);
-    }
-    if (idCol != 10 && cellType == CellType.CENTER) {
-        throw new Error("No center cell for a frame different than 10");
+        let total = document.createElement("th");
+        total.textContent = "Total";
+        total.setAttribute("id", this.getId(0, this.NB_FRAMES+1));
+        header.appendChild(total);
     }
 
-    const row = "rowP";
-    const col = "_col";
-
-    const identifierCol = idCol == 0 ? "name" : idCol == 11 ? "total" : idCol;
-
-    if (idRow == 0) {
-        const rowHeader = "row";
-        return rowHeader + idRow + col + identifierCol;
-    } else {
-        const type = cellType != null && idCol != 0 && idCol != 11 ? getCellType(cellType) : "";
-        return row + idRow + col + identifierCol + type;
-    }
-}
-
-/**
- * Met à jour le score d'un joueur
- */
-function addScore() {
-    // console.log(document.querySelector("body").outerHTML);
-    let first = parseInt(document.getElementById('first').value);
-    let second = parseInt(document.getElementById('second').value);
-    let score = first + second;
-    // cell to update
-    let row = playingOrder[cellToBePlayed].split("_")[0];
-    let frameNum = playingOrder[cellToBePlayed].split("_")[1];
-    let firstThrowCell = document.getElementById(getId(row, frameNum, CellType.LEFT));
-    let secondThrowCell = document.getElementById(getId(row, frameNum, CellType.RIGHT));
-    // let thirdThrowCell = document.getElementById(getId(row, frame, CellType.RIGHT));
-
-    //update the cells
-    if (first == 10) {
-        firstThrowCell.textContent = "X";
-        secondThrowCell.textContent = "";
-    } else if (score == 10) {
-        firstThrowCell.textContent = first.toString();
-        secondThrowCell.textContent = "/";
-    } else {
-        firstThrowCell.textContent = first.toString();
-        secondThrowCell.textContent = second.toString();
-    }
-
-    if (cellToBePlayed == playingOrder.length) {
-        cellToBePlayed = 0;
-        total();
-    }
-    nextTurn();
-
-}
-//TODO TEMPORARY FIX
-function total() {
-    for (let i = 1; i < rowNumber; i++) {
-        for (let j = 1; j <= 10; j++) {
-            let left = document.getElementById(getId(i, j, CellType.LEFT)).textContent;
-            let right = document.getElementById(getId(i, j, CellType.RIGHT)).textContent;
-            let bottom = document.getElementById(getId(i, j, CellType.BOTTOM)).textContent;
-            let center = document.getElementById(getId(i, j, CellType.CENTER)).textContent;
-            grid["Player"+i](i, j, left, right, bottom, center);
+    /**
+     * Return the id from a cell given the following argument (sans vérifier si elle existe)
+     * @param idRow line/player
+     * @param idCol nb frame
+     * @param cellType CellType
+     * @returns {string} id corresponding to the parameters
+     */
+    getId(idRow, idCol, cellType = null) {
+        if (idRow < 0 || idCol < 0 || idCol > this.NB_FRAMES+1) {
+            throw new Error(`Invalid id ${idRow}, ${idCol}`);
         }
-    }
-    console.log(grid);
-    calculScoreTotal(grid);
-}
-
-/**
- * Met à jour le tour de jeu
- */
-function nextTurn() {
-    if (cellToBePlayed < playingOrder.length -1 ) cellToBePlayed++;
-    let row = playingOrder[cellToBePlayed].split("_")[0];
-    let frame = playingOrder[cellToBePlayed].split("_")[1];
-    let playerId = document.getElementById("player-id");
-    let frameId = document.getElementById("frame-id");
-    playerId.innerHTML = row;
-    frameId.innerHTML = frame;
-    return playingOrder[cellToBePlayed];
-}
-
-/**
- * Génère l'ordre de jeu
- * @param nbPlayer
- * @returns {*[]} tableau contenant l'ordre de jeu
- */
-function generatePlayingOrder(nbPlayer) {
-    // console.log("Generating playing order");
-    // console.log("Nb player : " + nbPlayer);
-    if (nbPlayer < 1 || nbPlayer == null) {
-        throw new Error("Invalid number of player");
-    }
-    playingOrder = [];
-    for (let frame = 1; frame <= 10; frame++) {
-        for (let row = 1; row <= nbPlayer; row++) {
-            playingOrder.push(row + "_" + frame);
+        if (idCol != this.NB_FRAMES && cellType == CellType.THIRD) {
+            throw new Error("No 3rd cell for a frame different than 10");
         }
-    }
-    return playingOrder;
 
-}
+        const row = "rowP";
+        const col = "_col";
+        // if idCol is 0, it is the name column, if it's NB_FRAMES+1 : total column, else it's the frame's number
+        const identifierCol = idCol == 0 ? "name" : idCol == this.NB_FRAMES+1 ? "total" : idCol;
 
-/**
- * Compte le nombre de joueurs avant de commencer la partie
- * @returns {number}
- */
-function getNbPlayers() {
-    return document.querySelectorAll("tr").length - 1;
-}
-
-/**
- * Vérifie si un input fourni via son id est valide
- * @param inputId id de l'input à vérifier
- * @returns {boolean}
- */
-function isValidInput(inputId) {
-    // Récupère la valeur du champ input
-    let inputValue = document.getElementById(inputId).value;
-    let errorMsg = document.getElementById("error-msg");
-    if (inputValue == "") {
-        errorMsg.innerHTML = "Saisir le nombre de quilles tombées (entre 0 et 10)";
-        return false;
-    }
-    else if (!Number.isInteger(parseInt(inputValue))) {//si pas un entier
-        errorMsg.innerHTML = "Veuillez saisir un nombre entier";
-        return false;
-    } else if (parseInt(inputValue) < 0 || parseInt(inputValue) > 10) {
-        errorMsg.innerHTML = "Veuillez saisir un nombre entre 0 et 10";
-        return false;
-    }
-    errorMsg.innerHTML = "";
-    return true;
-}
-
-/**
- * Lance la vérification des inputs
- * @param input
- */
-function checkInput(input) {
-    let errorMsg = document.getElementById("error-msg");
-
-    let button = document.getElementById('add-score');
-    let block2 = false;
-    let block3 = false;
-    if (input === "first") {
-        if (!isValidInput("first")) {
-            button.disabled = true;
-            document.getElementById('first').value = "";
-            if (document.getElementById('second').value == "10") {
-                document.getElementById('second').disabled = true;
-                errorMsg.innerHTML = "";
-                block2 = true;
-            }
-        }
-    }
-
-    if (input === "second" && !block2) {
-        if (!isValidInput("second")) {
-            button.disabled = true;
-            document.getElementById('second').value = "";
+        if (idRow == 0) {
+            const rowHeader = "row";
+            return rowHeader + idRow + col + identifierCol;
         } else {
-            if (!isValidInput("first")) {
-                button.disabled = true;
-                document.getElementById('second').value = "";
-                errorMsg.innerHTML = "Veuillez saisir une valeur pour le premier lancer";
+            //retrieve the type in a inner cell (1st throw, 2nd, 3rd or subtotal
+            const type = cellType != null && idCol != 0 && idCol != this.NB_FRAMES+1 ? getCellType(cellType) : "";
+            return row + idRow + col + identifierCol + type;
+        }
+    }
+
+    /**
+     * Create a score cell (1st throw, 2nd throw, 3rd throw, subtotal ...) given the following parameters
+     * @param idRow
+     * @param idCol
+     * @param cellType
+     * @returns {HTMLDivElement}
+     */
+    createFrameCell(idRow, idCol, cellType) {
+        if (cellType == CellType.THIRD && idCol != this.NB_FRAMES) {
+            throw new Error("Can't create a third cell for a frame different than 10");
+        }
+        let innerFrameCell = document.createElement("div");
+        innerFrameCell.setAttribute("id", this.getId(idRow, idCol, cellType));
+        return innerFrameCell;
+    }
+
+    /**
+     * Creating the frames for each player
+     */
+    createScoreboard() {
+        this.players.forEach(([player,frame], index) => {
+            let rowNumber = index+1;
+            let row = document.createElement("tr");
+            let nameCell = document.createElement("td");
+            nameCell.setAttribute("id", this.getId(rowNumber, 0, CellType.NONE));
+            let namePlayer = document.createElement("div");
+            namePlayer.setAttribute("id", this.getId(rowNumber, 0, CellType.NONE));
+            namePlayer.innerHTML = player;
+            nameCell.appendChild(namePlayer);
+            row.appendChild(nameCell)
+
+            // Management of the display of the player who must play
+            if (frame['isPlaying'] == true) {
+                this.playerNameToPlay = player;
+                this.frameToPlay = frame['currentFrame'];
+                this.throwToPlay = frame['nbThrow'];
+                let playerToPlay = document.getElementById("player-id");
+                playerToPlay.innerHTML = player;
+                let frameToPlay = document.getElementById("frame-id");
+                frameToPlay.innerHTML = this.frameToPlay.toString();
+                let throwToPlay = document.getElementById("throw-id");
+                throwToPlay.innerHTML = this.throwToPlay.toString();
+            }
+
+            // create score cells
+            for (let i = 1; i <= this.NB_FRAMES; i++) {
+                let cell = document.createElement("td");
+                let firstThrowDiv = this.createFrameCell(rowNumber, i, CellType.FIRST);// first throw
+                let secondThrowDiv = this.createFrameCell(rowNumber, i, CellType.SECOND);// second throw
+                let subTotalDiv = this.createFrameCell(rowNumber, i, CellType.SUB_TOTAL);// sub total
+                cell.appendChild(firstThrowDiv);
+                cell.appendChild(secondThrowDiv);
+                //last frame
+                if (i == this.NB_FRAMES) {
+                    let centerInput = this.createFrameCell(rowNumber, i, CellType.THIRD);
+                    cell.appendChild(centerInput);
+                }
+                cell.appendChild(subTotalDiv);
+                row.appendChild(cell);
+            }
+
+            let total = document.createElement("td");
+            total.setAttribute("id", this.getId(rowNumber, this.NB_FRAMES+1));
+            row.appendChild(total);
+            let tbody = document.querySelector("tbody");
+            tbody.appendChild(row);
+        })
+        // console.log({playerNameToPlay: this.playerNameToPlay, frameToPlay: this.frameToPlay, throwToPlay: this.throwToPlay})
+    }
+
+    /**
+     * From the player's data received from the API, fill in the scoreboard
+     */
+    fillScoreboard() {
+        console.log(this.players)
+        this.players.forEach(([player, playerData], index) => {
+            if (playerData['isPlaying'] == true) {
+                console.log(playerData['currentFrame'])
+
+                this.playerNameToPlay = player;
+                this.frameToPlay = playerData['currentFrame'];
+                this.throwToPlay = playerData['nbThrow'];
+                let playerToPlay = document.getElementById("player-id");
+                playerToPlay.innerHTML = player;
+                let frameToPlay = document.getElementById("frame-id");
+                frameToPlay.innerHTML = this.frameToPlay.toString();
+                let throwToPlay = document.getElementById("throw-id");
+                throwToPlay.innerHTML = this.throwToPlay.toString();
+            }
+            if (this.frameToPlay > this.NB_FRAMES) {
+                let rowNumber = index + 1;
+                console.log(playerData)
+                let frame = playerData['frames'][this.NB_FRAMES - 1];
+                let totalDiv = document.getElementById(this.getId(rowNumber, this.NB_FRAMES + 1));
+                console.log(frame)
+                let total = frame['totalScore'];
+
+                if (total != null) {
+                    totalDiv.innerHTML = total;
+                }
+
+                //remove buttons
+                let buttons = document.getElementById("keels");
+                while (buttons.firstChild) {
+                    buttons.removeChild(buttons.firstChild);
+                }
+
+                console.log("end of game")
             } else {
-                button.disabled = false;
+                this.players.forEach(([player, playerData], index) => {
+                    let rowNumber = index + 1;
+                    console.log(playerData)
+                    for (let i = 1; i <= this.frameToPlay; i++) {
+                        let frame = playerData['frames'][i - 1];
+                        let firstThrowDiv = document.getElementById(this.getId(rowNumber, i, CellType.FIRST));
+                        let secondThrowDiv = document.getElementById(this.getId(rowNumber, i, CellType.SECOND));
+                        let subTotalDiv = document.getElementById(this.getId(rowNumber, i, CellType.SUB_TOTAL));
+                        let firstThrow = frame['c1'];
+                        let secondThrow = frame['c2'];
+                        let subTotal = frame['totalScore'];
+
+                        if (firstThrow != null) {
+                            firstThrowDiv.innerHTML = firstThrow;
+                        }
+                        if (secondThrow != null) {
+                            secondThrowDiv.innerHTML = secondThrow;
+                        }
+                        if (subTotal != null) {
+                            subTotalDiv.innerHTML = subTotal;
+                        }
+
+                        if (i == this.NB_FRAMES) {
+                            let centerInput = document.getElementById(this.getId(rowNumber, i, CellType.THIRD));
+                            if (frame['c3'] != null) {
+                                centerInput.innerHTML = frame['c3'];
+                            }
+                        }
+
+
+                    }
+                })
             }
-        }
+
+        });
     }
 
-    if (isValidInput("first") && isValidInput("second")) {
-        button.disabled = false;
-        let first = parseInt(document.getElementById('first').value);
-        let second = parseInt(document.getElementById('second').value);
-        if ((first + second) > 10) {
-            button.disabled = true;
-            errorMsg.innerHTML = "Le nombre de quilles tombées ne peut pas être supérieur à 10";
-        } else {
-            errorMsg.innerHTML = "";
-            button.disabled = false;
+    /**
+     * Generate buttons to avoid complexity with the user (error in input...)
+     * @param playerToPlay which player is going to play
+     * @param frame quelle manche de jeu (de 1 à NB_FRAMES maximum)
+     * @param nbThrow throw number 1, 2 or 3 if the last run
+     */
+    generatePossibilities() {
+        //we remove all the buttons before generating new ones
+        let buttons = document.getElementById("keels");
+        while (buttons.firstChild) {
+            buttons.removeChild(buttons.firstChild);
+        }
+        let currentFrame = this.gridview['player'][this.playerNameToPlay]['frames'][this.frameToPlay-1];
+        let nbKeelDown = 0;
+        if (this.throwToPlay == 2 && currentFrame['c1'] != this.NB_KEELS)
+            nbKeelDown = currentFrame['c1'] != null ? currentFrame['c1'] : 0;
+
+        for (let i = 0; i <= this.NB_KEELS - nbKeelDown; i++) {
+            let button = document.createElement("button");
+            if (this.frameToPlay != this.NB_FRAMES) {
+                if (this.throwToPlay == 1 && i == this.NB_KEELS)
+                    button.innerHTML = "X";
+                else if (this.throwToPlay == 2 && i == this.NB_KEELS - nbKeelDown)// if we made a strike on the first move, we won't go back in because the backing will change the move to be played
+                    button.innerHTML = "/";
+                else
+                    button.innerHTML = i.toString();
+            } else {
+                // console.log("last frame nbthrow " + this.throwToPlay );
+                if (this.throwToPlay == 1 && i == this.NB_KEELS)
+                    button.innerHTML = "X";
+                else if (this.throwToPlay == 2) {
+                    // last shot not a strike and the number of pins dropped is equal to the number of pins remaining
+                    if (currentFrame['c1'] != this.NB_KEELS && i == this.NB_KEELS - currentFrame['c1'])
+                        button.innerHTML = "/";
+                    else if (currentFrame['c1'] == this.NB_KEELS && i == this.NB_KEELS)
+                        button.innerHTML = "X";
+                    else
+                        button.innerHTML = i.toString();
+                }
+                else if (this.throwToPlay == 3 && i == this.NB_KEELS)
+                    button.innerHTML = "X";
+                else
+                    button.innerHTML = i.toString();
+            }
+            let p = this.playerNameToPlay;
+            let t = this.throwToPlay;
+            let f = this.frameToPlay;
+            button.addEventListener("click", function() {
+                // console.log("Click on :", i);
+                fetch(THROW_ENDPOINT+`${f}?p=${p}&e=${t}&v=${i}`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3750.0 Iron Safari/537.36'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        console.log("Successfully received updated grid");
+                        updateGridView(data);
+                    })
+                    .catch(error => console.error(error))
+            });
+            let buttonsDiv = document.getElementById("keels");
+            buttonsDiv.appendChild(button);
         }
     }
-
 }
+//initialisation of the gridview by retrieving the grid from the server
+fetch(GRID_ENDPOINT, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+})
+    .then(response => response.json())
+    .then(data => {
+        // console.log(data)
+        console.log("Successfully fetched data")
+        createGridView(data);
 
-function resetGlobalVariables() {
-    playingOrder = [];
-    cellToBePlayed = 0;
-    rowNumber = 1;
-}
-
-// {addScore, generatePlayingOrder, getNbPlayers, nextTurn, resetGlobalVariables, generateHeader, checkInput, isValidInput,
-// };
-
-// module.exports = {
-//     generateHeader, addRow, getId, getCellType, CellType,
-//     getNbPlayers, addScore, nextTurn, generatePlayingOrder, createFrameCell,
-//     checkInput, isValidInput, playingOrder, cellToBePlayed, resetGlobalVariables, rowNumber
-// };
+    })
+    .catch(error => console.error(error))

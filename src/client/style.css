@@ -51,6 +51,10 @@
     text-align: left;
 }
 
+#grid {
+    overflow-x:auto;
+}
+
 input {
     width: 90%;
 }
@@ -62,4 +66,14 @@ table {
 
 form {
     width: 20%;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-align: center;
 }

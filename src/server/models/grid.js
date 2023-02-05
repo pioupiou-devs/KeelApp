@@ -1,5 +1,6 @@
 const Frame = require('./frame');
 const Player=require('./player');
+const {grid} = require("../modelManager");
 
 class Grid {
     constructor(nbKeel=10, nbFrame=10) {
@@ -20,7 +21,15 @@ class Grid {
         
     }
 
-    // as we create the list of frame during player creation, we need to set value of frame
+    /**
+     * setFrameThrow: set the throws of a frame for a player
+     * @param {string} playerName , the name of a player
+     * @param {int} frameNumber , the number of the frame between 1 and grid.nbFrame
+     * @param {int} c1 , the number of fallen keels in the first throw, between 0 and grid.nbKeel (default 0)
+     * @param {int} c2 , the number of fallen keels in the second throw, between 0 and grid.nbKeel (default 0) 
+     * @param {int} c3 , the number of fallen keels in the third throw, between 0 and grid.nbKeel (default 0)
+     * @returns Nothing
+     */
     setFrameThrow(playerName, frameNumber, c1 = 0,c2 = 0, c3 = 0){
         //player inupt verification
         if (playerName == null) {
@@ -59,28 +68,40 @@ class Grid {
         this.players.get(playerName).frames[frameNumber -1] = new Frame(c1,c2,c3);
     }
 
+    /**
+     * calculFrame: Calcul and set the score of a frame of the player
+     * @param {string} namePlayer , name of the player
+     * @param {int} mancheNumber , the number of the frame between 1 and grid.nbFrame
+     * @returns {int} the Score of the frame
+     */
     calculFrame(namePlayer, mancheNumber) {
-        var frameTable=this.players.get(namePlayer).frames;
-        var frameIndex =  mancheNumber -1;
-        var nextFrameIndex =  mancheNumber;
-        var next2FrameIdex=  mancheNumber+1;
-        var doubleKeel = this.nbKeel*2;
+        let frameTable=this.players.get(namePlayer).frames;
+        let frameIndex =  mancheNumber -1;
+        let nextFrameIndex =  mancheNumber;
+        let next2FrameIdex=  mancheNumber+1;
+        let doubleKeel = this.nbKeel*2;
+        console.log("-----------------------")
+        console.log(mancheNumber)
+        console.log(frameTable[mancheNumber]);
 
         if (nextFrameIndex == this.nbFrame) {
             frameTable[frameIndex].setScore(this.calculLastFrame(frameTable[frameIndex]),this.nbKeel);
         } else {
-
             if (frameTable[frameIndex].getC1() == this.nbKeel) { //case of a strike
-
+                console.log("strike")
 
                 if (frameTable[nextFrameIndex].getC1() == this.nbKeel) { //case 2 strikes in a row
                     if (nextFrameIndex == this.nbFrame-1) { // case of the 9th frame with 2 strikes in a row
+                        console.log("strike strike")
                         frameTable[frameIndex].setScore(doubleKeel + frameTable[nextFrameIndex].getC2(),this.nbKeel);
                     } else {
+                        console.log("strike strike strike")
                         frameTable[frameIndex].setScore(doubleKeel + frameTable[next2FrameIdex].getC1(),this.nbKeel);
                     }
 
                 } else {
+                    console.log("strike strike strike strike")
+                    console.log(frameTable[nextFrameIndex].getC1() )
                     frameTable[frameIndex].setScore(this.nbKeel + frameTable[nextFrameIndex].getC1() + frameTable[nextFrameIndex].getC2(),this.nbKeel);
                 }
 
@@ -98,19 +119,29 @@ class Grid {
         return frameTable[frameIndex].getScore();
     }
 
-
+    /**
+     * CalculScoreTotal: calcul the score of the game of a player using calculFrame
+     * @param {string} namePlayer , the name of the current player
+     * @returns {int} the Score of the current player of the game
+     */
     calculScoreTotal(namePlayer) {
         var sum = 0;
-        for (let i = 1; i < this.nbFrame+1; i = i + 1) {
+        // for (let i = 1; i < this.nbFrame+1; i = i + 1) {
+        for (let i = 1; i <= this.nbFrame; i = i + 1) {
             sum = sum + this.calculFrame(namePlayer, i);
             this.players.get(namePlayer).frames[i - 1].setTotalScore(sum,this.nbFrame,this.nbKeel);
         }
+        console.log(grid)
         return sum;
     }
 
 
 
-
+    /**
+     * calculLastFrame: calcul the score of the last frame which is given in parameter
+     * @param {Frame} frame the Frame object of the last frame
+     * @returns {int} the score of the frame
+     */
     calculLastFrame(frame) {
         if (!(frame instanceof (Frame))) { //also cover undefined and null
             return 0;

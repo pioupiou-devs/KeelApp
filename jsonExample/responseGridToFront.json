@@ -15,20 +15,20 @@
             "c1":1,
             "c2":9,
             "c3":0,
-            "score":20,
-            "totalScore":24
+            "score":10,
+            "totalScore":14
           },
           {
             "c1":10,
             "c2":10,
             "c3":5,
             "score":25,
-            "totalScore":49
+            "totalScore":39
           }
   
         ],
         "isPlaying":false,
-        "currentFrame":4,
+        "currentFrame":3,
         "nbThrow": 1
       },
       "player2":{
@@ -44,15 +44,15 @@
             "c1":1,
             "c2":9,
             "c3":0,
-            "score":19,
-            "totalScore":23
+            "score":10,
+            "totalScore":14
           },
           {
             "c1":9,
             "c2":0,
             "c3":0,
             "score":9,
-            "totalScore":32
+            "totalScore":14
           }
   
         ],
