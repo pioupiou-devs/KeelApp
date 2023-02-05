@@ -11,25 +11,39 @@ const GRID_ENDPOINT = BASE_URL + "/grid";
 const THROW_ENDPOINT = GRID_ENDPOINT + "/player/frame/";
 // POST /api/grid/player/frame/1?p=player1&e=2&v=3 => 3 quille dans le champs 2 de la frame 1 du player1 | renvoie json grid updated
 
+var isFinished = false;
+
 /**
  * Create a new grid from a json
  * @param json
  */
 function createGridView(json) {
     let grid = new GridView(json);
-    console.log(grid);
+    // console.log(grid);
     grid.createHeader();
     grid.createScoreboard();
     grid.fillScoreboard();
     // console.log(grid.NB_KEELS);
     grid.generatePossibilities(grid.playerNameToPlay, grid.frameToPlay, grid.throwToPlay);
     // console.log("oui");
+
 }
 
 function updateGridView(json) {
     let grid = new GridView(json);
     grid.fillScoreboard();
+    if (isFinished) {
+        //remove buttons
+        let buttons = document.getElementById("keels");
+        buttons.parentNode.removeChild(buttons);
+        let text = document.getElementById("text-info");
+        text.innerHTML = "La partie est finie !";
+        let turn = document.getElementById("turn");
+        turn.remove();
+        // window.location.href = window.location.origin + "/src/client/index.html";
+    }
     grid.generatePossibilities(grid.playerNameToPlay, grid.frameToPlay, grid.throwToPlay);
+
 }
 /**
  * Given a cellType, return the corresponding id value
@@ -67,7 +81,7 @@ class GridView {
 
     constructor(jsonDocument) {
         this.gridview = JSON.parse(jsonDocument);
-        console.log(this.gridview);
+        // console.log(this.gridview);
         // console.log( this.gridview)
         this.NB_KEELS = this.gridview['nbKeel'];
         this.players = Object.entries(this.gridview['player']);
@@ -206,10 +220,10 @@ class GridView {
      * From the player's data received from the API, fill in the scoreboard
      */
     fillScoreboard() {
-        console.log(this.players)
+        // console.log(this.players)
         this.players.forEach(([player, playerData], index) => {
             if (playerData['isPlaying'] == true) {
-                console.log(playerData['currentFrame'])
+                // console.log(playerData['currentFrame'])
 
                 this.playerNameToPlay = player;
                 this.frameToPlay = playerData['currentFrame'];
@@ -223,27 +237,22 @@ class GridView {
             }
             if (this.frameToPlay > this.NB_FRAMES) {
                 let rowNumber = index + 1;
-                console.log(playerData)
+                // console.log(playerData)
                 let frame = playerData['frames'][this.NB_FRAMES - 1];
                 let totalDiv = document.getElementById(this.getId(rowNumber, this.NB_FRAMES + 1));
-                console.log(frame)
+                // console.log(frame)
                 let total = frame['totalScore'];
 
                 if (total != null) {
                     totalDiv.innerHTML = total;
                 }
 
-                //remove buttons
-                let buttons = document.getElementById("keels");
-                while (buttons.firstChild) {
-                    buttons.removeChild(buttons.firstChild);
-                }
-
-                console.log("end of game")
+                isFinished = true;
+                // console.log("end of game")
             } else {
                 this.players.forEach(([player, playerData], index) => {
                     let rowNumber = index + 1;
-                    console.log(playerData)
+                    // console.log(playerData)
                     for (let i = 1; i <= this.frameToPlay; i++) {
                         let frame = playerData['frames'][i - 1];
                         let firstThrowDiv = document.getElementById(this.getId(rowNumber, i, CellType.FIRST));
@@ -337,8 +346,8 @@ class GridView {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
-                        console.log("Successfully received updated grid");
+                        // console.log(data);
+                        // console.log("Successfully received updated grid");
                         updateGridView(data);
                     })
                     .catch(error => console.error(error))
@@ -359,7 +368,7 @@ fetch(GRID_ENDPOINT, {
     .then(response => response.json())
     .then(data => {
         // console.log(data)
-        console.log("Successfully fetched data")
+        // console.log("Successfully fetched data")
         createGridView(data);
 
     })
