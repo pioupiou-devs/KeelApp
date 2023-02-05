@@ -23,6 +23,7 @@ var grid;
 */
 function createGrid(json)
 {
+
     let nbFrame=json.nbFrames;
     let nbKeel=json.nbKeel;
     let players=json.players;
@@ -32,6 +33,28 @@ function createGrid(json)
     });
     grid.players.get(players[0]).isPlaying=true;
 
+    module.exports = { grid };
+
+}
+
+/**
+ * Alternative ways to retrieve the grid params from qeuryparams
+ * @param nbKeel
+ * @param nbFrame
+ * @param players
+ */
+function createGrid(nbKeel, nbFrame, players)
+{
+
+    // let nbFrame=json.nbFrames;
+    // let nbKeel=json.nbKeel;
+    // let players=json.players;
+    let playerList = players.split(',');
+    grid=new Grid(nbKeel,nbFrame);
+    playerList.forEach(element => {
+        grid.addPlayer(element);
+    });
+    grid.players.get(players[0]).isPlaying=true;
     module.exports = { grid };
 
 }
@@ -91,11 +114,16 @@ function playingPlayerGestion(namePlayer){
 */
 function updateGrid(namePlayer, frame, element, value)
 {
+  frame = parseInt(frame);
+  element = parseInt(element);
+  value = parseInt(value);
   let indexFrame=frame-1;
   if(grid.players.get(namePlayer)!=undefined){
     switch (element) {
         case 1:
             grid.players.get(namePlayer).frames[indexFrame].setC1(value);
+            console.log("value : "+value);
+            console.log(grid.players.get(namePlayer).frames[indexFrame]);
             if(value==10){
               if(frame==grid.nbFrame){
                 grid.players.get(namePlayer).nbThrow=grid.players.get(namePlayer).nbThrow+1;
@@ -133,7 +161,7 @@ function updateGrid(namePlayer, frame, element, value)
             playingPlayerGestion(namePlayer);
             break;
     }
-      
+
     grid.calculScoreTotal(namePlayer);
 
   }else{
@@ -150,6 +178,7 @@ function updateGrid(namePlayer, frame, element, value)
  */
 function getGrid()
 {   let json="{";
+    console.log(grid)
     let proprieties=Object.keys(grid);
     proprieties.forEach(element => {
       if(element!="players"){

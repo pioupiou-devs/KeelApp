@@ -1,5 +1,6 @@
 const Frame = require('./frame');
 const Player=require('./player');
+const {grid} = require("../modelManager");
 
 class Grid {
     constructor(nbKeel=10, nbFrame=10) {
@@ -74,27 +75,33 @@ class Grid {
      * @returns {int} the Score of the frame
      */
     calculFrame(namePlayer, mancheNumber) {
-        var frameTable=this.players.get(namePlayer).frames;
-        var frameIndex =  mancheNumber -1;
-        var nextFrameIndex =  mancheNumber;
-        var next2FrameIdex=  mancheNumber+1;
-        var doubleKeel = this.nbKeel*2;
+        let frameTable=this.players.get(namePlayer).frames;
+        let frameIndex =  mancheNumber -1;
+        let nextFrameIndex =  mancheNumber;
+        let next2FrameIdex=  mancheNumber+1;
+        let doubleKeel = this.nbKeel*2;
+        console.log("-----------------------")
+        console.log(mancheNumber)
+        console.log(frameTable[mancheNumber]);
 
         if (nextFrameIndex == this.nbFrame) {
             frameTable[frameIndex].setScore(this.calculLastFrame(frameTable[frameIndex]),this.nbKeel);
         } else {
-
             if (frameTable[frameIndex].getC1() == this.nbKeel) { //case of a strike
-
+                console.log("strike")
 
                 if (frameTable[nextFrameIndex].getC1() == this.nbKeel) { //case 2 strikes in a row
                     if (nextFrameIndex == this.nbFrame-1) { // case of the 9th frame with 2 strikes in a row
+                        console.log("strike strike")
                         frameTable[frameIndex].setScore(doubleKeel + frameTable[nextFrameIndex].getC2(),this.nbKeel);
                     } else {
+                        console.log("strike strike strike")
                         frameTable[frameIndex].setScore(doubleKeel + frameTable[next2FrameIdex].getC1(),this.nbKeel);
                     }
 
                 } else {
+                    console.log("strike strike strike strike")
+                    console.log(frameTable[nextFrameIndex].getC1() )
                     frameTable[frameIndex].setScore(this.nbKeel + frameTable[nextFrameIndex].getC1() + frameTable[nextFrameIndex].getC2(),this.nbKeel);
                 }
 
@@ -119,10 +126,12 @@ class Grid {
      */
     calculScoreTotal(namePlayer) {
         var sum = 0;
-        for (let i = 1; i < this.nbFrame+1; i = i + 1) {
+        // for (let i = 1; i < this.nbFrame+1; i = i + 1) {
+        for (let i = 1; i <= this.nbFrame; i = i + 1) {
             sum = sum + this.calculFrame(namePlayer, i);
             this.players.get(namePlayer).frames[i - 1].setTotalScore(sum,this.nbFrame,this.nbKeel);
         }
+        console.log(grid)
         return sum;
     }
 

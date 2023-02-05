@@ -15,7 +15,6 @@ const server = http.createServer(function (request, response) {
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Accept, Origin, User-Agent, DNT, Cache-Control, X-Mx-ReqToken, Keep-Alive, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With');
-    console.log(request.headers)
     if (getRegexUrl(urlBase).test(request.url)) {
 
         switch (request.method) {
@@ -60,16 +59,7 @@ function getEndpoints(request,response)
     {
         console.log('grid get');
         response.writeHead(200, { 'Content-Type': 'text/json' });
-        // response.write(JSON.stringify(manager.getGrid()));
-        // response.end();
-        // response.write(JSON.stringify(manager.getGrid()));
-        // response.write("test");
-        //met le status à 200
-        // response.end(JSON.stringify(manager.getGrid()));
-        let json = {
-            "nbKeel" : 10
-        }
-        response.end(JSON.stringify(json));
+        response.end(JSON.stringify(manager.getGrid()));
 
         console.log('grid get end');
     }
@@ -85,18 +75,6 @@ function postEndpoints(request, response) {
     if (getRegexUrl(urlGrid).test(request.url)) {
         if (getRegexUrl(urlFrame).test(request.url)) {
             {
-                if (test== true) {
-                    manager.createGrid(JSON.parse(`{
-   "nbKeel":10,
-   "nbPlayer":2,
-   "nbFrame":8,
-   "players":[
-      "player1",
-      "player2"
-   ]
-}`))
-                    test = false;
-                }
                 console.log('frame update');
                 const querystring = getQueryParams(request.url);
                 const frame = getPathInfoParam(request.url);
@@ -123,14 +101,23 @@ function putEndpoints(request, response) {
 
     if (getRegexUrl(urlGrid).test(request.url)) {
         console.log('grid creation');
+        let querystring = getQueryParams(request.url);
+        let nbKeel = querystring.nbK;
+        let nbFrame = querystring.nbF;
+        let players = querystring.n;
+        let urlRedirect = querystring.u;
+        console.log('nbKeel: ' + nbKeel + ', nbFrame: ' + nbFrame + ', players: ' + players + ', urlRedirect: ' + urlRedirect);
+        // let json = getJsonFromBody(request);
+        manager.createGrid(nbKeel, nbFrame, players);
 
-        let json = getJsonFromBody(request);
-        manager.createGrid(json);
+        // let urlRedirect = 'http://localhost:' + frontServerPort + '/src/client/' + urlRedirectGrid;
 
-        let urlRedirect = 'http://localhost:' + frontServerPort + '/src/client/' + urlRedirectGrid;
-
-        response.writeHead(308, { 'Location': urlRedirect });
-        response.end();
+        // response.writeHead(308, { 'Location': urlRedirect });
+        response.writeHead(302, {
+            Location: urlRedirect
+        });
+        console.log("redirect to " + urlRedirect);
+        response.end(urlRedirect);
     }
 }
 

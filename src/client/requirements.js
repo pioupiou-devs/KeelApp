@@ -79,11 +79,18 @@ function setRequirements() {
         console.log(data);
 
         // Send json to server
-        // sendRequest(SERVER_URL + '/api/grid', 'PUT')
+        // sendRequest(SERVER_URL + '/api/grid',data, 'PUT')
         //     .catch((error) => {
         //         console.error("ERROR (sending requirements to server) - ", error);
         //     });
+        fetch(SERVER_URL + '/api/grid'+`?nbK=${inputNbPins}&nbF=${inputNbRounds}&n=${inputNames}&u=${redirectURL}`, {
+            method: 'PUT',
+            mode: 'cors',
+            redirect: 'follow',
+        })
+            .then(response => console.log(response.redirected))
+            .catch(error => console.error(error))
 
-        return false;
+        return true;
     }
 }
