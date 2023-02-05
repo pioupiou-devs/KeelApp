@@ -178,4 +178,4 @@ function getGrid()
 
 //#endregion Grid
 
-module.exports = { createGrid, updateGrid, getGrid };
+module.exports = { createGrid, updateGrid, getGrid, playingPlayerGestion };
