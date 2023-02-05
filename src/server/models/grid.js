@@ -85,6 +85,8 @@ class Grid {
         console.log(frameTable[mancheNumber]);
 
         if (nextFrameIndex == this.nbFrame) {
+            console.log("last frame")
+            console.log(this.calculLastFrame(frameTable[frameIndex]),this.nbKeel)
             frameTable[frameIndex].setScore(this.calculLastFrame(frameTable[frameIndex]),this.nbKeel);
         } else {
             if (frameTable[frameIndex].getC1() == this.nbKeel) { //case of a strike
@@ -92,8 +94,9 @@ class Grid {
 
                 if (frameTable[nextFrameIndex].getC1() == this.nbKeel) { //case 2 strikes in a row
                     if (nextFrameIndex == this.nbFrame-1) { // case of the 9th frame with 2 strikes in a row
-                        console.log("strike strike")
-                        let score = 2*parseInt(this.nbKeel) + parseInt(frameTable[nextFrameIndex].getC1());
+                        console.log("strike strike---")
+                        let score = 2*parseInt(this.nbKeel) + parseInt(frameTable[nextFrameIndex].getC2());
+                        console.log(score)
                         // frameTable[frameIndex].setScore(doubleKeel + frameTable[nextFrameIndex].getC2(),this.nbKeel);
                         frameTable[frameIndex].setScore(score,this.nbKeel);
                     } else {
@@ -150,6 +153,8 @@ class Grid {
      * @returns {int} the score of the frame
      */
     calculLastFrame(frame) {
+        console.log("calculLastFrame")
+        console.log(frame)
         if (!(frame instanceof (Frame))) { //also cover undefined and null
             return 0;
         }
@@ -170,7 +175,7 @@ class Grid {
                 return result;
             }
             result += frame.getC3();
-
+            console.log("le resultat est " + result)
             return result;
         }
 
@@ -184,6 +189,7 @@ class Grid {
                 return result;
             }
             result += frame.getC3();
+
             return result;
         }
         else { // we got a normal round with only 2 throws
