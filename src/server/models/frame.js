@@ -84,13 +84,20 @@ class Frame {
     }
 
     setScore(score, nbKeel=10) {
-        score=parseInt(score);
-        nbKeel=parseInt(nbKeel);
+        // score=parseInt(score);
+        // nbKeel=parseInt(nbKeel);
         console.log("score: "+score);
         console.log("nbKeel: "+nbKeel);
         let maxScore=3*nbKeel;
-        if (score < 0 || score > maxScore || score == null || typeof score != 'number')
-            throw new Error("Out of range total score");
+        //refactor condition above with one if and throw at time
+        if (score > maxScore)
+            throw new Error("Error score > maxScore");
+        if (score < 0)
+            throw new Error("Error score < 0");
+        if (score == null)
+            throw new Error("Error score == null");
+        if (typeof score != 'number')
+            throw new Error("Error typeof score != 'number'");
 
         this.score = score;
     }
