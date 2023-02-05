@@ -2,7 +2,9 @@ const assert = require('assert');
 const Grid = require('../../src/server/models/grid');
 const Frame = require('../../src/server/models/frame');
 const Player = require('../../src/server/models/player');
+
 const {createGrid,updateGrid,getGrid,grid,playingPlayerGestion}=require("../../src/server/modelManager");
+
 
 
 const { create } = require('domain');
@@ -80,6 +82,7 @@ describe('Model Manager', function () {
         });
     });
     describe('getGrid', function () {
+
         it('test on get grid', function () {
 
             var json='{"nbKeel" : 10,"nbFrames" : 3,"players": ["player1","player2"]}';
@@ -243,5 +246,6 @@ describe('Model Manager', function () {
 
         });
     });
+
 
 });

@@ -31,6 +31,9 @@ function createGrid(json)
       grid.addPlayer(element);
     });
     grid.players.get(players[0]).isPlaying=true;
+
+    module.exports = { grid };
+
 }
 
 /**
