@@ -6,7 +6,7 @@ class Player{
         this.frames=this.constructFrameList(nbFrame);
         this.isPlaying=false;
         this.currentFrame=1;
-        this.throw=1;
+        this.nbThrow=1;
     }
 
     /**

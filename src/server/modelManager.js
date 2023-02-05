@@ -40,14 +40,34 @@ function createGrid(json)
  * @returns nothing
  */
 function playingPlayerGestion(namePlayer){
-   let t=Object.keys(grid.players);
-    let indexPlayer=t.indexOf(namePlayer);
-    if(indexPlayer!=-1){
-      indexPlayer=(indexPlayer+1)%t.length;
-      grid.players.get(t[indexPlayer]).isPlaying=true;
-      grid.players.get(t[indexPlayer]).throw=1;
+    const iterator=grid.players.keys();
+    let firstIteration;
+    let currentIteration;
 
-    }else{
+    for (let index = 0; index < grid.players.size; index++) {
+      currentIteration=iterator.next().value;
+      if(index==0){
+        firstIteration=currentIteration;
+      }
+      if(currentIteration==namePlayer){
+        if(index!=grid.players.size-1){
+          let nextIteration=iterator.next().value;
+          grid.players.get(nextIteration).isPlaying=true;
+          grid.players.get(nextIteration).nbThrow=1;
+          break;
+        }else{
+          let nextIteration=firstIteration;
+          grid.players.get(nextIteration).isPlaying=true;
+          grid.players.get(nextIteration).nbThrow=1;
+          break;
+        }
+
+      }
+      
+    }
+
+    
+    if(currentIteration!=namePlayer){//Player not found
       throw new Error('Player is undefined');
     }
 }
@@ -75,17 +95,17 @@ function updateGrid(namePlayer, frame, element, value)
             grid.players.get(namePlayer).frames[indexFrame].setC1(value);
             if(value==10){
               if(frame==grid.nbFrame){
-                grid.players.get(namePlayer).throw=grid.players.get(namePlayer).throw+1;
+                grid.players.get(namePlayer).nbThrow=grid.players.get(namePlayer).nbThrow+1;
 
               }else{
                 grid.players.get(namePlayer).currentFrame=grid.players.get(namePlayer).currentFrame+1;
                 grid.players.get(namePlayer).isPlaying=false;
-                grid.players.get(namePlayer).throw=1;
+                grid.players.get(namePlayer).nbThrow=1;
                 playingPlayerGestion(namePlayer);
 
               }
             }else{
-              grid.players.get(namePlayer).throw=grid.players.get(namePlayer).throw+1;
+              grid.players.get(namePlayer).nbThrow=grid.players.get(namePlayer).nbThrow+1;
             }
 
           break;
@@ -95,11 +115,11 @@ function updateGrid(namePlayer, frame, element, value)
             let nbKeel=grid.nbKeel;
             if(frame==grid.nbFrame && (throw1==nbKeel || throw1+value==nbKeel)) // Last frame and (strike in the first throw or a spare)
             {
-              grid.players.get(namePlayer).throw=grid.players.get(namePlayer).throw+1; // the third throw
+              grid.players.get(namePlayer).nbThrow=grid.players.get(namePlayer).nbThrow+1; // the third throw
             }else{
               grid.players.get(namePlayer).currentFrame=grid.players.get(namePlayer).currentFrame+1;
               grid.players.get(namePlayer).isPlaying=false;
-              grid.players.get(namePlayer).throw=1;
+              grid.players.get(namePlayer).nbThrow=1;
               playingPlayerGestion(namePlayer);
             }  
             break;
@@ -126,8 +146,31 @@ function updateGrid(namePlayer, frame, element, value)
  * @returns a string which contains a JSON object
  */
 function getGrid()
-{
-    return JSON.stringify(grid);
+{   let json="{";
+    let proprieties=Object.keys(grid);
+    proprieties.forEach(element => {
+      if(element!="players"){
+        json=json+"\""+element+"\":"+grid[element]+",";
+      }else{
+        json=json+"\"player\":{";
+        const iterator=grid.players.keys();
+        for (let index = 0; index < grid.players.size; index++) {
+          let key=iterator.next().value;
+          if(index!=0){
+            json=json+",";
+          }
+          json=json+"\""+key+"\":"+JSON.stringify(grid.players.get(key));
+          
+        }
+        json=json+"},";
+      }
+
+      
+    });
+    json = json.slice(0,-1);
+    json=json+"}";
+    
+    return json;
 }
 
 //#endregion Grid
