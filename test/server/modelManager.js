@@ -2,7 +2,9 @@ const assert = require('assert');
 const Grid = require('../../src/server/models/grid');
 const Frame = require('../../src/server/models/frame');
 const Player = require('../../src/server/models/player');
-const {createGrid,updateGrid,getGrid,grid}=require("../../src/server/modelManager");
+
+const {createGrid,updateGrid,getGrid,grid,playingPlayerGestion}=require("../../src/server/modelManager");
+
 
 
 const { create } = require('domain');
@@ -80,22 +82,170 @@ describe('Model Manager', function () {
         });
     });
     describe('getGrid', function () {
-        it('should create a new Player', function () {
 
-            function replacer(key, value) {
-                // Filtering out properties
-                if (typeof value === "string") {
-                  return undefined;
-                }
-                return value;
-              }
+        it('test on get grid', function () {
 
             var json='{"nbKeel" : 10,"nbFrames" : 3,"players": ["player1","player2"]}';
             createGrid(JSON.parse(json));
-            const {grid}=require("../../src/server/modelManager");
-            json = `{"nbKeel":10,"nbFrame":3,"player":{"player1":{"frames":[{"c1":1,"c2":3,"c3":0,"score":4,"totalScore":4},{"c1":1,"c2":9,"c3":0,"score":20,"totalScore":24},{"c1":10,"c2":10,"c3":5,"score":25,"totalScore":49}],"isPlaying":false,"currentFrame":4,"nbThrow": 1},"player2":{"frames":[{"c1":1,"c2":3,"c3":0,"score":4,"totalScore":4},{"c1":1,"c2":9,"c3":0,"score":19,"totalScore":23},{"c1":9,"c2":0,"c3":0,"score":9,"totalScore":32}],"isPlaying":true,"currentFrame":3,"nbThrow": 2}}}`;
-            assert.equal(createGrid(),);
+            json = `{"player":{"player1":{"frames":[{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null}],"isPlaying":true,"currentFrame":1,"nbThrow":1},"player2":{"frames":[{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null}],"isPlaying":false,"currentFrame":1,"nbThrow":1}},"nbKeel":10,"nbFrame":3}`;
+            assert.equal(getGrid(),json);
 
         });
     });
+    describe('updateGrid', function () {
+        it('test simple', function () {
+
+            var json='{"nbKeel" : 10,"nbFrames" : 3,"players": ["player1","player2"]}';
+            createGrid(JSON.parse(json));
+            updateGrid("player1", 1, 1, 4);
+            
+            json = `{"player":{"player1":{"frames":[{"c1":4,"c2":0,"c3":0,"score":4,"totalScore":4},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":4},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":4}],"isPlaying":true,"currentFrame":1,"nbThrow":2},"player2":{"frames":[{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null}],"isPlaying":false,"currentFrame":1,"nbThrow":1}},"nbKeel":10,"nbFrame":3}`;
+            
+            assert.equal(getGrid(),json);
+
+        });
+        it('test 2 throw, noraml frame', function () {
+
+            var json='{"nbKeel" : 10,"nbFrames" : 3,"players": ["player1","player2"]}';
+            createGrid(JSON.parse(json));
+            updateGrid("player1", 1, 1, 4);
+            updateGrid("player1", 1, 2, 4);
+            
+            json = `{"player":{"player1":{"frames":[{"c1":4,"c2":4,"c3":0,"score":8,"totalScore":8},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":8},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":8}],"isPlaying":false,"currentFrame":2,"nbThrow":1},"player2":{"frames":[{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null}],"isPlaying":true,"currentFrame":1,"nbThrow":1}},"nbKeel":10,"nbFrame":3}`;
+            
+            assert.equal(getGrid(),json);
+
+        });
+        it('test strike, noraml frame', function () {
+
+            var json='{"nbKeel" : 10,"nbFrames" : 3,"players": ["player1","player2"]}';
+            createGrid(JSON.parse(json));
+            updateGrid("player1", 1, 1, 10);
+            
+            json = `{"player":{"player1":{"frames":[{"c1":10,"c2":0,"c3":0,"score":10,"totalScore":10},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":10},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":10}],"isPlaying":false,"currentFrame":2,"nbThrow":1},"player2":{"frames":[{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null}],"isPlaying":true,"currentFrame":1,"nbThrow":1}},"nbKeel":10,"nbFrame":3}`;
+            
+            assert.equal(getGrid(),json);
+
+        });
+        it('testback to first player', function () {
+
+            var json='{"nbKeel" : 10,"nbFrames" : 3,"players": ["player1","player2"]}';
+            createGrid(JSON.parse(json));
+            updateGrid("player1", 1, 1, 4);
+            updateGrid("player1", 1, 2, 4);
+
+            updateGrid("player2", 1, 1, 0);
+            updateGrid("player2", 1, 2, 0);
+            
+            json = `{"player":{"player1":{"frames":[{"c1":4,"c2":4,"c3":0,"score":8,"totalScore":8},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":8},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":8}],"isPlaying":true,"currentFrame":2,"nbThrow":1},"player2":{"frames":[{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0}],"isPlaying":false,"currentFrame":2,"nbThrow":1}},"nbKeel":10,"nbFrame":3}`;
+            
+            assert.equal(getGrid(),json);
+
+        });
+
+        it('test last frame (spare)', function () {
+
+            var json='{"nbKeel" : 10,"nbFrames" : 3,"players": ["player1","player2"]}';
+            createGrid(JSON.parse(json));
+            //frmae 1
+            updateGrid("player1", 1, 1, 4);
+            updateGrid("player1", 1, 2, 4);
+
+            updateGrid("player2", 1, 1, 0);
+            updateGrid("player2", 1, 2, 0);
+
+            //frame 2
+            updateGrid("player1", 2, 1, 0);
+            updateGrid("player1", 2, 2, 0);
+
+            updateGrid("player2", 2, 1, 0);
+            updateGrid("player2", 2, 2, 0);
+
+            //frame 3 (last)
+            updateGrid("player1", 3, 1, 4);
+            updateGrid("player1", 3, 2, 6);
+
+
+            json = `{"player":{"player1":{"frames":[{"c1":4,"c2":4,"c3":0,"score":8,"totalScore":8},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":8},{"c1":4,"c2":6,"c3":0,"score":10,"totalScore":18}],"isPlaying":true,"currentFrame":3,"nbThrow":3},"player2":{"frames":[{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0}],"isPlaying":false,"currentFrame":3,"nbThrow":1}},"nbKeel":10,"nbFrame":3}`;
+            
+            assert.equal(getGrid(),json);
+
+        });
+
+        it('test last frame (strike)', function () {
+
+            var json='{"nbKeel" : 10,"nbFrames" : 3,"players": ["player1","player2"]}';
+            createGrid(JSON.parse(json));
+            //frmae 1
+            updateGrid("player1", 1, 1, 4);
+            updateGrid("player1", 1, 2, 4);
+
+            updateGrid("player2", 1, 1, 0);
+            updateGrid("player2", 1, 2, 0);
+
+            //frame 2
+            updateGrid("player1", 2, 1, 0);
+            updateGrid("player1", 2, 2, 0);
+
+            updateGrid("player2", 2, 1, 0);
+            updateGrid("player2", 2, 2, 0);
+
+            //frame 3 (last)
+            updateGrid("player1", 3, 1, 10);
+            updateGrid("player1", 3, 2, 6);
+
+
+            json = `{"player":{"player1":{"frames":[{"c1":4,"c2":4,"c3":0,"score":8,"totalScore":8},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":8},{"c1":10,"c2":6,"c3":0,"score":16,"totalScore":24}],"isPlaying":true,"currentFrame":3,"nbThrow":3},"player2":{"frames":[{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0}],"isPlaying":false,"currentFrame":3,"nbThrow":1}},"nbKeel":10,"nbFrame":3}`;
+            
+            assert.equal(getGrid(),json);
+
+        });
+        it('test last frame ( 2 strike)', function () {
+
+            var json='{"nbKeel" : 10,"nbFrames" : 3,"players": ["player1","player2"]}';
+            createGrid(JSON.parse(json));
+            //frmae 1
+            updateGrid("player1", 1, 1, 4);
+            updateGrid("player1", 1, 2, 4);
+
+            updateGrid("player2", 1, 1, 0);
+            updateGrid("player2", 1, 2, 0);
+
+            //frame 2
+            updateGrid("player1", 2, 1, 0);
+            updateGrid("player1", 2, 2, 0);
+
+            updateGrid("player2", 2, 1, 0);
+            updateGrid("player2", 2, 2, 0);
+
+            //frame 3 (last)
+            updateGrid("player1", 3, 1, 10);
+            updateGrid("player1", 3, 2, 10);
+
+
+            json = `{"player":{"player1":{"frames":[{"c1":4,"c2":4,"c3":0,"score":8,"totalScore":8},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":8},{"c1":10,"c2":10,"c3":0,"score":20,"totalScore":28}],"isPlaying":true,"currentFrame":3,"nbThrow":3},"player2":{"frames":[{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0},{"c1":0,"c2":0,"c3":0,"score":0,"totalScore":0}],"isPlaying":false,"currentFrame":3,"nbThrow":1}},"nbKeel":10,"nbFrame":3}`;
+            
+            assert.equal(getGrid(),json);
+
+        });
+
+    });
+
+
+    describe('playingPlayerGestion', function () {
+        it('test ', function () {
+
+            var json='{"nbKeel" : 10,"nbFrames" : 3,"players": ["player1","player2"]}';
+            createGrid(JSON.parse(json));
+            playingPlayerGestion("player1");
+            playingPlayerGestion("player2");
+            
+            json = `{"player":{"player1":{"frames":[{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null}],"isPlaying":true,"currentFrame":1,"nbThrow":1},"player2":{"frames":[{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null},{"c1":0,"c2":0,"c3":0,"score":null,"totalScore":null}],"isPlaying":true,"currentFrame":1,"nbThrow":1}},"nbKeel":10,"nbFrame":3}`;
+            
+            assert.equal(getGrid(),json);
+
+        });
+    });
+
+
 });
