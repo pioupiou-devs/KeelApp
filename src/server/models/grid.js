@@ -93,22 +93,29 @@ class Grid {
                 if (frameTable[nextFrameIndex].getC1() == this.nbKeel) { //case 2 strikes in a row
                     if (nextFrameIndex == this.nbFrame-1) { // case of the 9th frame with 2 strikes in a row
                         console.log("strike strike")
-                        frameTable[frameIndex].setScore(doubleKeel + frameTable[nextFrameIndex].getC2(),this.nbKeel);
+                        let score = 2*parseInt(this.nbKeel) + parseInt(frameTable[nextFrameIndex].getC1());
+                        // frameTable[frameIndex].setScore(doubleKeel + frameTable[nextFrameIndex].getC2(),this.nbKeel);
+                        frameTable[frameIndex].setScore(score,this.nbKeel);
                     } else {
                         console.log("strike strike strike")
-                        frameTable[frameIndex].setScore(doubleKeel + frameTable[next2FrameIdex].getC1(),this.nbKeel);
+                        // doubleKeel + frameTable[next2FrameIdex].getC1()
+                        let score = 2*parseInt(this.nbKeel) + parseInt(frameTable[next2FrameIdex].getC1());
+                        frameTable[frameIndex].setScore(score,this.nbKeel);
+                        // frameTable[frameIndex].setScore(doubleKeel + frameTable[next2FrameIdex].getC1(),this.nbKeel);
                     }
 
                 } else {
-                    console.log("strike strike strike strike")
-                    console.log(frameTable[nextFrameIndex].getC1() )
-                    frameTable[frameIndex].setScore(this.nbKeel + frameTable[nextFrameIndex].getC1() + frameTable[nextFrameIndex].getC2(),this.nbKeel);
+                    let score = parseInt(this.nbKeel) + parseInt(frameTable[nextFrameIndex].getC1()) + parseInt(frameTable[nextFrameIndex].getC2());
+                    // this.nbKeel + frameTable[nextFrameIndex].getC1() + frameTable[nextFrameIndex].getC2()
+                    frameTable[frameIndex].setScore(score,this.nbKeel);
                 }
 
 
             } else {
                 if (frameTable[frameIndex].getC1() + frameTable[frameIndex].getC2() == this.nbKeel) { //case of a spare
-                    frameTable[frameIndex].setScore(this.nbKeel + frameTable[nextFrameIndex].getC1(),this.nbKeel);
+                    let score = parseInt(this.nbKeel) + parseInt(frameTable[nextFrameIndex].getC1());
+                    // frameTable[frameIndex].setScore(this.nbKeel + frameTable[nextFrameIndex].getC1(),this.nbKeel);
+                    frameTable[frameIndex].setScore(score,this.nbKeel);
 
                 } else { //no spare, no strike
                     frameTable[frameIndex].setScore(frameTable[frameIndex].getC1() + frameTable[frameIndex].getC2(),this.nbKeel);
