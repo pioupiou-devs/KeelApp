@@ -10,7 +10,7 @@ var grid;
 * {
 *    "nbKeel" : 10,
 *    "nbFrames" : 10,
-*    "players": 
+*    "players":
 *    [
 *        "player1",
 *        "player2",
@@ -18,11 +18,12 @@ var grid;
 *    ]
 * }
 *
-* @param {Object}json, the Object JS 
+* @param {Object}json, the Object JS
 * @returns Nothing
 */
 function createGrid(json)
 {
+
     let nbFrame=json.nbFrames;
     let nbKeel=json.nbKeel;
     let players=json.players;
@@ -37,8 +38,30 @@ function createGrid(json)
 }
 
 /**
+ * Alternative ways to retrieve the grid params from qeuryparams
+ * @param nbKeel
+ * @param nbFrame
+ * @param players
+ */
+function createGrid(nbKeel, nbFrame, players)
+{
+
+    // let nbFrame=json.nbFrames;
+    // let nbKeel=json.nbKeel;
+    // let players=json.players;
+    let playerList = players.split(',');
+    grid=new Grid(nbKeel,nbFrame);
+    playerList.forEach(element => {
+        grid.addPlayer(element);
+    });
+    grid.players.get(players[0]).isPlaying=true;
+    module.exports = { grid };
+
+}
+
+/**
  * playingPlayerGestion: set isPlaying at True for the person after the playing passing in parameter
- * 
+ *
  * @param {string} namePlayer , name of the current player
  * @returns nothing
  */
@@ -66,22 +89,22 @@ function playingPlayerGestion(namePlayer){
         }
 
       }
-      
+
     }
 
-    
+
     if(currentIteration!=namePlayer){//Player not found
       throw new Error('Player is undefined');
     }
 }
 
 /**
-* update Grid : 
+* update Grid :
 *   - udpate frame and scores in the grid after the throw of a player
 *   - change the current frame of the player if it is necessary
 *   - Increase or reset the number of throws in the current frame of the player
 *   - Change the current player if it is necessary
-* 
+*
 *
 * @param {string} namePlayer, the name of the playing player
 * @param {int} frame, the number of the current frame of the player between 1 and grid.nbFrame
@@ -91,11 +114,16 @@ function playingPlayerGestion(namePlayer){
 */
 function updateGrid(namePlayer, frame, element, value)
 {
+  frame = parseInt(frame);
+  element = parseInt(element);
+  value = parseInt(value);
   let indexFrame=frame-1;
   if(grid.players.get(namePlayer)!=undefined){
     switch (element) {
         case 1:
             grid.players.get(namePlayer).frames[indexFrame].setC1(value);
+            console.log("value : "+value);
+            console.log(grid.players.get(namePlayer).frames[indexFrame]);
             if(value==10){
               if(frame==grid.nbFrame){
                 grid.players.get(namePlayer).nbThrow=grid.players.get(namePlayer).nbThrow+1;
@@ -133,23 +161,24 @@ function updateGrid(namePlayer, frame, element, value)
             playingPlayerGestion(namePlayer);
             break;
     }
-      
+
     grid.calculScoreTotal(namePlayer);
 
   }else{
     throw new Error('Player is undefined');
   }
- 
+
 }
 
 
 /**
  * getGrid: transform the grid (which is a grid object) to a string in a JSON format
- * 
+ *
  * @returns a string which contains a JSON object
  */
 function getGrid()
 {   let json="{";
+    console.log(grid)
     let proprieties=Object.keys(grid);
     proprieties.forEach(element => {
       if(element!="players"){
@@ -163,16 +192,16 @@ function getGrid()
             json=json+",";
           }
           json=json+"\""+key+"\":"+JSON.stringify(grid.players.get(key));
-          
+
         }
         json=json+"},";
       }
 
-      
+
     });
     json = json.slice(0,-1);
     json=json+"}";
-    
+
     return json;
 }
 
