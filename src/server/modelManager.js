@@ -23,7 +23,7 @@ var grid;
 */
 function createGrid(json)
 {
-    let nbFrame=json.nbFrame;
+    let nbFrame=json.nbFrames;
     let nbKeel=json.nbKeel;
     let players=json.players;
     grid=new Grid(nbKeel,nbFrame);
